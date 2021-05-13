@@ -6,48 +6,48 @@ import java.util.function.LongFunction;
 
 /**
  * A specialisation of {@code Extractor} for {@code long} values.
- * @param <ENV>     the environment type
+ * @param <CTX>     the context type
  */
 @FunctionalInterface
-public interface LongExtractor<ENV> extends Extractor<ENV, Long> {
+public interface LongExtractor<CTX> extends Extractor<CTX, Long> {
     /**
      * Static constructor method.
      * @param extr      the extractor
-     * @param <ENV>     the environment type
+     * @param <CTX>     the context type
      * @return the extractor
      */
-    static <ENV> LongExtractor<ENV> of(LongExtractor<ENV> extr) {
+    static <CTX> LongExtractor<CTX> of(LongExtractor<CTX> extr) {
         return extr;
     }
 
     /**
-     * An extractor that simply returns the environment.
+     * An extractor that simply returns the context.
      * @return          the extractor
      */
     static LongExtractor<Long> id() {
-        return env -> env;
+        return ctx -> ctx;
     }
 
     /**
      * An extractor that always returns the given value.
      * @param value     the value
-     * @param <ENV>     the environment type
+     * @param <CTX>     the context type
      * @return          the extractor
      */
-    static <ENV> LongExtractor<ENV> konst(long value) {
-        return env -> value;
+    static <CTX> LongExtractor<CTX> konst(long value) {
+        return ctx -> value;
     }
 
     /**
      * The extraction method, specialised to return an unboxed {@code long} value.
-     * @param env       the environment
+     * @param ctx       the context
      * @return the extracted value
      */
-    long extractLong(ENV env);
+    long extractLong(CTX ctx);
 
     @Override
-    default Long extract(ENV env) {
-        return extractLong(env);
+    default Long extract(CTX ctx) {
+        return extractLong(ctx);
     }
 
     /**
@@ -56,58 +56,58 @@ public interface LongExtractor<ENV> extends Extractor<ENV, Long> {
      * @param <U>       the return type of the function
      * @return the mapped extractor
      */
-    default <U> Extractor<ENV, U> mapLong(LongFunction<U> f) {
-        return env -> f.apply(extractLong(env));
+    default <U> Extractor<CTX, U> mapLong(LongFunction<U> f) {
+        return ctx -> f.apply(extractLong(ctx));
     }
 
     /**
      * A specialisation of {@code ExtractorEx} for {@code long} values.
-     * @param <ENV>     the environment type
+     * @param <CTX>     the context type
      * @param <EX>      the exception type
      */
     @FunctionalInterface
-    interface Checked<ENV, EX extends Exception> extends Extractor.Checked<ENV, Long, EX> {
+    interface Checked<CTX, EX extends Exception> extends Extractor.Checked<CTX, Long, EX> {
         /**
          * Static constructor method.
          * @param extr      the extractor
-         * @param <ENV>     the environment type
+         * @param <CTX>     the context type
          * @param <EX>      the exception type
          * @return the extractor
          */
-        static <ENV, EX extends Exception> Checked<ENV, EX> of(Checked<ENV, EX> extr) {
+        static <CTX, EX extends Exception> Checked<CTX, EX> of(Checked<CTX, EX> extr) {
             return extr;
         }
 
         /**
-         * An extractor that simply returns the environment.
+         * An extractor that simply returns the context.
          * @param <EX>      the exception type
          * @return          the extractor
          */
         static <EX extends Exception> Checked<Long, EX> id() {
-            return env -> env;
+            return ctx -> ctx;
         }
 
         /**
          * An extractor that always returns the given value.
          * @param value     the value
-         * @param <ENV>     the environment type
+         * @param <CTX>     the context type
          * @param <EX>      the exception type
          * @return          the extractor
          */
-        static <ENV, EX extends Exception> Checked<ENV, EX> konst(long value) {
-            return env -> value;
+        static <CTX, EX extends Exception> Checked<CTX, EX> konst(long value) {
+            return ctx -> value;
         }
 
         /**
          * The extraction method, specialised to return an unboxed {@code long} value.
-         * @param env       the environment
+         * @param ctx       the context
          * @return          the extracted value
          */
-        long extractLong(ENV env);
+        long extractLong(CTX ctx);
 
         @Override
-        default Long extract(ENV env) {
-            return extractLong(env);
+        default Long extract(CTX ctx) {
+            return extractLong(ctx);
         }
 
         /**
@@ -116,18 +116,18 @@ public interface LongExtractor<ENV> extends Extractor<ENV, Long> {
          * @param <U>       the return type of the function
          * @return          the mapped extractor
          */
-        default <U> Extractor.Checked<ENV, U, EX> mapLong(LongFunction<U> f) {
-            return env -> f.apply(extractLong(env));
+        default <U> Extractor.Checked<CTX, U, EX> mapLong(LongFunction<U> f) {
+            return ctx -> f.apply(extractLong(ctx));
         }
 
         /**
          * Convert this extractor to an unchecked extractor (one that doesn't throw a checked exception).
          * @return          the unchecked extractor
          */
-        default LongExtractor<ENV> unchecked() {
-            return env -> {
+        default LongExtractor<CTX> unchecked() {
+            return ctx -> {
                 try {
-                    return extract(env);
+                    return extract(ctx);
                 } catch (Exception ex) {
                     return Exceptions.throwUnchecked(ex);
                 }

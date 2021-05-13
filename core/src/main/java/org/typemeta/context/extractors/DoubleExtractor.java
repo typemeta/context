@@ -2,52 +2,53 @@ package org.typemeta.context.extractors;
 
 import org.typemeta.context.utils.Exceptions;
 
+import java.util.*;
 import java.util.function.DoubleFunction;
 
 /**
  * A specialisation of {@link Extractor} for {@code double} values.
- * @param <ENV>     the environment type
+ * @param <CTX>     the context type
  */
 @FunctionalInterface
-public interface DoubleExtractor<ENV> extends Extractor<ENV, Double> {
+public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
     /**
      * Static constructor method.
      * @param extr      the extractor
-     * @param <ENV>     the environment type
+     * @param <CTX>     the context type
      * @return the extractor
      */
-    static <ENV> DoubleExtractor<ENV> of(DoubleExtractor<ENV> extr) {
+    static <CTX> DoubleExtractor<CTX> of(DoubleExtractor<CTX> extr) {
         return extr;
     }
 
     /**
-     * An extractor that simply returns the environment.
+     * An extractor that simply returns the context.
      * @return          the extractor
      */
     static DoubleExtractor<Double> id() {
-        return env -> env;
+        return ctx -> ctx;
     }
 
     /**
      * An extractor that always returns the given value.
      * @param value     the value
-     * @param <ENV>     the environment type
+     * @param <CTX>     the context type
      * @return          the extractor
      */
-    static <ENV> DoubleExtractor<ENV> konst(double value) {
-        return env -> value;
+    static <CTX> DoubleExtractor<CTX> konst(double value) {
+        return ctx -> value;
     }
 
     /**
      * The extraction method, specialised to return an unboxed {@code double} value.
-     * @param env   the environment
+     * @param ctx   the context
      * @return the extracted value
      */
-    double extractDouble(ENV env);
+    double extractDouble(CTX ctx);
 
     @Override
-    default Double extract(ENV env) {
-        return extractDouble(env);
+    default Double extract(CTX ctx) {
+        return extractDouble(ctx);
     }
 
     /**
@@ -56,58 +57,58 @@ public interface DoubleExtractor<ENV> extends Extractor<ENV, Double> {
      * @param <U>       the return type of the function
      * @return the mapped extractor
      */
-    default <U> Extractor<ENV, U> mapDouble(DoubleFunction<U> f) {
-        return env -> f.apply(extractDouble(env));
+    default <U> Extractor<CTX, U> mapDouble(DoubleFunction<U> f) {
+        return ctx -> f.apply(extractDouble(ctx));
     }
 
     /**
      * A specialisation of {@link Extractor.Checked} for {@code double} values.
-     * @param <ENV>     the environment type
+     * @param <CTX>     the context type
      * @param <EX>      the exception type
      */
     @FunctionalInterface
-    interface Checked<ENV, EX extends Exception> extends Extractor.Checked<ENV, Double, EX> {
+    interface Checked<CTX, EX extends Exception> extends Extractor.Checked<CTX, Double, EX> {
         /**
          * Static constructor method.
          * @param extr      the extractor
-         * @param <ENV>     the environment type
+         * @param <CTX>     the context type
          * @param <EX>      the exception type
          * @return the extractor
          */
-        static <ENV, EX extends Exception> Checked<ENV, EX> of(Checked<ENV, EX> extr) {
+        static <CTX, EX extends Exception> Checked<CTX, EX> of(Checked<CTX, EX> extr) {
             return extr;
         }
 
         /**
-         * An extractor that simply returns the environment.
+         * An extractor that simply returns the context.
          * @param <EX>      the exception type
          * @return          the extractor
          */
         static <EX extends Exception> Checked<Double, EX> id() {
-            return env -> env;
+            return ctx -> ctx;
         }
 
         /**
          * An extractor that always returns the given value.
          * @param value     the value
-         * @param <ENV>     the environment type
+         * @param <CTX>     the context type
          * @param <EX>      the exception type
          * @return          the extractor
          */
-        static <ENV, EX extends Exception> Checked<ENV, EX> konst(double value) {
-            return env -> value;
+        static <CTX, EX extends Exception> Checked<CTX, EX> konst(double value) {
+            return ctx -> value;
         }
 
         /**
          * The extraction method, specialised to return an unboxed {@code double} value.
-         * @param env       the environment
+         * @param ctx       the context
          * @return          the extracted value
          */
-        double extractDouble(ENV env) throws EX;
+        double extractDouble(CTX ctx) throws EX;
 
         @Override
-        default Double extract(ENV env) throws EX {
-            return extractDouble(env);
+        default Double extract(CTX ctx) throws EX {
+            return extractDouble(ctx);
         }
 
         /**
@@ -116,18 +117,18 @@ public interface DoubleExtractor<ENV> extends Extractor<ENV, Double> {
          * @param <U>       the return type of the function
          * @return          the mapped extractor
          */
-        default <U> Extractor.Checked<ENV, U, EX> mapDouble(DoubleFunction<U> f) {
-            return env -> f.apply(extractDouble(env));
+        default <U> Extractor.Checked<CTX, U, EX> mapDouble(DoubleFunction<U> f) {
+            return ctx -> f.apply(extractDouble(ctx));
         }
 
         /**
          * Convert this extractor to an unchecked extractor (one that doesn't throw a checked exception).
          * @return          the unchecked extractor
          */
-        default DoubleExtractor<ENV> unchecked() {
-            return env -> {
+        default DoubleExtractor<CTX> unchecked() {
+            return ctx -> {
                 try {
-                    return extract(env);
+                    return extract(ctx);
                 } catch (Exception ex) {
                     return Exceptions.throwUnchecked(ex);
                 }

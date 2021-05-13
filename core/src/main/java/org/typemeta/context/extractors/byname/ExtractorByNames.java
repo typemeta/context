@@ -4,16 +4,17 @@ public class ExtractorByNames {
 
     /**
      * Create a {@code NamedExtractor} for enum values.
-     * @param <ENV>     the environment type
+     * @param <CTX>     the context type
      * @param <E>       the enum type
      * @param enumType  the enum type class
      * @param strExtr   the string extractor
      * @return          the enum extractor
      */
-    static <ENV, E extends Enum<E>> ExtractorByName<ENV, E> enumExtractor(
+    static <CTX, E extends Enum<E>> ExtractorByName<CTX, E> enumExtractor(
             Class<E> enumType,
-            ExtractorByName<ENV, String> strExtr
+            ExtractorByName<CTX, String> strExtr
     ) {
         return strExtr.map(s -> Enum.valueOf(enumType, s));
     }
+
 }

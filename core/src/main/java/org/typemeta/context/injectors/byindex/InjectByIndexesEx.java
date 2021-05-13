@@ -4,52 +4,31 @@ import java.util.*;
 
 public abstract class InjectByIndexesEx {
 
-    @FunctionalInterface
-    public interface DoubleInjectByIndexEx<ENV, EX extends Exception> extends InjectByIndexEx<ENV, Double, EX> {
-        ENV injectDouble(ENV env, int n, double value) throws EX;
-        
-        default ENV inject(ENV env, int n, Double value) throws EX {
-            return injectDouble(env, n, value);
-        }
-    }
-
-    @FunctionalInterface
-    public interface IntInjectByIndexEx<ENV, EX extends Exception> extends InjectByIndexEx<ENV, Integer, EX> {
-        ENV injectInt(ENV env, int n, int value) throws EX;
-
-        default ENV inject(ENV env, int n, Integer value) throws EX {
-            return injectInt(env, n, value);
-        }
-    }
-
-    @FunctionalInterface
-    public interface LongInjectByIndexEx<ENV, EX extends Exception> extends InjectByIndexEx<ENV, Long, EX> {
-        ENV injectLong(ENV env, int n, long value) throws EX;
-
-        default ENV inject(ENV env, int n, Long value) throws EX {
-            return injectLong(env, n, value);
-        }
-    }
-
-    public static <ENV, T, EX extends Exception> InjectByIndexEx<ENV, Optional<T>, EX> optional(
-            InjectByIndexEx<ENV, T, EX> injr
+    public static <CTX, T, EX extends Exception> InjectByIndex.Checked<CTX, Optional<T>, EX> optional(
+            InjectByIndex.Checked<CTX, T, EX> injr
     ) {
-        return (env, n, optVal) ->
-                optVal.isPresent() ? injr.inject(env, n, optVal.get()) : env;
+        return (ctx, n, optVal) ->
+                optVal.isPresent() ? injr.inject(ctx, n, optVal.get()) : ctx;
     }
 
-    public static <ENV, EX extends Exception> InjectByIndexEx<ENV, OptionalDouble, EX> optional(DoubleInjectByIndexEx<ENV, EX> injr) {
-        return (env, n, optVal) ->
-                optVal.isPresent() ? injr.inject(env, n, optVal.getAsDouble()) : env;
+    public static <CTX, EX extends Exception> InjectByIndex.Checked<CTX, OptionalDouble, EX> optional(
+            DoubleInjectByIndex.Checked<CTX, EX> injr
+    ) {
+        return (ctx, n, optVal) ->
+                optVal.isPresent() ? injr.inject(ctx, n, optVal.getAsDouble()) : ctx;
     }
 
-    public static <ENV, EX extends Exception> InjectByIndexEx<ENV, OptionalInt, EX> optional(IntInjectByIndexEx<ENV, EX> injr) {
-        return (env, n, optVal) ->
-                optVal.isPresent() ? injr.inject(env, n, optVal.getAsInt()) : env;
+    public static <CTX, EX extends Exception> InjectByIndex.Checked<CTX, OptionalInt, EX> optional(
+            IntInjectByIndex.Checked<CTX, EX> injr
+    ) {
+        return (ctx, n, optVal) ->
+                optVal.isPresent() ? injr.inject(ctx, n, optVal.getAsInt()) : ctx;
     }
 
-    public static <ENV, EX extends Exception> InjectByIndexEx<ENV, OptionalLong, EX> optional(LongInjectByIndexEx<ENV, EX> injr) {
-        return (env, n, optVal) ->
-                optVal.isPresent() ? injr.inject(env, n, optVal.getAsLong()) : env;
+    public static <CTX, EX extends Exception> InjectByIndex.Checked<CTX, OptionalLong, EX> optional(
+            LongInjectByIndex.Checked<CTX, EX> injr
+    ) {
+        return (ctx, n, optVal) ->
+                optVal.isPresent() ? injr.inject(ctx, n, optVal.getAsLong()) : ctx;
     }
 }

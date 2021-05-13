@@ -1,10 +1,39 @@
 package org.typemeta.context.injectors.byindex;
 
-@FunctionalInterface
-public interface LongInjectByIndex<ENV> extends InjectByIndex<ENV, Long> {
-    ENV injectLong(ENV env, int n, double value);
+import java.util.*;
 
-    default ENV inject(ENV env, int n, Long value) {
-        return injectLong(env, n, value);
+@FunctionalInterface
+public interface LongInjectByIndex<CTX> extends InjectByIndex<CTX, Long> {
+    CTX injectLong(CTX ctx, int n, double value);
+
+    default CTX inject(CTX ctx, int n, Long value) {
+        return injectLong(ctx, n, value);
+    }
+
+    /**
+     * Convert this injector into one that accepts optional values.
+     * @return          the injector for optional values
+     */
+    default InjectByIndex<CTX, OptionalLong> optionalLong() {
+        return (ctx, n, optVal) ->
+                optVal.isPresent() ? inject(ctx, n, optVal.getAsLong()) : ctx;
+    }
+
+    @FunctionalInterface
+    interface Checked<CTX, EX extends Exception> extends InjectByIndex.Checked<CTX, Long, EX> {
+        CTX injectLong(CTX ctx, int n, long value) throws EX;
+
+        default CTX inject(CTX ctx, int n, Long value) throws EX {
+            return injectLong(ctx, n, value);
+        }
+
+        /**
+         * Convert this injector into one that accepts optional values.
+         * @return          the injector for optional values
+         */
+        default InjectByIndex.Checked<CTX, OptionalLong, EX> optionalLong() {
+            return (ctx, n, optVal) ->
+                    optVal.isPresent() ? inject(ctx, n, optVal.getAsLong()) : ctx;
+        }
     }
 }

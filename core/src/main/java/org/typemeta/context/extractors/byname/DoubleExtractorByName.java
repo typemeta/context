@@ -7,21 +7,21 @@ import java.util.function.DoubleFunction;
 
 /**
  * A specialisation of {@link ExtractorByName} for {@code double} values.
- * @param <ENV>     the environment type
+ * @param <CTX>     the context type
  */
 @FunctionalInterface
-public interface DoubleExtractorByName<ENV> extends ExtractorByName<ENV, Double> {
+public interface DoubleExtractorByName<CTX> extends ExtractorByName<CTX, Double> {
 
     /**
      * The extraction method, specialised to return an unboxed {@code double} value.
-     * @param env       the environment
+     * @param ctx       the context
      * @return          the extracted value
      */
-    double extractDouble(ENV env, String name);
+    double extractDouble(CTX ctx, String name);
 
     @Override
-    default Double extract(ENV env, String name) {
-        return extractDouble(env, name);
+    default Double extract(CTX ctx, String name) {
+        return extractDouble(ctx, name);
     }
 
     /**
@@ -30,43 +30,43 @@ public interface DoubleExtractorByName<ENV> extends ExtractorByName<ENV, Double>
      * @param <U>       the return type of the function
      * @return          the mapped extractor
      */
-    default <U> ExtractorByName<ENV, U> mapDouble(DoubleFunction<U> f) {
-        return (env, name) -> f.apply(extractDouble(env, name));
+    default <U> ExtractorByName<CTX, U> mapDouble(DoubleFunction<U> f) {
+        return (ctx, name) -> f.apply(extractDouble(ctx, name));
     }
 
     @Override
-    default DoubleExtractor<ENV> bind(String name) {
+    default DoubleExtractor<CTX> bind(String name) {
         return rs -> extractDouble(rs, name);
     }
 
     /**
      * A specialisation of {@link ExtractorByName.Checked} for {@code double} values.
-     * @param <ENV>     the environment type
+     * @param <CTX>     the context type
      * @param <EX>      the exception type
      */
-    interface Checked<ENV, EX extends Exception> extends ExtractorByName.Checked<ENV, Double, EX> {
+    interface Checked<CTX, EX extends Exception> extends ExtractorByName.Checked<CTX, Double, EX> {
         /**
          * Static constructor method.
          * @param extr      the extractor
-         * @param <ENV>     the environment type
+         * @param <CTX>     the context type
          * @param <EX>      the exception type
          * @return          the extractor
          */
-        static <ENV, EX extends Exception> Checked<ENV, EX> of(Checked<ENV, EX> extr) {
+        static <CTX, EX extends Exception> Checked<CTX, EX> of(Checked<CTX, EX> extr) {
             return extr;
         }
 
         /**
          * The extraction method, specialised to return an unboxed {@code double} value.
-         * @param env       the environment
+         * @param ctx       the context
          * @return          the extracted double value
          * @throws EX       if the extraction fails
          */
-        double extractDouble(ENV env, String name) throws EX;
+        double extractDouble(CTX ctx, String name) throws EX;
 
         @Override
-        default Double extract(ENV env, String name) throws EX {
-            return extractDouble(env, name);
+        default Double extract(CTX ctx, String name) throws EX {
+            return extractDouble(ctx, name);
         }
 
         /**
@@ -75,18 +75,18 @@ public interface DoubleExtractorByName<ENV> extends ExtractorByName<ENV, Double>
          * @param <U>       the return type of the function
          * @return          the mapped extractor
          */
-        default <U> ExtractorByName.Checked<ENV, U, EX> mapDouble(DoubleFunction<U> f) {
-            return (env, name) -> f.apply(extract(env, name));
+        default <U> ExtractorByName.Checked<CTX, U, EX> mapDouble(DoubleFunction<U> f) {
+            return (ctx, name) -> f.apply(extract(ctx, name));
         }
 
         /**
          * Convert this extractor to an unchecked extractor (one that doesn't throw).
          * @return the unchecked extractor
          */
-        default DoubleExtractorByName<ENV> unchecked() {
-            return (env, name) -> {
+        default DoubleExtractorByName<CTX> unchecked() {
+            return (ctx, name) -> {
                 try {
-                    return extractDouble(env, name);
+                    return extractDouble(ctx, name);
                 } catch (Exception ex) {
                     return Exceptions.throwUnchecked(ex);
                 }

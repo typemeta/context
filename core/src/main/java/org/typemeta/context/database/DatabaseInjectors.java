@@ -130,10 +130,10 @@ public abstract class DatabaseInjectors {
             DatabaseInjectorsEx.OPT_STRING.unchecked();
 
     public static final InjectByIndex<PreparedStatement, Optional<String>> OPT_EMPTY_STRING =
-            (env, n, optVal) ->
+            (ctx, n, optVal) ->
                     optVal.map(String::isEmpty).orElse(false) ?
-                            STRING.inject(env, n, optVal.get()) :
-                            env;
+                            STRING.inject(ctx, n, optVal.get()) :
+                            ctx;
 
     public static final InjectByIndex<PreparedStatement, Date> SQLDATE =
             DatabaseInjectorsEx.SQLDATE.unchecked();

@@ -1,20 +1,20 @@
 package org.typemeta.context.injectors;
 
-public abstract class Injectors {
+public abstract class CheckedInjectors {
 
     /**
-     * A combinator function for building an injector from an array of injectors.
+     * Combinator function for building an injector from an array of injectors.
      * @param exs       the array of the extractors
      * @param <CTX>     the context type
      * @param <T>       the injector value type
      * @return          the new injector
      */
     @SafeVarargs
-    public static <CTX, T> Injector<CTX, T> combine(
-            Injector<CTX, T> ... exs
+    public static <CTX, T, EX extends Exception> Injector.Checked<CTX, T, EX> combine(
+            Injector.Checked<CTX, T, EX>... exs
     ) {
         return (ctx, value) -> {
-            for(Injector<CTX, T> ex : exs) {
+            for(Injector.Checked<CTX, T, EX> ex : exs) {
                 ctx = ex.inject(ctx, value);
             }
             return ctx;

@@ -4,25 +4,27 @@ import org.typemeta.context.extractors.Extractor;
 import org.typemeta.context.functions.Functions;
 import org.typemeta.context.utils.Exceptions;
 
+import java.util.Optional;
+
 /**
- * A function to extract a value from an environment, given a name.
- * @param <ENV>     the environment type
+ * A function to extract a value from an context, given a name.
+ * @param <CTX>     the context type
  * @param <T>       the value type
  */
 @FunctionalInterface
-public interface ExtractorByName<ENV, T> {
-    static <ENV, T> ExtractorByName<ENV, T> of(ExtractorByName<ENV, T> extr) {
+public interface ExtractorByName<CTX, T> {
+    static <CTX, T> ExtractorByName<CTX, T> of(ExtractorByName<CTX, T> extr) {
         return extr;
     }
 
     /**
-     * Extract a value of type {@code T} from the given environment,
+     * Extract a value of type {@code T} from the given context,
      * for the given column name.
-     * @param env       the environment
+     * @param ctx       the context
      * @param name      the name
      * @return          the extracted value
      */
-    T extract(ENV env, String name);
+    T extract(CTX ctx, String name);
 
     /**
      * Convert this extractor into another that applies a function to the result of this extractor.
@@ -30,8 +32,8 @@ public interface ExtractorByName<ENV, T> {
      * @param <U>       the function return type
      * @return          the new extractor
      */
-    default <U> ExtractorByName<ENV, U> map(Functions.F<T, U> f) {
-        return (rs, name) -> f.apply(extract(rs, name));
+    default <U> ExtractorByName<CTX, U> map(Functions.F<T, U> f) {
+        return (ctx, name) -> f.apply(extract(ctx, name));
     }
 
     /**
@@ -39,31 +41,40 @@ public interface ExtractorByName<ENV, T> {
      * @param name      the column name
      * @return          the extractor
      */
-    default Extractor<ENV, T> bind(String name) {
+    default Extractor<CTX, T> bind(String name) {
         return rs -> extract(rs, name);
     }
 
     /**
+     * Convert this extractor into one that extracts optional values.
+     * The option extractor converts null values to {@code Optional.empty}.
+     * @return          the extractor function for the optional value
+     */
+    default ExtractorByName<CTX, Optional<T>> optional() {
+        return map(Optional::ofNullable);
+    }
+
+    /**
      * Variant of {@link ExtractorByName} where the extract method may throw an exception.
-     * @param <ENV>     the environment type
+     * @param <CTX>     the context type
      * @param <T>       the value type
      * @param <EX>      the exception type
      */
     @FunctionalInterface
-    interface Checked<ENV, T, EX extends Exception> {
-        static <ENV, T, EX extends Exception> Checked<ENV, T, EX> of(Checked<ENV, T, EX> extr) {
+    interface Checked<CTX, T, EX extends Exception> {
+        static <CTX, T, EX extends Exception> Checked<CTX, T, EX> of(Checked<CTX, T, EX> extr) {
             return  extr;
         }
 
         /**
-         * Extract a value of type {@code T} from the given environment,
+         * Extract a value of type {@code T} from the given context,
          * for the given column name.
-         * @param env       the environment
+         * @param ctx       the context
          * @param name      the name
          * @return          the extracted value
          * @throws EX       if the extraction fails
          */
-        T extract(ENV env, String name) throws EX;
+        T extract(CTX ctx, String name) throws EX;
 
         /**
          * Convert this extractor into another that applies a function to the result of this extractor.
@@ -71,7 +82,7 @@ public interface ExtractorByName<ENV, T> {
          * @param <U>       the function return type
          * @return          the new extractor
          */
-        default <U> Checked<ENV, U, EX> map(Functions.F<T, U> f) {
+        default <U> Checked<CTX, U, EX> map(Functions.F<T, U> f) {
             return (rs, name) -> f.apply(extract(rs, name));
         }
 
@@ -80,18 +91,27 @@ public interface ExtractorByName<ENV, T> {
          * @param name      the column name
          * @return          the extractor
          */
-        default Extractor.Checked<ENV, T, EX> bind(String name) {
+        default Extractor.Checked<CTX, T, EX> bind(String name) {
             return rs -> extract(rs, name);
+        }
+
+        /**
+         * Convert this extractor into one that extracts optional values.
+         * The option extractor converts null values to {@code Optional.empty}.
+         * @return          the extractor function for the optional value
+         */
+        default Checked<CTX, Optional<T>, EX> optional() {
+            return map(Optional::ofNullable);
         }
 
         /**
          * Convert this extractor to an unchecked extractor (one that doesn't throw a checked exception).
          * @return          the unchecked extractor
          */
-        default ExtractorByName<ENV, T> unchecked() {
-            return (env, name) -> {
+        default ExtractorByName<CTX, T> unchecked() {
+            return (ctx, name) -> {
                 try {
-                    return extract(env, name);
+                    return extract(ctx, name);
                 } catch (Exception ex) {
                     return Exceptions.throwUnchecked(ex);
                 }

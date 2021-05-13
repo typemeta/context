@@ -3,53 +3,54 @@ package org.typemeta.context.extractors;
 import org.typemeta.context.functions.Functions;
 import org.typemeta.context.utils.Exceptions;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
- * A function to extract a value from an environment.
- * @param <ENV>     the environment type
+ * A function to extract a value from an ctxironment.
+ * @param <CTX>     the ctxironment type
  * @param <T>       the extracted value type
  */
 @FunctionalInterface
-public interface Extractor<ENV, T> {
+public interface Extractor<CTX, T> {
 
     /**
      * Static constructor method.
      * @param extr      the extractor
-     * @param <ENV>     the environment type
+     * @param <CTX>     the ctxironment type
      * @param <T>       the extracted value type
      * @return          the extractor
      */
-    static <ENV, T> Extractor<ENV, T> of(Extractor<ENV, T> extr) {
+    static <CTX, T> Extractor<CTX, T> of(Extractor<CTX, T> extr) {
         return extr;
     }
 
     /**
-     * An extractor that simply returns the environment.
-     * @param <ENV>     the environment type
+     * An extractor that simply returns the ctxironment.
+     * @param <CTX>     the ctxironment type
      * @return          the extractor
      */
-    static <ENV> Extractor<ENV, ENV> id() {
-        return env -> env;
+    static <CTX> Extractor<CTX, CTX> id() {
+        return ctx -> ctx;
     }
 
     /**
      * An extractor that always returns the same value.
      * @param t         the value
-     * @param <ENV>     environment type
+     * @param <CTX>     ctxironment type
      * @param <T>       the extracted value type
      * @return          the extractor
      */
-    static <ENV, T> Extractor<ENV, T> konst(T t) {
-        return env -> t;
+    static <CTX, T> Extractor<CTX, T> konst(T t) {
+        return ctx -> t;
     }
 
     /**
-     * Extract a value of type {@code T} from the given environment.
-     * @param env       the environment value
+     * Extract a value of type {@code T} from the given ctxironment.
+     * @param ctx       the ctxironment value
      * @return          the extracted value
      */
-    T extract(ENV env);
+    T extract(CTX ctx);
 
     /**
      * Map a function over this extractor.
@@ -57,7 +58,7 @@ public interface Extractor<ENV, T> {
      * @param <U>       the function return type
      * @return          the new extractor
      */
-    default <U> Extractor<ENV, U> map(Functions.F<T, U> f) {
+    default <U> Extractor<CTX, U> map(Functions.F<T, U> f) {
         return rs -> f.apply(extract(rs));
     }
 
@@ -67,58 +68,67 @@ public interface Extractor<ENV, T> {
      * @param <U>       the extractor value type returned by the function
      * @return          the new extractor
      */
-    default <U> Extractor<ENV, U> flatMap(Functions.F<T, Extractor<ENV, U>> f) {
+    default <U> Extractor<CTX, U> flatMap(Functions.F<T, Extractor<CTX, U>> f) {
         return rs -> f.apply(this.extract(rs)).extract(rs);
     }
 
     /**
-     * A function to extract a value from an environment, which may throw a checked exception.
-     * @param <ENV>     the environment type
+     * Convert this extractor into one that extracts optional values.
+     * The option extractor converts null values to {@code Optional.empty}.
+     * @return          the extractor function for the optional value
+     */
+    default Extractor<CTX, Optional<T>> optional() {
+        return map(Optional::ofNullable);
+    }
+
+    /**
+     * A function to extract a value from an ctxironment, which may throw a checked exception.
+     * @param <CTX>     the ctxironment type
      * @param <T>       the extracted value type
      * @param <EX>      the exception type
      */
     @FunctionalInterface
-    interface Checked<ENV, T, EX extends Exception> {
+    interface Checked<CTX, T, EX extends Exception> {
         /**
          * Static constructor method.
          * @param extr      the extractor
-         * @param <ENV>     the environment type
+         * @param <CTX>     the ctxironment type
          * @param <T>       the extracted value type
          * @param <EX>      the exception type
          * @return          the extractor
          */
-        static <ENV, T, EX extends Exception> Checked<ENV, T, EX> of(Checked<ENV, T, EX> extr) {
+        static <CTX, T, EX extends Exception> Checked<CTX, T, EX> of(Checked<CTX, T, EX> extr) {
             return extr;
         }
 
         /**
-         * An extractor that simply returns the environment.
-         * @param <ENV>     the environment type
+         * An extractor that simply returns the ctxironment.
+         * @param <CTX>     the ctxironment type
          * @param <EX>      the exception type
          * @return          the extractor
          */
-        static <ENV, EX extends Exception> Checked<ENV, ENV, EX> id() {
-            return env -> env;
+        static <CTX, EX extends Exception> Checked<CTX, CTX, EX> id() {
+            return ctx -> ctx;
         }
 
         /**
          * An extractor that always returns the same value.
          * @param value     the value
-         * @param <ENV>     environment type
+         * @param <CTX>     ctxironment type
          * @param <T>       the extracted value type
          * @param <EX>      the exception type
          * @return          the extractor
          */
-        static <ENV, T, EX extends Exception> Checked<ENV, T, EX> konst(T value) {
-            return env -> value;
+        static <CTX, T, EX extends Exception> Checked<CTX, T, EX> konst(T value) {
+            return ctx -> value;
         }
 
         /**
-         * Extract a value of type {@code T} from the given env.
-         * @param env       the environment value
+         * Extract a value of type {@code T} from the given ctx.
+         * @param ctx       the ctxironment value
          * @return          the extracted value
          */
-        T extract(ENV env) throws EX;
+        T extract(CTX ctx) throws EX;
 
         /**
          * Map a function over this extractor.
@@ -126,7 +136,7 @@ public interface Extractor<ENV, T> {
          * @param <U>       the function return type
          * @return          the new extractor
          */
-        default <U> Checked<ENV, U, EX> map(Function<T, U> f) {
+        default <U> Checked<CTX, U, EX> map(Function<T, U> f) {
             return rs -> f.apply(extract(rs));
         }
 
@@ -134,20 +144,29 @@ public interface Extractor<ENV, T> {
          * Flatmap a function over this extractor.
          * @param f         the function
          * @param <U>       the extractor value type returned by the function
-         * @return          the flatmapped extractor
+         * @return          the new extractor
          */
-        default <U> Checked<ENV, U, EX> flatMap(Functions.F<T, Checked<ENV, U, EX>> f) {
+        default <U> Checked<CTX, U, EX> flatMap(Functions.F<T, Checked<CTX, U, EX>> f) {
             return rs -> f.apply(this.extract(rs)).extract(rs);
+        }
+
+        /**
+         * Convert this extractor into one that extracts optional values.
+         * The option extractor converts null values to {@code Optional.empty}.
+         * @return          the extractor function for the optional value
+         */
+        default Checked<CTX, Optional<T>, EX> optional() {
+            return map(Optional::ofNullable);
         }
 
         /**
          * Convert this extractor to an unchecked extractor (one that doesn't throw a checked exception).
          * @return          the unchecked extractor
          */
-        default Extractor<ENV, T> unchecked() {
-            return env -> {
+        default Extractor<CTX, T> unchecked() {
+            return ctx -> {
                 try {
-                    return extract(env);
+                    return extract(ctx);
                 } catch (Exception ex) {
                     return Exceptions.throwUnchecked(ex);
                 }
