@@ -3,7 +3,7 @@ package org.typemeta.context.extractors.byname;
 public class ExtractorByNames {
 
     /**
-     * Create a {@code NamedExtractor} for enum values.
+     * Create a {@code ExtractorByName} for enum values.
      * @param <CTX>     the context type
      * @param <E>       the enum type
      * @param enumType  the enum type class

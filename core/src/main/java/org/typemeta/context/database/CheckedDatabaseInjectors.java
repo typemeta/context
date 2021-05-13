@@ -7,7 +7,7 @@ import java.sql.*;
 import java.time.*;
 import java.util.*;
 
-public abstract class DatabaseInjectorsEx {
+public abstract class CheckedDatabaseInjectors {
 
     public static <T> InjectByIndex.Checked<PreparedStatement, Optional<T>, SQLException> optional(
             InjectByIndex.Checked<PreparedStatement, T, SQLException> injr

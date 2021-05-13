@@ -6,7 +6,7 @@ import org.typemeta.context.utils.Exceptions;
 import java.util.function.LongFunction;
 
 /**
- * A specialisation of {@code NamedExtractor} for {@code long} values.
+ * A specialisation of {@code ExtractorByName} for {@code long} values.
  * @param <CTX>     the context type
  */
 @FunctionalInterface

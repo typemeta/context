@@ -13,6 +13,17 @@ import java.util.Optional;
 @FunctionalInterface
 public interface Injector<CTX, T> {
     /**
+     * Static constructor.
+     * @param injr      the injector
+     * @param <CTX>     the context type
+     * @param <T>       the injected value type
+     * @return          the extractor
+     */
+    static <CTX, T> Injector<CTX, T> of(Injector<CTX, T> injr) {
+        return injr;
+    }
+
+    /**
      * Inject a value into a context.
      * @param ctx       the context
      * @param value     the value

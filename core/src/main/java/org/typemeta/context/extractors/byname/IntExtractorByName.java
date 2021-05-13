@@ -6,7 +6,7 @@ import org.typemeta.context.utils.Exceptions;
 import java.util.function.IntFunction;
 
 /**
- * A specialisation of {@code NamedExtractor} for {@code int} values.
+ * A specialisation of {@code ExtractorByName} for {@code int} values.
  * @param <CTX>     the context type
  */
 @FunctionalInterface

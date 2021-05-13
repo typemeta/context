@@ -14,7 +14,7 @@ import java.util.function.*;
 /**
  * A set of extraction functions and combinator functions.
  */
-public abstract class DatabaseExtractorsEx {
+public abstract class CheckedDatabaseExtractors {
 
     /**
      * A combinator function to convert a {@link ExtractorByName.Checked} into one for {@link Optional} values.
@@ -127,7 +127,7 @@ public abstract class DatabaseExtractorsEx {
             optional(FLOAT);
 
     /**
-     * A {@code NamedExtractor} instance for {@code int} values.
+     * A {@code ExtractorByName} instance for {@code int} values.
      */
     public static final IntExtractorByName.Checked<ResultSet, SQLException> INTEGER =
             ResultSet::getInt;

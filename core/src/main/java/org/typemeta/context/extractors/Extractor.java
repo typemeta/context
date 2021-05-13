@@ -7,17 +7,16 @@ import java.util.Optional;
 import java.util.function.Function;
 
 /**
- * A function to extract a value from an ctxironment.
- * @param <CTX>     the ctxironment type
+ * A function to extract a value from an context.
+ * @param <CTX>     the context type
  * @param <T>       the extracted value type
  */
 @FunctionalInterface
 public interface Extractor<CTX, T> {
-
     /**
-     * Static constructor method.
+     * Static constructor.
      * @param extr      the extractor
-     * @param <CTX>     the ctxironment type
+     * @param <CTX>     the context type
      * @param <T>       the extracted value type
      * @return          the extractor
      */
@@ -26,8 +25,8 @@ public interface Extractor<CTX, T> {
     }
 
     /**
-     * An extractor that simply returns the ctxironment.
-     * @param <CTX>     the ctxironment type
+     * An extractor that simply returns the context.
+     * @param <CTX>     the context type
      * @return          the extractor
      */
     static <CTX> Extractor<CTX, CTX> id() {
@@ -37,7 +36,7 @@ public interface Extractor<CTX, T> {
     /**
      * An extractor that always returns the same value.
      * @param t         the value
-     * @param <CTX>     ctxironment type
+     * @param <CTX>     context type
      * @param <T>       the extracted value type
      * @return          the extractor
      */
@@ -46,8 +45,8 @@ public interface Extractor<CTX, T> {
     }
 
     /**
-     * Extract a value of type {@code T} from the given ctxironment.
-     * @param ctx       the ctxironment value
+     * Extract a value of type {@code T} from the given context.
+     * @param ctx       the context value
      * @return          the extracted value
      */
     T extract(CTX ctx);
@@ -82,8 +81,8 @@ public interface Extractor<CTX, T> {
     }
 
     /**
-     * A function to extract a value from an ctxironment, which may throw a checked exception.
-     * @param <CTX>     the ctxironment type
+     * A function to extract a value from an context, which may throw a checked exception.
+     * @param <CTX>     the context type
      * @param <T>       the extracted value type
      * @param <EX>      the exception type
      */
@@ -92,7 +91,7 @@ public interface Extractor<CTX, T> {
         /**
          * Static constructor method.
          * @param extr      the extractor
-         * @param <CTX>     the ctxironment type
+         * @param <CTX>     the context type
          * @param <T>       the extracted value type
          * @param <EX>      the exception type
          * @return          the extractor
@@ -102,8 +101,8 @@ public interface Extractor<CTX, T> {
         }
 
         /**
-         * An extractor that simply returns the ctxironment.
-         * @param <CTX>     the ctxironment type
+         * An extractor that simply returns the context.
+         * @param <CTX>     the context type
          * @param <EX>      the exception type
          * @return          the extractor
          */
@@ -114,7 +113,7 @@ public interface Extractor<CTX, T> {
         /**
          * An extractor that always returns the same value.
          * @param value     the value
-         * @param <CTX>     ctxironment type
+         * @param <CTX>     context type
          * @param <T>       the extracted value type
          * @param <EX>      the exception type
          * @return          the extractor
@@ -125,7 +124,7 @@ public interface Extractor<CTX, T> {
 
         /**
          * Extract a value of type {@code T} from the given ctx.
-         * @param ctx       the ctxironment value
+         * @param ctx       the context value
          * @return          the extracted value
          */
         T extract(CTX ctx) throws EX;
