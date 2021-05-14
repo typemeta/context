@@ -4,6 +4,7 @@ import org.apache.arrow.vector.complex.reader.FieldReader;
 import org.typemeta.context.extractors.Extractor;
 import org.typemeta.context.extractors.byindex.ExtractorByIndex;
 
+import java.time.*;
 import java.util.*;
 
 public class FieldReaderListExtractors {
@@ -34,47 +35,52 @@ public class FieldReaderListExtractors {
     }
 
     public static final ExtractorByIndex<List<FieldReader>, Boolean> BOOLEAN =
-            new FieldReaderListExtractor(FieldReaderExtractors.BOOLEAN);
+            new FieldReaderListExtractor<>(FieldReaderExtractors.BOOLEAN);
 
     public static final ExtractorByIndex<List<FieldReader>, Optional<Boolean>> OPT_BOOLEAN = BOOLEAN.optional();
 
-    public static final ExtractorByIndex<List<FieldReader>, Boolean> BYTE =
-            new FieldReaderListExtractor(FieldReaderExtractors.BYTE);
+    public static final ExtractorByIndex<List<FieldReader>, Byte> BYTE =
+            new FieldReaderListExtractor<>(FieldReaderExtractors.BYTE);
 
-    public static final ExtractorByIndex<List<FieldReader>, Optional<Boolean>> OPT_BYTE = BYTE.optional();
+    public static final ExtractorByIndex<List<FieldReader>, Optional<Byte>> OPT_BYTE = BYTE.optional();
 
-    public static final ExtractorByIndex<List<FieldReader>, Boolean> DOUBLE =
-            new FieldReaderListExtractor(FieldReaderExtractors.DOUBLE);
+    public static final ExtractorByIndex<List<FieldReader>, Double> DOUBLE =
+            new FieldReaderListExtractor<>(FieldReaderExtractors.DOUBLE);
 
-    public static final ExtractorByIndex<List<FieldReader>, Optional<Boolean>> OPT_DOUBLE = DOUBLE.optional();
+    public static final ExtractorByIndex<List<FieldReader>, Optional<Double>> OPT_DOUBLE = DOUBLE.optional();
 
-    public static final ExtractorByIndex<List<FieldReader>, Boolean> FLOAT =
-            new FieldReaderListExtractor(FieldReaderExtractors.FLOAT);
+    public static final ExtractorByIndex<List<FieldReader>, Float> FLOAT =
+            new FieldReaderListExtractor<>(FieldReaderExtractors.FLOAT);
 
-    public static final ExtractorByIndex<List<FieldReader>, Optional<Boolean>> OPT_FLOAT = FLOAT.optional();
+    public static final ExtractorByIndex<List<FieldReader>, Optional<Float>> OPT_FLOAT = FLOAT.optional();
 
-    public static final ExtractorByIndex<List<FieldReader>, Boolean> LONG =
-            new FieldReaderListExtractor(FieldReaderExtractors.LONG);
+    public static final ExtractorByIndex<List<FieldReader>, Integer> INT =
+            new FieldReaderListExtractor<>(FieldReaderExtractors.INT);
 
-    public static final ExtractorByIndex<List<FieldReader>, Optional<Boolean>> OPT_LONG = LONG.optional();
+    public static final ExtractorByIndex<List<FieldReader>, Optional<Integer>> OPT_INT = INT.optional();
 
-    public static final ExtractorByIndex<List<FieldReader>, Boolean> SHORT =
-            new FieldReaderListExtractor(FieldReaderExtractors.SHORT);
+    public static final ExtractorByIndex<List<FieldReader>, Long> LONG =
+            new FieldReaderListExtractor<>(FieldReaderExtractors.LONG);
 
-    public static final ExtractorByIndex<List<FieldReader>, Optional<Boolean>> OPT_SHORT = SHORT.optional();
+    public static final ExtractorByIndex<List<FieldReader>, Optional<Long>> OPT_LONG = LONG.optional();
 
-    public static final ExtractorByIndex<List<FieldReader>, Boolean> STRING =
-            new FieldReaderListExtractor(FieldReaderExtractors.STRING);
+    public static final ExtractorByIndex<List<FieldReader>, Short> SHORT =
+            new FieldReaderListExtractor<>(FieldReaderExtractors.SHORT);
 
-    public static final ExtractorByIndex<List<FieldReader>, Optional<Boolean>> OPT_STRING = STRING.optional();
+    public static final ExtractorByIndex<List<FieldReader>, Optional<Short>> OPT_SHORT = SHORT.optional();
 
-    public static final ExtractorByIndex<List<FieldReader>, Boolean> LOCALDATETIME =
-            new FieldReaderListExtractor(FieldReaderExtractors.LOCALDATETIME);
+    public static final ExtractorByIndex<List<FieldReader>, String> STRING =
+            new FieldReaderListExtractor<>(FieldReaderExtractors.STRING);
 
-    public static final ExtractorByIndex<List<FieldReader>, Optional<Boolean>> OPT_LOCALDATETIME = LOCALDATETIME.optional();
+    public static final ExtractorByIndex<List<FieldReader>, Optional<String>> OPT_STRING = STRING.optional();
 
-    public static final ExtractorByIndex<List<FieldReader>, Boolean> LOCALDATE =
-            new FieldReaderListExtractor(FieldReaderExtractors.LOCALDATE);
+    public static final ExtractorByIndex<List<FieldReader>, LocalDateTime> LOCALDATETIME =
+            new FieldReaderListExtractor<>(FieldReaderExtractors.LOCALDATETIME);
 
-    public static final ExtractorByIndex<List<FieldReader>, Optional<Boolean>> OPT_LOCALDATE = LOCALDATE.optional();
+    public static final ExtractorByIndex<List<FieldReader>, Optional<LocalDateTime>> OPT_LOCALDATETIME = LOCALDATETIME.optional();
+
+    public static final ExtractorByIndex<List<FieldReader>, LocalDate> LOCALDATE =
+            new FieldReaderListExtractor<>(FieldReaderExtractors.LOCALDATE);
+
+    public static final ExtractorByIndex<List<FieldReader>, Optional<LocalDate>> OPT_LOCALDATE = LOCALDATE.optional();
 }

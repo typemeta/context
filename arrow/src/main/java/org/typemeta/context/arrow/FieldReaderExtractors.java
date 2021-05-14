@@ -31,7 +31,7 @@ public abstract class FieldReaderExtractors {
     public static final Extractor<FieldReader, Byte> BYTE = FieldReader::readByte;
     public static final Extractor<FieldReader, Optional<Byte>> OPT_BYTE = optional(BYTE);
 
-    public static final IntExtractor<FieldReader> DOUBLE = FieldReader::readInteger;
+    public static final DoubleExtractor<FieldReader> DOUBLE = FieldReader::readInteger;
     public static final OptDoubleExtractor<FieldReader> OPT_DOUBLE =
             fr -> {
                 if (fr.isSet()) {
