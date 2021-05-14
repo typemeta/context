@@ -3,10 +3,7 @@ package org.typemeta.context.arrow;
 import org.apache.arrow.vector.complex.reader.FieldReader;
 import org.apache.arrow.vector.util.Text;
 import org.typemeta.context.extractors.*;
-import org.typemeta.context.extractors.byname.ExtractorByName;
 
-import java.sql.*;
-import java.sql.Date;
 import java.time.*;
 import java.util.*;
 
