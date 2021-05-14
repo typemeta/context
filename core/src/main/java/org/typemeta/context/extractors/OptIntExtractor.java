@@ -8,6 +8,7 @@ import java.util.function.*;
 /**
  * A {@code ExtractorByName} for optional {@code int} values.
  */
+@FunctionalInterface
 public interface OptIntExtractor<CTX> extends Extractor<CTX, OptionalInt> {
     static <CTX> OptIntExtractor<CTX> of(OptIntExtractor<CTX> extr) {
         return extr;
@@ -34,6 +35,7 @@ public interface OptIntExtractor<CTX> extends Extractor<CTX, OptionalInt> {
     /**
      * A {@link Extractor.Checked} for optional {@code int} values.
      */
+    @FunctionalInterface
     interface Checked<CTX, EX extends Exception> extends Extractor.Checked<CTX, OptionalInt, EX> {
         static <CTX, EX extends Exception> Checked<CTX, EX> of(Checked<CTX, EX> extr) {
             return  extr;

@@ -5,7 +5,11 @@ import org.typemeta.context.extractors.byname.*;
 import java.util.*;
 
 public class PropertiesExtractors {
-    public static final ExtractorByName<Properties, String> STRING = ExtractorByName.of(Properties::getProperty);
+    public static final ExtractorByName<Properties, String> STRING =
+            ExtractorByName.of(Properties::getProperty);
+
+    public static final ExtractorByName<Properties, Optional<String>> OPT_STRING =
+            STRING.optional();
 
     public static final ExtractorByName<Properties, Boolean> BOOLEAN =
             STRING.map(s -> s == null ? null : Boolean.valueOf(s));
@@ -20,10 +24,38 @@ public class PropertiesExtractors {
             BYTE.optional();
 
     public static final ExtractorByName<Properties, Double> DOUBLE =
-            STRING.map(s -> s == null ? null : Double.parseDouble(s));
+            STRING.map(s -> s == null ? null : Double.valueOf(s));
 
     public static final ExtractorByName<Properties, OptionalDouble> OPT_DOUBLE =
             STRING.map(s ->
                     s == null ? OptionalDouble.empty() : OptionalDouble.of(Double.parseDouble(s))
             );
+
+    public static final ExtractorByName<Properties, Float> FLOAT =
+            STRING.map(s -> s == null ? null : Float.valueOf(s));
+
+    public static final ExtractorByName<Properties, Optional<Float>> OPT_FLOAT =
+            FLOAT.optional();
+
+    public static final ExtractorByName<Properties, Integer> INT =
+            STRING.map(s -> s == null ? null : Integer.valueOf(s));
+
+    public static final ExtractorByName<Properties, OptionalInt> OPT_INT =
+            STRING.map(s ->
+                    s == null ? OptionalInt.empty() : OptionalInt.of(Integer.parseInt(s))
+            );
+
+    public static final ExtractorByName<Properties, Long> LONG =
+            STRING.map(s -> s == null ? null : Long.valueOf(s));
+
+    public static final ExtractorByName<Properties, OptionalLong> OPT_LONG =
+            STRING.map(s ->
+                    s == null ? OptionalLong.empty() : OptionalLong.of(Long.parseLong(s))
+            );
+
+    public static final ExtractorByName<Properties, Short> SHORT =
+            STRING.map(s -> s == null ? null : Short.valueOf(s));
+
+    public static final ExtractorByName<Properties, Optional<Short>> OPT_SHORT =
+            SHORT.optional();
 }

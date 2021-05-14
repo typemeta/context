@@ -53,6 +53,7 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
      * @param <CTX>     the context type
      * @param <EX>      the exception type
      */
+    @FunctionalInterface
     interface Checked<CTX, EX extends Exception> extends ExtractorByName.Checked<CTX, Long, EX> {
         /**
          * Static constructor.
