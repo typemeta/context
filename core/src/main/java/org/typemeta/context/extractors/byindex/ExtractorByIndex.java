@@ -1,4 +1,4 @@
-package org.typemeta.context.extractors.byname;
+package org.typemeta.context.extractors.byindex;
 
 import org.typemeta.context.extractors.Extractor;
 import org.typemeta.context.functions.Functions;
@@ -7,24 +7,24 @@ import org.typemeta.context.utils.Exceptions;
 import java.util.Optional;
 
 /**
- * A function to extract a value from an context, given a name.
+ * A function to extract a value from an context, given a index.
  * @param <CTX>     the context type
  * @param <T>       the value type
  */
 @FunctionalInterface
-public interface ExtractorByName<CTX, T> {
-    static <CTX, T> ExtractorByName<CTX, T> of(ExtractorByName<CTX, T> extr) {
+public interface ExtractorByIndex<CTX, T> {
+    static <CTX, T> ExtractorByIndex<CTX, T> of(ExtractorByIndex<CTX, T> extr) {
         return extr;
     }
 
     /**
      * Extract a value of type {@code T} from the given context,
-     * for the given column name.
+     * for the given index.
      * @param ctx       the context
-     * @param name      the name
+     * @param index     the index
      * @return          the extracted value
      */
-    T extract(CTX ctx, String name);
+    T extract(CTX ctx, int index);
 
     /**
      * Convert this extractor into another that applies a function to the result of this extractor.
@@ -32,17 +32,17 @@ public interface ExtractorByName<CTX, T> {
      * @param <U>       the function return type
      * @return          the new extractor
      */
-    default <U> ExtractorByName<CTX, U> map(Functions.F<T, U> f) {
-        return (ctx, name) -> f.apply(extract(ctx, name));
+    default <U> ExtractorByIndex<CTX, U> map(Functions.F<T, U> f) {
+        return (ctx, index) -> f.apply(extract(ctx, index));
     }
 
     /**
-     * Bind this extractor to a name, giving us an {@link Extractor}.
-     * @param name      the column name
+     * Bind this extractor to a index, giving us an {@link Extractor}.
+     * @param index     the column index
      * @return          the extractor
      */
-    default Extractor<CTX, T> bind(String name) {
-        return ctx -> extract(ctx, name);
+    default Extractor<CTX, T> bind(int index) {
+        return rs -> extract(rs, index);
     }
 
     /**
@@ -50,12 +50,12 @@ public interface ExtractorByName<CTX, T> {
      * The option extractor converts null values to {@code Optional.empty}.
      * @return          the extractor function for the optional value
      */
-    default ExtractorByName<CTX, Optional<T>> optional() {
+    default ExtractorByIndex<CTX, Optional<T>> optional() {
         return map(Optional::ofNullable);
     }
 
     /**
-     * Variant of {@link ExtractorByName} where the extract method may throw an exception.
+     * Variant of {@link ExtractorByIndex} where the extract method may throw an exception.
      * @param <CTX>     the context type
      * @param <T>       the value type
      * @param <EX>      the exception type
@@ -68,13 +68,13 @@ public interface ExtractorByName<CTX, T> {
 
         /**
          * Extract a value of type {@code T} from the given context,
-         * for the given column name.
+         * for the given column index.
          * @param ctx       the context
-         * @param name      the name
+         * @param index     the index
          * @return          the extracted value
          * @throws EX       if the extraction fails
          */
-        T extract(CTX ctx, String name) throws EX;
+        T extract(CTX ctx, int index) throws EX;
 
         /**
          * Convert this extractor into another that applies a function to the result of this extractor.
@@ -83,16 +83,16 @@ public interface ExtractorByName<CTX, T> {
          * @return          the new extractor
          */
         default <U> Checked<CTX, U, EX> map(Functions.F<T, U> f) {
-            return (ctx, name) -> f.apply(extract(ctx, name));
+            return (rs, index) -> f.apply(extract(rs, index));
         }
 
         /**
-         * Bind this extractor to a name, giving us an {@link Extractor}.
-         * @param name      the column name
+         * Bind this extractor to a index, giving us an {@link Extractor}.
+         * @param index     the column index
          * @return          the extractor
          */
-        default Extractor.Checked<CTX, T, EX> bind(String name) {
-            return ctx -> extract(ctx, name);
+        default Extractor.Checked<CTX, T, EX> bind(int index) {
+            return rs -> extract(rs, index);
         }
 
         /**
@@ -108,10 +108,10 @@ public interface ExtractorByName<CTX, T> {
          * Convert this extractor to an unchecked extractor (one that doesn't throw a checked exception).
          * @return          the unchecked extractor
          */
-        default ExtractorByName<CTX, T> unchecked() {
-            return (ctx, name) -> {
+        default ExtractorByIndex<CTX, T> unchecked() {
+            return (ctx, index) -> {
                 try {
-                    return extract(ctx, name);
+                    return extract(ctx, index);
                 } catch (Exception ex) {
                     return Exceptions.throwUnchecked(ex);
                 }

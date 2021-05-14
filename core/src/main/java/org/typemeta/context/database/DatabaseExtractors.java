@@ -1,13 +1,11 @@
 package org.typemeta.context.database;
 
-import org.typemeta.context.extractors.*;
 import org.typemeta.context.extractors.byname.*;
 
 import java.sql.Date;
 import java.sql.*;
 import java.time.*;
 import java.util.*;
-import java.util.function.*;
 
 /**
  * A set of database value extractor combinator functions.
@@ -49,7 +47,6 @@ public abstract class DatabaseExtractors {
     public static final ExtractorByName<ResultSet, Byte> BYTE =
             CheckedDatabaseExtractors.BYTE.unchecked();
 
-
     /**
      * A {@code ExtractorByName} instance for optional {@code byte} values.
      */
@@ -63,41 +60,9 @@ public abstract class DatabaseExtractors {
             CheckedDatabaseExtractors.DOUBLE.unchecked();
 
     /**
-     * A {@code ExtractorByName} for optional {@code double} values.
-     */
-    public interface OptDoubleExtractorByName extends ExtractorByName<ResultSet, OptionalDouble> {
-        static OptDoubleExtractorByName of(OptDoubleExtractorByName extr) {
-            return extr;
-        }
-
-        /**
-         * Create an extractor that applies this extractor first and then maps a function over the
-         * extracted optional value.
-         * @param f         the function to be mapped over the optional
-         * @param <U>       the function return type
-         * @return          the new extractor
-         */
-        default <U> ExtractorByName<ResultSet, Optional<U>> mapOpt(DoubleFunction<U> f) {
-            return (rs, name) -> {
-                final OptionalDouble od = extract(rs, name);
-                if (od.isPresent()) {
-                    return Optional.of(f.apply(od.getAsDouble()));
-                } else {
-                    return Optional.empty();
-                }
-            };
-        }
-
-        @Override
-        default Extractor<ResultSet, OptionalDouble> bind(String name) {
-            return rs -> extract(rs, name);
-        }
-    }
-
-    /**
      * A {@code ExtractorByName} instance for optional {@code double} values.
      */
-    public static final OptDoubleExtractorByName OPT_DOUBLE =
+    public static final OptDoubleExtractorByName<ResultSet> OPT_DOUBLE =
             CheckedDatabaseExtractors.OPT_DOUBLE.unchecked();
 
     /**
@@ -119,41 +84,9 @@ public abstract class DatabaseExtractors {
             CheckedDatabaseExtractors.INTEGER.unchecked();
 
     /**
-     * A {@code ExtractorByName} for optional {@code int} values.
-     */
-    public interface OptIntExtractorByName extends ExtractorByName<ResultSet, OptionalInt> {
-        static OptIntExtractorByName of(OptIntExtractorByName extr) {
-            return extr;
-        }
-
-        /**
-         * Create an extractor that applies this extractor first and then maps a function over the
-         * extracted optional value.
-         * @param f         the function to be mapped over the optional
-         * @param <U>       the function return type
-         * @return          the new extractor
-         */
-        default <U> ExtractorByName<ResultSet, Optional<U>> mapOpt(IntFunction<U> f) {
-            return (rs, name) -> {
-                final OptionalInt od = extract(rs, name);
-                if (od.isPresent()) {
-                    return Optional.of(f.apply(od.getAsInt()));
-                } else {
-                    return Optional.empty();
-                }
-            };
-        }
-
-        @Override
-        default Extractor<ResultSet, OptionalInt> bind(String name) {
-            return rs -> extract(rs, name);
-        }
-    }
-
-    /**
      * A {@code ExtractorByName} instance for optional {@code int} values.
      */
-    public static final OptIntExtractorByName OPT_INTEGER =
+    public static final OptIntExtractorByName<ResultSet> OPT_INTEGER =
             CheckedDatabaseExtractors.OPT_INTEGER.unchecked();
 
     /**
@@ -163,41 +96,9 @@ public abstract class DatabaseExtractors {
             CheckedDatabaseExtractors.LONG.unchecked();
 
     /**
-     * A {@code ExtractorByName} for optional {@code long} values.
-     */
-    public interface OptLongExtractorByName extends ExtractorByName<ResultSet, OptionalLong> {
-        static OptLongExtractorByName of(OptLongExtractorByName extr) {
-            return extr;
-        }
-
-        /**
-         * Create an extractor that applies this extractor first and then maps a function over the
-         * extracted optional value.
-         * @param f         the function to be mapped over the optional
-         * @param <U>       the function return type
-         * @return          the new extractor
-         */
-        default <U> ExtractorByName<ResultSet, Optional<U>> mapOpt(LongFunction<U> f) {
-            return (rs, name) -> {
-                final OptionalLong od = extract(rs, name);
-                if (od.isPresent()) {
-                    return Optional.of(f.apply(od.getAsLong()));
-                } else {
-                    return Optional.empty();
-                }
-            };
-        }
-
-        @Override
-        default Extractor<ResultSet, OptionalLong> bind(String name) {
-            return rs -> extract(rs, name);
-        }
-    }
-
-    /**
      * A {@code ExtractorByName} instance for optional {@code long} values.
      */
-    public static final OptLongExtractorByName OPT_LONG =
+    public static final OptLongExtractorByName<ResultSet> OPT_LONG =
             CheckedDatabaseExtractors.OPT_LONG.unchecked();
 
     /**
