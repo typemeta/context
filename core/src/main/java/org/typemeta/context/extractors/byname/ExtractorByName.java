@@ -13,6 +13,13 @@ import java.util.Optional;
  */
 @FunctionalInterface
 public interface ExtractorByName<CTX, T> {
+    /**
+     * Static constructor.
+     * @param extr      the extractor
+     * @param <CTX>     the context type
+     * @param <T>       the extracted value type
+     * @return          the extractor
+     */
     static <CTX, T> ExtractorByName<CTX, T> of(ExtractorByName<CTX, T> extr) {
         return extr;
     }

@@ -11,6 +11,15 @@ import java.util.function.IntFunction;
  */
 @FunctionalInterface
 public interface IntExtractorByName<CTX> extends ExtractorByName<CTX, Integer> {
+    /**
+     * Static constructor.
+     * @param extr      the extractor
+     * @param <CTX>     the context type
+     * @return          the extractor
+     */
+    static <CTX> IntExtractorByName<CTX> of(IntExtractorByName<CTX> extr) {
+        return extr;
+    }
 
     /**
      * The extraction method, specialised to return an unboxed {@code int} value.
@@ -45,6 +54,13 @@ public interface IntExtractorByName<CTX> extends ExtractorByName<CTX, Integer> {
      * @param <EX>      the exception type
      */
     interface Checked<CTX, EX extends Exception> extends ExtractorByName.Checked<CTX, Integer, EX> {
+        /**
+         * Static constructor method.
+         * @param extr      the extractor
+         * @param <CTX>     the context type
+         * @param <EX>      the exception type
+         * @return          the extractor
+         */
         static <CTX, EX extends Exception> Checked<CTX, EX> of(Checked<CTX, EX> extr) {
             return extr;
         }

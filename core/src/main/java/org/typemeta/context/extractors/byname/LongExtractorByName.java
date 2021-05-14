@@ -11,6 +11,15 @@ import java.util.function.LongFunction;
  */
 @FunctionalInterface
 public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
+    /**
+     * Static constructor.
+     * @param extr      the extractor
+     * @param <CTX>     the context type
+     * @return          the extractor
+     */
+    static <CTX> LongExtractorByName<CTX> of(LongExtractorByName<CTX> extr) {
+        return extr;
+    }
 
     /**
      * The extraction method, specialised to return an unboxed {@code long} value.
@@ -45,6 +54,13 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
      * @param <EX>      the exception type
      */
     interface Checked<CTX, EX extends Exception> extends ExtractorByName.Checked<CTX, Long, EX> {
+        /**
+         * Static constructor.
+         * @param extr      the extractor
+         * @param <CTX>     the context type
+         * @param <EX>      the exception type
+         * @return          the extractor
+         */
         static <CTX, EX extends Exception> Checked<CTX, EX> of(Checked<CTX, EX> extr) {
             return extr;
         }

@@ -11,6 +11,15 @@ import java.util.function.DoubleFunction;
  */
 @FunctionalInterface
 public interface DoubleExtractorByName<CTX> extends ExtractorByName<CTX, Double> {
+    /**
+     * Static constructor.
+     * @param extr      the extractor
+     * @param <CTX>     the context type
+     * @return          the extractor
+     */
+    static <CTX> DoubleExtractorByName<CTX> of(DoubleExtractorByName<CTX> extr) {
+        return extr;
+    }
 
     /**
      * The extraction method, specialised to return an unboxed {@code double} value.
