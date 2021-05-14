@@ -7,7 +7,7 @@ import org.typemeta.context.extractors.*;
 import java.time.*;
 import java.util.*;
 
-public abstract class ArrowFlightExtractors {
+public abstract class FieldReaderExtractors {
 
     /**
      * A combinator function to convert a {@link Extractor} into one for {@link Optional} values.
