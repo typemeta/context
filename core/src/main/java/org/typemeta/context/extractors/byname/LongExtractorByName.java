@@ -6,7 +6,8 @@ import org.typemeta.context.utils.Exceptions;
 import java.util.function.LongFunction;
 
 /**
- * A specialisation of {@code ExtractorByName} for {@code long} values.
+ * A function to extract a long value from an context, given a name.
+ * Essentially a specialisation of {@link ExtractorByName} for long values.
  * @param <CTX>     the context type
  */
 @FunctionalInterface
@@ -36,7 +37,7 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
     /**
      * A variant of the {@link ExtractorByName#map} method specialised for {@code long} values.
      * @param f         the function
-     * @param <U>       the return type of the function
+     * @param <U>       the function return type
      * @return          the mapped extractor
      */
     default <U> ExtractorByName<CTX, U> mapLong(LongFunction<U> f) {
@@ -82,7 +83,7 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
         /**
          * A variant of the {@link ExtractorByName.Checked#map} method specialised for {@code long} values.
          * @param f         the function
-         * @param <U>       the return type of the function
+         * @param <U>       the function return type
          * @return          the mapped extractor
          */
         default <U> ExtractorByName.Checked<CTX, U, EX> mapLong(LongFunction<U> f) {

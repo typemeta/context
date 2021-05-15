@@ -15,6 +15,7 @@
     <name>context-arrow</name>
 
     <dependencies>
+
         <dependency>
             <groupId>org.typemeta</groupId>
             <artifactId>context-core</artifactId>

@@ -53,7 +53,7 @@ public interface IntExtractor<CTX> extends Extractor<CTX, Integer> {
     /**
      * A variant of the {@link Extractor#map} method specialised for {@code int} values.
      * @param f         the function
-     * @param <U>       the return type of the function
+     * @param <U>       the function return type
      * @return the mapped extractor
      */
     default <U> Extractor<CTX, U> mapInt(IntFunction<U> f) {
@@ -113,7 +113,7 @@ public interface IntExtractor<CTX> extends Extractor<CTX, Integer> {
         /**
          * A variant of the {@link Extractor.Checked#map} method specialised for {@code int} values.
          * @param f         the function
-         * @param <U>       the return type of the function
+         * @param <U>       the function return type
          * @return          the mapped extractor
          */
         default <U> Extractor.Checked<CTX, U, EX> mapInt(IntFunction<U> f) {

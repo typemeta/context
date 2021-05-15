@@ -54,7 +54,7 @@ public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
     /**
      * A variant of the {@link Extractor#map} method specialised for {@code double} values.
      * @param f         the function
-     * @param <U>       the return type of the function
+     * @param <U>       the function return type
      * @return the mapped extractor
      */
     default <U> Extractor<CTX, U> mapDouble(DoubleFunction<U> f) {
@@ -114,7 +114,7 @@ public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
         /**
          * A variant of the {@link Extractor.Checked#map} method specialised for {@code double} values.
          * @param f         the function
-         * @param <U>       the return type of the function
+         * @param <U>       the function return type
          * @return          the mapped extractor
          */
         default <U> Extractor.Checked<CTX, U, EX> mapDouble(DoubleFunction<U> f) {

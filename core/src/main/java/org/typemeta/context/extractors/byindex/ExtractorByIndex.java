@@ -13,6 +13,13 @@ import java.util.Optional;
  */
 @FunctionalInterface
 public interface ExtractorByIndex<CTX, T> {
+    /**
+     * Static constructor.
+     * @param extr      the extractor
+     * @param <CTX>     the context type
+     * @param <T>       the extracted value type
+     * @return          the extractor
+     */
     static <CTX, T> ExtractorByIndex<CTX, T> of(ExtractorByIndex<CTX, T> extr) {
         return extr;
     }
@@ -38,7 +45,7 @@ public interface ExtractorByIndex<CTX, T> {
 
     /**
      * Bind this extractor to a index, giving us an {@link Extractor}.
-     * @param index     the column index
+     * @param index     the index
      * @return          the extractor
      */
     default Extractor<CTX, T> bind(int index) {
@@ -68,7 +75,7 @@ public interface ExtractorByIndex<CTX, T> {
 
         /**
          * Extract a value of type {@code T} from the given context,
-         * for the given column index.
+         * for the given index.
          * @param ctx       the context
          * @param index     the index
          * @return          the extracted value
@@ -88,7 +95,7 @@ public interface ExtractorByIndex<CTX, T> {
 
         /**
          * Bind this extractor to a index, giving us an {@link Extractor}.
-         * @param index     the column index
+         * @param index     the index
          * @return          the extractor
          */
         default Extractor.Checked<CTX, T, EX> bind(int index) {

@@ -14,10 +14,21 @@ import java.util.Optional;
 @FunctionalInterface
 public interface InjectByIndex<CTX, T> {
     /**
+     * Static constructor.
+     * @param injr      the injector
+     * @param <CTX>     the context type
+     * @param <T>       the value type
+     * @return          the injector
+     */
+    static <CTX, T> InjectByIndex<CTX, T> of(InjectByIndex<CTX, T> injr) {
+        return injr;
+    }
+
+    /**
      * Inject a value into a context.
      * @param ctx       the context
      * @param n         the index
-     * @param value     the value
+     * @param value     the value to be injected
      * @return          the new context
      */
     CTX inject(CTX ctx, int n, T value);

@@ -6,7 +6,8 @@ import org.typemeta.context.utils.Exceptions;
 import java.util.function.IntFunction;
 
 /**
- * A specialisation of {@code ExtractorByName} for {@code int} values.
+ * A function to extract a integer value from an context, given a name.
+ * Essentially a specialisation of {@link ExtractorByName} for integer values.
  * @param <CTX>     the context type
  */
 @FunctionalInterface
@@ -36,7 +37,7 @@ public interface IntExtractorByName<CTX> extends ExtractorByName<CTX, Integer> {
     /**
      * A variant of the {@link ExtractorByName#map} method specialised for {@code int} values.
      * @param f         the function
-     * @param <U>       the return type of the function
+     * @param <U>       the function return type
      * @return          the mapped extractor
      */
     default <U> ExtractorByName<CTX, U> mapInt(IntFunction<U> f) {
@@ -82,7 +83,7 @@ public interface IntExtractorByName<CTX> extends ExtractorByName<CTX, Integer> {
         /**
          * A variant of the {@link ExtractorByName.Checked#map} method specialised for {@code int} values.
          * @param f         the function
-         * @param <U>       the return type of the function
+         * @param <U>       the function return type
          * @return          the mapped extractor
          */
         default <U> ExtractorByName.Checked<CTX, U, EX> mapInt(IntFunction<U> f) {

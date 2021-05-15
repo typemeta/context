@@ -81,7 +81,7 @@ public abstract class Exceptions {
      * Undo the effect of {@code wrap} by catching the exception,
      * and rethrowing the original checked exception.
      * @param thrower   the function that may throw an exception
-     * @param <R>       the return type of the function
+     * @param <R>       the function return type
      * @param <X>       the original exception type
      * @return          the function value, if it doesn't throw
      * @throws X        the original exception

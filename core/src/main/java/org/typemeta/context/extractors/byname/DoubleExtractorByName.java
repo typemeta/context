@@ -6,7 +6,8 @@ import org.typemeta.context.utils.Exceptions;
 import java.util.function.DoubleFunction;
 
 /**
- * A specialisation of {@link ExtractorByName} for {@code double} values.
+ * A function to extract a double value from an context, given a name.
+ * Essentially a specialisation of {@link ExtractorByName} for {@code double} values.
  * @param <CTX>     the context type
  */
 @FunctionalInterface
@@ -28,6 +29,13 @@ public interface DoubleExtractorByName<CTX> extends ExtractorByName<CTX, Double>
      */
     double extractDouble(CTX ctx, String name);
 
+    /**
+     * Extract a value of type {@code T} from the given context,
+     * for the given name.
+     * @param ctx       the context
+     * @param name      the index
+     * @return          the extracted value
+     */
     @Override
     default Double extract(CTX ctx, String name) {
         return extractDouble(ctx, name);
@@ -36,7 +44,7 @@ public interface DoubleExtractorByName<CTX> extends ExtractorByName<CTX, Double>
     /**
      * A variant of the {@link ExtractorByName#map} method specialised for {@code double} values.
      * @param f         the function
-     * @param <U>       the return type of the function
+     * @param <U>       the function return type
      * @return          the mapped extractor
      */
     default <U> ExtractorByName<CTX, U> mapDouble(DoubleFunction<U> f) {
@@ -66,9 +74,10 @@ public interface DoubleExtractorByName<CTX> extends ExtractorByName<CTX, Double>
         }
 
         /**
-         * The extraction method, specialised to return an unboxed {@code double} value.
+         * Extract a value of type {@code T} from the given context, for the given index.
          * @param ctx       the context
-         * @return          the extracted double value
+         * @param name      the name
+         * @return          the extracted value
          * @throws EX       if the extraction fails
          */
         double extractDouble(CTX ctx, String name) throws EX;
@@ -81,7 +90,7 @@ public interface DoubleExtractorByName<CTX> extends ExtractorByName<CTX, Double>
         /**
          * A variant of the {@link ExtractorByName.Checked#map} method specialised for {@code double} values.
          * @param f         the function
-         * @param <U>       the return type of the function
+         * @param <U>       the function return type
          * @return          the mapped extractor
          */
         default <U> ExtractorByName.Checked<CTX, U, EX> mapDouble(DoubleFunction<U> f) {
