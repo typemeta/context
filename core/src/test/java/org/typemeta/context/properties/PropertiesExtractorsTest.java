@@ -1,78 +1,182 @@
 package org.typemeta.context.properties;
 
 import org.junit.*;
+import org.typemeta.context.extractors.*;
 import org.typemeta.context.extractors.byname.ExtractorByName;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class PropertiesExtractorsTest {
+
+    private static final class Composite {
+        final boolean booleanField;
+        final byte byteField;
+        final double doubleField;
+        final float floatField;
+        final int intField;
+        final long longField;
+        final String stringField;
+
+        private Composite(
+                boolean booleanField,
+                byte byteField,
+                double doubleField,
+                float floatField,
+                int intField,
+                long longField,
+                String stringField
+        ) {
+            this.booleanField = booleanField;
+            this.byteField = byteField;
+            this.doubleField = doubleField;
+            this.floatField = floatField;
+            this.intField = intField;
+            this.longField = longField;
+            this.stringField = stringField;
+        }
+
+        public boolean booleanField() {
+            return booleanField;
+        }
+
+        public byte byteField() {
+            return byteField;
+        }
+
+        public double doubleField() {
+            return doubleField;
+        }
+
+        public float floatField() {
+            return floatField;
+        }
+
+        public int intField() {
+            return intField;
+        }
+
+        public long longField() {
+            return longField;
+        }
+
+        public String stringField() {
+            return stringField;
+        }
+    }
+
     private static final class TestData<T> {
         final String key;
         final T value;
         final ExtractorByName<Properties, T> extractor;
         final ExtractorByName<Properties, Optional<T>> optExtractor;
+        final Function<Composite, T> fieldGetter;
 
         private TestData(
                 String key,
                 T value,
-                ExtractorByName<Properties, T> extractor
-        ) {
+                ExtractorByName<Properties, T> extractor,
+                Function<Composite, T> fieldGetter) {
             this.key = key;
             this.value = value;
             this.extractor = extractor;
             this.optExtractor = extractor.optional();
+            this.fieldGetter = fieldGetter;
         }
 
-        public void set(Properties props) {
+        void set(Properties props) {
             props.put(key, Objects.toString(value));
+        }
+
+        Extractor<Properties, T> bindExtractor() {
+            return extractor.bind(key);
+        }
+
+        Extractor<Properties, Optional<T>> bindOptExtractor() {
+            return optExtractor.bind(key);
+        }
+
+        T getField(Composite comp) {
+            return fieldGetter.apply(comp);
         }
     }
 
     private static final TestData<Boolean> BOOLEAN = new TestData<>(
             "BOOLEAN",
             false,
-            PropertiesExtractors.BOOLEAN
+            PropertiesExtractors.BOOLEAN,
+            Composite::booleanField
     );
 
     private static final TestData<Byte> BYTE = new TestData<>(
             "BYTE",
             (byte)123,
-            PropertiesExtractors.BYTE
+            PropertiesExtractors.BYTE,
+            Composite::byteField
     );
 
     private static final TestData<Double> DOUBLE = new TestData<>(
             "DOUBLE",
             123.456d,
-            PropertiesExtractors.DOUBLE
+            PropertiesExtractors.DOUBLE,
+            Composite::doubleField
     );
 
     private static final TestData<Float> FLOAT = new TestData<>(
             "FLOAT",
             456.789f,
-            PropertiesExtractors.FLOAT
+            PropertiesExtractors.FLOAT,
+            Composite::floatField
     );
 
     private static final TestData<Integer> INT = new TestData<>(
             "INT",
             123456,
-            PropertiesExtractors.INT
+            PropertiesExtractors.INT,
+            Composite::intField
     );
 
     private static final TestData<Long> LONG = new TestData<>(
             "LONG",
             123456l,
-            PropertiesExtractors.LONG
+            PropertiesExtractors.LONG,
+            Composite::longField
     );
 
     private static final TestData<String> STRING = new TestData<>(
             "STRING",
             "1234abcd",
-            PropertiesExtractors.STRING
+            PropertiesExtractors.STRING,
+            Composite::stringField
     );
 
     private static final List<TestData<?>> testDataList = Arrays.asList(
             BOOLEAN, BYTE, DOUBLE, FLOAT, INT, LONG, STRING
     );
+
+    private static final Extractor<Properties, Composite> COMP_EXTRACTOR =
+            Extractors.combine(
+                    BOOLEAN.bindExtractor(),
+                    BYTE.bindExtractor(),
+                    DOUBLE.bindExtractor(),
+                    FLOAT.bindExtractor(),
+                    INT.bindExtractor(),
+                    LONG.bindExtractor(),
+                    STRING.bindExtractor(),
+                    Composite::new
+            );
+
+    private static final Extractor<Properties, Composite> COMP_OPT_EXTRACTOR =
+            Extractors.combine(
+                    BOOLEAN.bindOptExtractor().map(o -> o.orElse(null)),
+                    BYTE.bindOptExtractor().map(o -> o.orElse(null)),
+                    DOUBLE.bindOptExtractor().map(o -> o.orElse(null)),
+                    FLOAT.bindOptExtractor().map(o -> o.orElse(null)),
+                    INT.bindOptExtractor().map(o -> o.orElse(null)),
+                    LONG.bindOptExtractor().map(o -> o.orElse(null)),
+                    STRING.bindOptExtractor().map(o -> o.orElse(null)),
+                    Composite::new
+            );
 
     private static final Properties PROPS = new Properties();
 
@@ -105,6 +209,22 @@ public class PropertiesExtractorsTest {
     public void testOptExtractors2() {
         testDataList.forEach(td -> {
             Assert.assertEquals(td.key, Optional.empty(), td.optExtractor.extract(PROPS, "NO_SUCH_KEY"));
+        });
+    }
+
+    @Test
+    public void testCompositeExtractors() {
+        final Composite comp = COMP_EXTRACTOR.extract(PROPS);
+        testDataList.forEach(td -> {
+            Assert.assertEquals(td.key, td.value, td.getField(comp));
+        });
+    }
+
+    @Test
+    public void testCompositeOptExtractors() {
+        final Composite comp = COMP_OPT_EXTRACTOR.extract(PROPS);
+        testDataList.forEach(td -> {
+            Assert.assertEquals(td.key, td.value, td.getField(comp));
         });
     }
 }
