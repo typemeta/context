@@ -23,9 +23,8 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <!-- Maven plugin versions -->
-        <errorprone.version>2.3.4</errorprone.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+        <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <maven-release-plugin.version>3.0.0-M1</maven-release-plugin.version>
@@ -40,6 +39,41 @@
         <junit.version>4.12</junit.version>
         <slf4j.version>1.7.25</slf4j.version>
     </properties>
+
+    <scm>
+        <connection>scm:git:git@github.com:typemeta/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:git@github.com:typemeta/${project.artifactId}.git</developerConnection>
+        <url>http://github.com:typemeta/${project.artifactId}/tree/master</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/typemeta/${project.artifactId}/issues</url>
+    </issueManagement>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <developers>
+        <developer>
+            <id>jonhanson</id>
+            <name>Jon Hanson</name>
+            <email>jon.hanson@gmail.com</email>
+            <url>https://github.com/jon-hanson</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
 
     <dependencyManagement>
 
