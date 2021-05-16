@@ -1,17 +1,16 @@
 package org.typemeta.context.extractors.byindex;
 
-import org.typemeta.context.extractors.LongExtractor;
+import org.typemeta.context.extractors.DoubleExtractor;
 import org.typemeta.context.utils.Exceptions;
 
-import java.util.function.LongFunction;
+import java.util.function.DoubleFunction;
 
 /**
- * A function to extract a long value from an context, given a index.
- * Essentially a specialisation of {@link ExtractorByIndex} for {@code long} values.
+ * A function to extract a value from an context, given a index.
  * @param <CTX>     the context type
  */
 @FunctionalInterface
-public interface LongExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Long> {
+public interface LongExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Double> {
     /**
      * Static constructor.
      * @param extr      the extractor
@@ -23,11 +22,11 @@ public interface LongExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Long> {
     }
 
     /**
-     * The extraction method, specialised to return an unboxed {@code long} value.
+     * The extraction method, specialised to return an unboxed {@code double} value.
      * @param ctx       the context
      * @return          the extracted value
      */
-    long extractLong(CTX ctx, int index);
+    double extractDouble(CTX ctx, int index);
 
     /**
      * Extract a value of type {@code T} from the given context,
@@ -37,8 +36,8 @@ public interface LongExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Long> {
      * @return          the extracted value
      */
     @Override
-    default Long extract(CTX ctx, int index) {
-        return extractLong(ctx, index);
+    default Double extract(CTX ctx, int index) {
+        return extractDouble(ctx, index);
     }
 
     /**
@@ -47,12 +46,12 @@ public interface LongExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Long> {
      * @param <U>       the function return type
      * @return          the new extractor
      */
-    default <U> ExtractorByIndex<CTX, U> mapLong(LongFunction<U> f) {
-        return (ctx, index) -> f.apply(extractLong(ctx, index));
+    default <U> ExtractorByIndex<CTX, U> mapDouble(DoubleFunction<U> f) {
+        return (ctx, index) -> f.apply(extractDouble(ctx, index));
     }
 
     @Override
-    default LongExtractor<CTX> bind(int index) {
+    default DoubleExtractor<CTX> bind(int index) {
         return rs -> extract(rs, index);
     }
 
@@ -62,7 +61,7 @@ public interface LongExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Long> {
      * @param <EX>      the exception type
      */
     @FunctionalInterface
-    interface Checked<CTX, EX extends Exception> extends ExtractorByIndex.Checked<CTX, Long, EX> {
+    interface Checked<CTX, EX extends Exception> extends ExtractorByIndex.Checked<CTX, Double, EX> {
         /**
          * Static constructor method.
          * @param extr      the extractor
@@ -81,20 +80,20 @@ public interface LongExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Long> {
          * @return          the extracted value
          * @throws EX       if the extraction fails
          */
-        long extractLong(CTX ctx, int index) throws EX;
+        double extractDouble(CTX ctx, int index) throws EX;
 
         @Override
-        default Long extract(CTX ctx, int index) throws EX {
-            return extractLong(ctx, index);
+        default Double extract(CTX ctx, int index) throws EX {
+            return extractDouble(ctx, index);
         }
 
         /**
-         * A variant of the {@link ExtractorByIndex.Checked#map} method specialised for {@code long} values.
+         * A variant of the {@link ExtractorByIndex.Checked#map} method specialised for {@code double} values.
          * @param f         the function
          * @param <U>       the function return type
          * @return          the new extractor
          */
-        default <U> ExtractorByIndex.Checked<CTX, U, EX> mapLong(LongFunction<U> f) {
+        default <U> ExtractorByIndex.Checked<CTX, U, EX> mapDouble(DoubleFunction<U> f) {
             return (rs, index) -> f.apply(extract(rs, index));
         }
 
@@ -105,7 +104,7 @@ public interface LongExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Long> {
         default LongExtractorByIndex<CTX> unchecked() {
             return (ctx, index) -> {
                 try {
-                    return extractLong(ctx, index);
+                    return extractDouble(ctx, index);
                 } catch (Exception ex) {
                     return Exceptions.throwUnchecked(ex);
                 }

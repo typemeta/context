@@ -3,7 +3,7 @@ package org.typemeta.context.database;
 import org.junit.*;
 import org.slf4j.*;
 import org.typemeta.context.extractors.Extractor;
-import org.typemeta.context.injectors.*;
+import org.typemeta.context.injectors.Injector;
 import org.typemeta.context.injectors.byindex.InjectByIndex;
 import org.typemeta.context.utils.Exceptions;
 

@@ -1,24 +1,24 @@
-package org.typemeta.context.extractors.byname;
+package org.typemeta.context.extractors.byindex;
 
 import org.typemeta.context.extractors.Extractor;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.*;
-import java.util.function.IntFunction;
+import java.util.function.LongFunction;
 
 /**
- * A function to extract an {@link OptionalInt} value from an context, given an index.
- * Essentially a specialisation of {@link ExtractorByName} for integer {@code OptionalInt} values.
+ * A function to extract an {@link OptionalLong} value from an context, given an index.
+ * Essentially a specialisation of {@link ExtractorByIndex} for integer {@code OptionalLong} values.
  */
 @FunctionalInterface
-public interface OptIntExtractorByName<CTX> extends ExtractorByName<CTX, OptionalInt> {
+public interface OptLongExtractorByIndex<CTX> extends ExtractorByIndex<CTX, OptionalLong> {
     /**
      * Static constructor.
      * @param extr      the extractor
      * @param <CTX>     the context type
      * @return          the extractor
      */
-    static <CTX> OptIntExtractorByName<CTX> of(OptIntExtractorByName<CTX> extr) {
+    static <CTX> OptLongExtractorByIndex<CTX> of(OptLongExtractorByIndex<CTX> extr) {
         return extr;
     }
 
@@ -29,11 +29,11 @@ public interface OptIntExtractorByName<CTX> extends ExtractorByName<CTX, Optiona
      * @param <U>       the function return type
      * @return          the new extractor
      */
-    default <U> ExtractorByName<CTX, Optional<U>> mapInt(IntFunction<U> f) {
-        return (ctx, name) -> {
-            final OptionalInt od = extract(ctx, name);
+    default <U> ExtractorByIndex<CTX, Optional<U>> mapLong(LongFunction<U> f) {
+        return (ctx, index) -> {
+            final OptionalLong od = extract(ctx, index);
             if (od.isPresent()) {
-                return Optional.of(f.apply(od.getAsInt()));
+                return Optional.of(f.apply(od.getAsLong()));
             } else {
                 return Optional.empty();
             }
@@ -41,17 +41,17 @@ public interface OptIntExtractorByName<CTX> extends ExtractorByName<CTX, Optiona
     }
 
     @Override
-    default Extractor<CTX, OptionalInt> bind(String name) {
-        return ctx -> extract(ctx, name);
+    default Extractor<CTX, OptionalLong> bind(int index) {
+        return ctx -> extract(ctx, index);
     }
 
     /**
-     * Variant of {@link OptDoubleExtractorByName} where the extract method may throw an exception.
+     * Variant of {@link OptLongExtractorByIndex} where the extract method may throw an exception.
      * @param <CTX>     the context type
      * @param <EX>      the exception type
      */
     @FunctionalInterface
-    interface Checked<CTX, EX extends Exception> extends ExtractorByName.Checked<CTX, OptionalInt, EX> {
+    interface Checked<CTX, EX extends Exception> extends ExtractorByIndex.Checked<CTX, OptionalLong, EX> {
         /**
          * Static constructor.
          * @param extr      the extractor
@@ -70,11 +70,11 @@ public interface OptIntExtractorByName<CTX> extends ExtractorByName<CTX, Optiona
          * @param <U>       the function return type
          * @return          the new extractor
          */
-        default <U> ExtractorByName.Checked<CTX, Optional<U>, EX> mapInt(IntFunction<U> f) {
-            return (ctx, name) -> {
-                final OptionalInt od = extract(ctx, name);
+        default <U> ExtractorByIndex.Checked<CTX, Optional<U>, EX> mapLong(LongFunction<U> f) {
+            return (rs, index) -> {
+                final OptionalLong od = extract(rs, index);
                 if (od.isPresent()) {
-                    return Optional.of(f.apply(od.getAsInt()));
+                    return Optional.of(f.apply(od.getAsLong()));
                 } else {
                     return Optional.empty();
                 }
@@ -82,10 +82,10 @@ public interface OptIntExtractorByName<CTX> extends ExtractorByName<CTX, Optiona
         }
 
         @Override
-        default OptIntExtractorByName<CTX> unchecked() {
-            return (ctx, name) -> {
+        default OptLongExtractorByIndex<CTX> unchecked() {
+            return (ctx, index) -> {
                 try {
-                    return extract(ctx, name);
+                    return extract(ctx, index);
                 } catch (Exception ex) {
                     return Exceptions.throwUnchecked(ex);
                 }

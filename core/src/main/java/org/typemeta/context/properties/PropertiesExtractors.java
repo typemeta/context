@@ -1,6 +1,6 @@
 package org.typemeta.context.properties;
 
-import org.typemeta.context.extractors.byname.*;
+import org.typemeta.context.extractors.byname.ExtractorByName;
 
 import java.util.*;
 

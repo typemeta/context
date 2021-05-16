@@ -1,6 +1,8 @@
 package org.typemeta.context.injectors.byindex;
 
-import java.util.*;
+import org.typemeta.context.utils.Exceptions;
+
+import java.util.OptionalLong;
 
 /**
  * A function to inject a long value into an context, given an index.
@@ -22,14 +24,14 @@ public interface LongInjectByIndex<CTX> extends InjectByIndex<CTX, Long> {
     /**
      * A variant of the {@link InjectByIndex#inject} method specialised for {@code long} values.
      * @param ctx       the context
-     * @param n         the index
+     * @param index     the index
      * @param value     the value to be injected
      * @return          the context
      */
-    CTX injectLong(CTX ctx, int n, long value);
+    CTX injectLong(CTX ctx, int index, long value);
 
-    default CTX inject(CTX ctx, int n, Long value) {
-        return injectLong(ctx, n, value);
+    default CTX inject(CTX ctx, int index, Long value) {
+        return injectLong(ctx, index, value);
     }
 
     /**
@@ -37,8 +39,8 @@ public interface LongInjectByIndex<CTX> extends InjectByIndex<CTX, Long> {
      * @return          the injector for optional values
      */
     default InjectByIndex<CTX, OptionalLong> optionalLong() {
-        return (ctx, n, optVal) ->
-                optVal.isPresent() ? inject(ctx, n, optVal.getAsLong()) : ctx;
+        return (ctx, index, optVal) ->
+                optVal.isPresent() ? inject(ctx, index, optVal.getAsLong()) : ctx;
     }
 
     /**
@@ -61,14 +63,15 @@ public interface LongInjectByIndex<CTX> extends InjectByIndex<CTX, Long> {
         /**
          * A variant of the {@link InjectByIndex.Checked#inject} method specialised for {@code long} values.
          * @param ctx       the context
-         * @param n         the index
+         * @param index         the index
          * @param value     the value to be injected
          * @return          the context
          */
-        CTX injectLong(CTX ctx, int n, long value) throws EX;
+        CTX injectLong(CTX ctx, int index, long value) throws EX;
 
-        default CTX inject(CTX ctx, int n, Long value) throws EX {
-            return injectLong(ctx, n, value);
+        @Override
+        default CTX inject(CTX ctx, int index, Long value) throws EX {
+            return injectLong(ctx, index, value);
         }
 
         /**
@@ -76,8 +79,22 @@ public interface LongInjectByIndex<CTX> extends InjectByIndex<CTX, Long> {
          * @return          the injector for optional values
          */
         default InjectByIndex.Checked<CTX, OptionalLong, EX> optionalLong() {
-            return (ctx, n, optVal) ->
-                    optVal.isPresent() ? inject(ctx, n, optVal.getAsLong()) : ctx;
+            return (ctx, index, optVal) ->
+                    optVal.isPresent() ? inject(ctx, index, optVal.getAsLong()) : ctx;
+        }
+
+        /**
+         * Convert this extractor to an unchecked extractor (one that doesn't throw a checked exception).
+         * @return          the unchecked extractor
+         */
+        default LongInjectByIndex<CTX> unchecked() {
+            return (ctx, index, value)  -> {
+                try {
+                    return inject(ctx, index, value);
+                } catch (Exception ex) {
+                    return Exceptions.throwUnchecked(ex);
+                }
+            };
         }
     }
 }

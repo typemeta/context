@@ -3,7 +3,7 @@ package org.typemeta.context.extractors;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.*;
-import java.util.function.*;
+import java.util.function.IntFunction;
 
 /**
  * A {@code ExtractorByName} for optional {@code int} values.

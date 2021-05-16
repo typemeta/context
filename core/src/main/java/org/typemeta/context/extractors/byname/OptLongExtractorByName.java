@@ -7,10 +7,17 @@ import java.util.*;
 import java.util.function.LongFunction;
 
 /**
- * A {@code ExtractorByName} for optional {@code long} values.
+ * A function to extract an {@link OptionalLong} value from an context, given an index.
+ * Essentially a specialisation of {@link ExtractorByName} for integer {@code OptionalLong} values.
  */
 @FunctionalInterface
 public interface OptLongExtractorByName<CTX> extends ExtractorByName<CTX, OptionalLong> {
+    /**
+     * Static constructor.
+     * @param extr      the extractor
+     * @param <CTX>     the context type
+     * @return          the extractor
+     */
     static <CTX> OptLongExtractorByName<CTX> of(OptLongExtractorByName<CTX> extr) {
         return extr;
     }
@@ -39,14 +46,30 @@ public interface OptLongExtractorByName<CTX> extends ExtractorByName<CTX, Option
     }
 
     /**
-     * A {@code NamedExtractorEx} for optional {@code long} values.
+     * Variant of {@link OptDoubleExtractorByName} where the extract method may throw an exception.
+     * @param <CTX>     the context type
+     * @param <EX>      the exception type
      */
     @FunctionalInterface
     interface Checked<CTX, EX extends Exception> extends ExtractorByName.Checked<CTX, OptionalLong, EX> {
+        /**
+         * Static constructor.
+         * @param extr      the extractor
+         * @param <CTX>     the context type
+         * @param <EX>      the exception type
+         * @return          the extractor
+         */
         static <CTX, EX extends Exception> Checked<CTX, EX> of(Checked<CTX, EX> extr) {
             return  extr;
         }
 
+        /**
+         * Create an extractor that applies this extractor first and then maps a function over the
+         * extracted optional value.
+         * @param f         the function to be mapped over the optional
+         * @param <U>       the function return type
+         * @return          the new extractor
+         */
         default <U> ExtractorByName.Checked<CTX, Optional<U>, EX> mapLong(LongFunction<U> f) {
             return (rs, name) -> {
                 final OptionalLong od = extract(rs, name);
@@ -56,11 +79,6 @@ public interface OptLongExtractorByName<CTX> extends ExtractorByName<CTX, Option
                     return Optional.empty();
                 }
             };
-        }
-
-        @Override
-        default Extractor.Checked<CTX, OptionalLong, EX> bind(String name) {
-            return rs -> extract(rs, name);
         }
 
         @Override

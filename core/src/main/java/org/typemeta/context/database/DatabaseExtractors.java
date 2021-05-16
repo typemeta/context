@@ -2,10 +2,9 @@ package org.typemeta.context.database;
 
 import org.typemeta.context.extractors.byname.*;
 
-import java.sql.Date;
 import java.sql.*;
 import java.time.*;
-import java.util.*;
+import java.util.Optional;
 
 /**
  * A set of database value extractor combinator functions.

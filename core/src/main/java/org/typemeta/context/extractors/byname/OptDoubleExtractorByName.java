@@ -1,16 +1,23 @@
 package org.typemeta.context.extractors.byname;
 
-import org.typemeta.context.extractors.Extractor;
+import org.typemeta.context.extractors.byindex.*;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.*;
 import java.util.function.DoubleFunction;
 
 /**
- * A {@code ExtractorByName} for optional {@code double} values.
+ * A function to extract an {@link OptionalDouble} value from an context, given an index.
+ * Essentially a specialisation of {@link ExtractorByName} for integer {@code OptionalDouble} values.
  */
 @FunctionalInterface
 public interface OptDoubleExtractorByName<CTX> extends ExtractorByName<CTX, OptionalDouble> {
+    /**
+     * Static constructor.
+     * @param extr      the extractor
+     * @param <CTX>     the context type
+     * @return          the extractor
+     */
     static <CTX> OptDoubleExtractorByName<CTX> of(OptDoubleExtractorByName<CTX> extr) {
         return extr;
     }
@@ -22,7 +29,7 @@ public interface OptDoubleExtractorByName<CTX> extends ExtractorByName<CTX, Opti
      * @param <U>       the function return type
      * @return          the new extractor
      */
-    default <U> ExtractorByName<CTX, Optional<U>> mapDbl(DoubleFunction<U> f) {
+    default <U> ExtractorByName<CTX, Optional<U>> mapDouble(DoubleFunction<U> f) {
         return (ctx, name) -> {
             final OptionalDouble od = extract(ctx, name);
             if (od.isPresent()) {
@@ -34,15 +41,31 @@ public interface OptDoubleExtractorByName<CTX> extends ExtractorByName<CTX, Opti
     }
 
     /**
-     * A {@code NamedExtractorEx} for optional {@code double} values.
+     * Variant of {@link OptDoubleExtractorByName} where the extract method may throw an exception.
+     * @param <CTX>     the context type
+     * @param <EX>      the exception type
      */
     @FunctionalInterface
     interface Checked<CTX, EX extends Exception> extends ExtractorByName.Checked<CTX, OptionalDouble, EX> {
+        /**
+         * Static constructor.
+         * @param extr      the extractor
+         * @param <CTX>     the context type
+         * @param <EX>      the exception type
+         * @return          the extractor
+         */
         static <CTX, EX extends Exception> Checked<CTX, EX> of(Checked<CTX, EX> extr) {
             return  extr;
         }
 
-        default <U> ExtractorByName.Checked<CTX, Optional<U>, EX> mapDbl(DoubleFunction<U> f) {
+        /**
+         * Create an extractor that applies this extractor first and then maps a function over the
+         * extracted optional value.
+         * @param f         the function to be mapped over the optional
+         * @param <U>       the function return type
+         * @return          the new extractor
+         */
+        default <U> ExtractorByName.Checked<CTX, Optional<U>, EX> mapDouble(DoubleFunction<U> f) {
             return (ctx, name) -> {
                 final OptionalDouble od = extract(ctx, name);
                 if (od.isPresent()) {

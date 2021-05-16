@@ -1,6 +1,5 @@
 package org.typemeta.context.extractors;
 
-import org.typemeta.context.extractors.byname.ExtractorByName;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.*;
@@ -22,7 +21,7 @@ public interface OptDoubleExtractor<CTX> extends Extractor<CTX, OptionalDouble> 
      * @param <U>       the function return type
      * @return          the new extractor
      */
-    default <U> Extractor<CTX, Optional<U>> mapDbl(DoubleFunction<U> f) {
+    default <U> Extractor<CTX, Optional<U>> mapDouble(DoubleFunction<U> f) {
         return ctx -> {
             final OptionalDouble od = extract(ctx);
             if (od.isPresent()) {
@@ -42,7 +41,7 @@ public interface OptDoubleExtractor<CTX> extends Extractor<CTX, OptionalDouble> 
             return  extr;
         }
 
-        default <U> Extractor.Checked<CTX, Optional<U>, EX> mapDbl(DoubleFunction<U> f) {
+        default <U> Extractor.Checked<CTX, Optional<U>, EX> mapDouble(DoubleFunction<U> f) {
             return ctx -> {
                 final OptionalDouble od = extract(ctx);
                 if (od.isPresent()) {

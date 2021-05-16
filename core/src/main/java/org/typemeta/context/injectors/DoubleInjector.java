@@ -1,6 +1,6 @@
 package org.typemeta.context.injectors;
 
-import java.util.*;
+import java.util.OptionalDouble;
 
 /**
  * A {@link Injector} specialised for {@code double} values.

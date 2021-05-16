@@ -1,6 +1,6 @@
 package org.typemeta.context.extractors.byname;
 
-import org.typemeta.context.extractors.*;
+import org.typemeta.context.extractors.LongExtractor;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.function.LongFunction;

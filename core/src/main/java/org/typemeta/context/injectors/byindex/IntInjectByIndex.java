@@ -1,6 +1,8 @@
 package org.typemeta.context.injectors.byindex;
 
-import java.util.*;
+import org.typemeta.context.utils.Exceptions;
+
+import java.util.OptionalInt;
 
 /**
  * A function to inject a integer value into an context, given an index.
@@ -22,14 +24,14 @@ public interface IntInjectByIndex<CTX> extends InjectByIndex<CTX, Integer> {
     /**
      * A variant of the {@link InjectByIndex#inject} method specialised for {@code int} values.
      * @param ctx       the context
-     * @param n         the index
+     * @param index     the index
      * @param value     the value to be injected
      * @return          the context
      */
-    CTX injectInt(CTX ctx, int n, double value);
+    CTX injectInt(CTX ctx, int index, int value);
 
-    default CTX inject(CTX ctx, int n, Integer value) {
-        return injectInt(ctx, n, value);
+    default CTX inject(CTX ctx, int index, Integer value) {
+        return injectInt(ctx, index, value);
     }
 
     /**
@@ -37,8 +39,8 @@ public interface IntInjectByIndex<CTX> extends InjectByIndex<CTX, Integer> {
      * @return          the injector for optional values
      */
     default InjectByIndex<CTX, OptionalInt> optionalInt() {
-        return (ctx, n, optVal) ->
-                optVal.isPresent() ? inject(ctx, n, optVal.getAsInt()) : ctx;
+        return (ctx, index, optVal) ->
+                optVal.isPresent() ? inject(ctx, index, optVal.getAsInt()) : ctx;
     }
 
     /**
@@ -61,14 +63,15 @@ public interface IntInjectByIndex<CTX> extends InjectByIndex<CTX, Integer> {
         /**
          * A variant of the {@link InjectByIndex.Checked#inject} method specialised for {@code int} values.
          * @param ctx       the context
-         * @param n         the index
+         * @param index     the index
          * @param value     the value to be injected
          * @return          the context
          */
-        CTX injectInt(CTX ctx, int n, int value) throws EX;
+        CTX injectInt(CTX ctx, int index, int value) throws EX;
 
-        default CTX inject(CTX ctx, int n, Integer value) throws EX {
-            return injectInt(ctx, n, value);
+        @Override
+        default CTX inject(CTX ctx, int index, Integer value) throws EX {
+            return injectInt(ctx, index, value);
         }
 
         /**
@@ -76,8 +79,22 @@ public interface IntInjectByIndex<CTX> extends InjectByIndex<CTX, Integer> {
          * @return          the injector for optional values
          */
         default InjectByIndex.Checked<CTX, OptionalInt, EX> optionalInt() {
-            return (ctx, n, optVal) ->
-                    optVal.isPresent() ? inject(ctx, n, optVal.getAsInt()) : ctx;
+            return (ctx, index, optVal) ->
+                    optVal.isPresent() ? inject(ctx, index, optVal.getAsInt()) : ctx;
+        }
+
+        /**
+         * Convert this extractor to an unchecked extractor (one that doesn't throw a checked exception).
+         * @return          the unchecked extractor
+         */
+        default IntInjectByIndex<CTX> unchecked() {
+            return (ctx, index, value)  -> {
+                try {
+                    return inject(ctx, index, value);
+                } catch (Exception ex) {
+                    return Exceptions.throwUnchecked(ex);
+                }
+            };
         }
     }
 }

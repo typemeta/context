@@ -2,7 +2,6 @@ package org.typemeta.context.extractors;
 
 import org.typemeta.context.utils.Exceptions;
 
-import java.util.*;
 import java.util.function.DoubleFunction;
 
 /**

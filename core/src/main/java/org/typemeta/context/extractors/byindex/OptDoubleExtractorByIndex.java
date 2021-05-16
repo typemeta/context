@@ -1,24 +1,23 @@
-package org.typemeta.context.extractors.byname;
+package org.typemeta.context.extractors.byindex;
 
-import org.typemeta.context.extractors.Extractor;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.*;
-import java.util.function.IntFunction;
+import java.util.function.DoubleFunction;
 
 /**
- * A function to extract an {@link OptionalInt} value from an context, given an index.
- * Essentially a specialisation of {@link ExtractorByName} for integer {@code OptionalInt} values.
+ * A function to extract an {@link OptionalDouble} value from an context, given an index.
+ * Essentially a specialisation of {@link ExtractorByIndex} for integer {@code OptionalDouble} values.
  */
 @FunctionalInterface
-public interface OptIntExtractorByName<CTX> extends ExtractorByName<CTX, OptionalInt> {
+public interface OptDoubleExtractorByIndex<CTX> extends ExtractorByIndex<CTX, OptionalDouble> {
     /**
      * Static constructor.
      * @param extr      the extractor
      * @param <CTX>     the context type
      * @return          the extractor
      */
-    static <CTX> OptIntExtractorByName<CTX> of(OptIntExtractorByName<CTX> extr) {
+    static <CTX> OptDoubleExtractorByIndex<CTX> of(OptDoubleExtractorByIndex<CTX> extr) {
         return extr;
     }
 
@@ -29,29 +28,24 @@ public interface OptIntExtractorByName<CTX> extends ExtractorByName<CTX, Optiona
      * @param <U>       the function return type
      * @return          the new extractor
      */
-    default <U> ExtractorByName<CTX, Optional<U>> mapInt(IntFunction<U> f) {
-        return (ctx, name) -> {
-            final OptionalInt od = extract(ctx, name);
+    default <U> ExtractorByIndex<CTX, Optional<U>> mapDouble(DoubleFunction<U> f) {
+        return (ctx, index) -> {
+            final OptionalDouble od = extract(ctx, 8);
             if (od.isPresent()) {
-                return Optional.of(f.apply(od.getAsInt()));
+                return Optional.of(f.apply(od.getAsDouble()));
             } else {
                 return Optional.empty();
             }
         };
     }
 
-    @Override
-    default Extractor<CTX, OptionalInt> bind(String name) {
-        return ctx -> extract(ctx, name);
-    }
-
     /**
-     * Variant of {@link OptDoubleExtractorByName} where the extract method may throw an exception.
+     * Variant of {@link OptDoubleExtractorByIndex} where the extract method may throw an exception.
      * @param <CTX>     the context type
      * @param <EX>      the exception type
      */
     @FunctionalInterface
-    interface Checked<CTX, EX extends Exception> extends ExtractorByName.Checked<CTX, OptionalInt, EX> {
+    interface Checked<CTX, EX extends Exception> extends ExtractorByIndex.Checked<CTX, OptionalDouble, EX> {
         /**
          * Static constructor.
          * @param extr      the extractor
@@ -70,11 +64,11 @@ public interface OptIntExtractorByName<CTX> extends ExtractorByName<CTX, Optiona
          * @param <U>       the function return type
          * @return          the new extractor
          */
-        default <U> ExtractorByName.Checked<CTX, Optional<U>, EX> mapInt(IntFunction<U> f) {
+        default <U> ExtractorByIndex.Checked<CTX, Optional<U>, EX> mapDouble(DoubleFunction<U> f) {
             return (ctx, name) -> {
-                final OptionalInt od = extract(ctx, name);
+                final OptionalDouble od = extract(ctx, name);
                 if (od.isPresent()) {
-                    return Optional.of(f.apply(od.getAsInt()));
+                    return Optional.of(f.apply(od.getAsDouble()));
                 } else {
                     return Optional.empty();
                 }
@@ -82,10 +76,10 @@ public interface OptIntExtractorByName<CTX> extends ExtractorByName<CTX, Optiona
         }
 
         @Override
-        default OptIntExtractorByName<CTX> unchecked() {
-            return (ctx, name) -> {
+        default OptDoubleExtractorByIndex<CTX> unchecked() {
+            return (ctx, index) -> {
                 try {
-                    return extract(ctx, name);
+                    return extract(ctx, index);
                 } catch (Exception ex) {
                     return Exceptions.throwUnchecked(ex);
                 }

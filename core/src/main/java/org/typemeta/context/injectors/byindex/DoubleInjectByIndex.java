@@ -1,6 +1,9 @@
 package org.typemeta.context.injectors.byindex;
 
-import java.util.*;
+import org.typemeta.context.extractors.DoubleExtractor;
+import org.typemeta.context.utils.Exceptions;
+
+import java.util.OptionalDouble;
 
 /**
  * A function to inject a double value into an context, given an index.
@@ -22,23 +25,23 @@ public interface DoubleInjectByIndex<CTX> extends InjectByIndex<CTX, Double> {
     /**
      * A variant of the {@link InjectByIndex#inject} method specialised for {@code double} values.
      * @param ctx       the context
-     * @param n         the index
+     * @param index     the index
      * @param value     the value to be injected
      * @return          the context
      */
-    CTX injectDouble(CTX ctx, int n, double value);
+    CTX injectDouble(CTX ctx, int index, double value);
 
-    default CTX inject(CTX ctx, int n, Double value) {
-        return injectDouble(ctx, n, value);
+    default CTX inject(CTX ctx, int index, Double value) {
+        return injectDouble(ctx, index, value);
     }
 
     /**
      * Convert this injector into one that accepts optional values.
      * @return          the injector for optional values
      */
-    default InjectByIndex<CTX, OptionalDouble> optionalDbl() {
-        return (ctx, n, optVal) ->
-                optVal.isPresent() ? inject(ctx, n, optVal.getAsDouble()) : ctx;
+    default InjectByIndex<CTX, OptionalDouble> optionalDouble() {
+        return (ctx, index, optVal) ->
+                optVal.isPresent() ? inject(ctx, index, optVal.getAsDouble()) : ctx;
     }
 
     /**
@@ -61,23 +64,38 @@ public interface DoubleInjectByIndex<CTX> extends InjectByIndex<CTX, Double> {
         /**
          * A variant of the {@link InjectByIndex.Checked#inject} method specialised for {@code double} values.
          * @param ctx       the context
-         * @param n         the index
+         * @param index     the index
          * @param value     the value to be injected
          * @return          the context
          */
-        CTX injectDouble(CTX ctx, int n, double value) throws EX;
+        CTX injectDouble(CTX ctx, int index, double value) throws EX;
 
-        default CTX inject(CTX ctx, int n, Double value) throws EX {
-            return injectDouble(ctx, n, value);
+        @Override
+        default CTX inject(CTX ctx, int index, Double value) throws EX {
+            return injectDouble(ctx, index, value);
         }
 
         /**
          * Convert this injector into one that accepts optional values.
          * @return          the injector for optional values
          */
-        default InjectByIndex.Checked<CTX, OptionalDouble, EX> optionalDbl() {
-            return (ctx, n, optVal) ->
-                    optVal.isPresent() ? inject(ctx, n, optVal.getAsDouble()) : ctx;
+        default InjectByIndex.Checked<CTX, OptionalDouble, EX> optionalDouble() {
+            return (ctx, index, optVal) ->
+                    optVal.isPresent() ? inject(ctx, index, optVal.getAsDouble()) : ctx;
+        }
+
+        /**
+         * Convert this extractor to an unchecked extractor (one that doesn't throw a checked exception).
+         * @return          the unchecked extractor
+         */
+        default DoubleInjectByIndex<CTX> unchecked() {
+            return (ctx, index, value)  -> {
+                try {
+                    return inject(ctx, index, value);
+                } catch (Exception ex) {
+                    return Exceptions.throwUnchecked(ex);
+                }
+            };
         }
     }
 }

@@ -1,6 +1,6 @@
 package org.typemeta.context.extractors.byindex;
 
-import org.typemeta.context.extractors.*;
+import org.typemeta.context.extractors.DoubleExtractor;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.function.DoubleFunction;

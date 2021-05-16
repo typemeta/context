@@ -2,7 +2,7 @@ package org.typemeta.context.database;
 
 import org.junit.*;
 import org.slf4j.*;
-import org.typemeta.context.extractors.*;
+import org.typemeta.context.extractors.Extractor;
 import org.typemeta.context.extractors.byname.ExtractorByName;
 import org.typemeta.context.utils.Exceptions;
 

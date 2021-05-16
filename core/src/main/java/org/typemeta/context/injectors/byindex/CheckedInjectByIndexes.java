@@ -2,7 +2,7 @@ package org.typemeta.context.injectors.byindex;
 
 import java.util.*;
 
-public abstract class InjectByIndexesEx {
+public abstract class CheckedInjectByIndexes {
 
     public static <CTX, T, EX extends Exception> InjectByIndex.Checked<CTX, Optional<T>, EX> optional(
             InjectByIndex.Checked<CTX, T, EX> injr
