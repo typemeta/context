@@ -5,7 +5,7 @@
 
     <groupId>org.typemeta</groupId>
     <artifactId>context</artifactId>
-    <version>0.1</version>
+    <version>0.1-SNAPSHOT</version>
 
     <name>context</name>
 
@@ -44,7 +44,7 @@
         <connection>scm:git:git@github.com:typemeta/${project.artifactId}.git</connection>
         <developerConnection>scm:git:git@github.com:typemeta/${project.artifactId}.git</developerConnection>
         <url>http://github.com:typemeta/${project.artifactId}/tree/master</url>
-        <tag>context-0.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
