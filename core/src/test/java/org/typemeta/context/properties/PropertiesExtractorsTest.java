@@ -16,6 +16,7 @@ public class PropertiesExtractorsTest {
         final float floatField;
         final int intField;
         final long longField;
+        final short shortField;
         final String stringField;
 
         private Composite(
@@ -25,6 +26,7 @@ public class PropertiesExtractorsTest {
                 float floatField,
                 int intField,
                 long longField,
+                short shortField,
                 String stringField
         ) {
             this.booleanField = booleanField;
@@ -33,6 +35,7 @@ public class PropertiesExtractorsTest {
             this.floatField = floatField;
             this.intField = intField;
             this.longField = longField;
+            this.shortField = shortField;
             this.stringField = stringField;
         }
 
@@ -60,10 +63,15 @@ public class PropertiesExtractorsTest {
             return longField;
         }
 
+        public short shortField() {
+            return shortField;
+        }
+
         public String stringField() {
             return stringField;
         }
     }
+
 
     private static final class TestData<T> {
         final String key;
@@ -143,6 +151,13 @@ public class PropertiesExtractorsTest {
             Composite::longField
     );
 
+    private static final TestData<Short> SHORT = new TestData<>(
+            "SHORT",
+            (short)123456,
+            PropertiesExtractors.SHORT,
+            Composite::shortField
+    );
+
     private static final TestData<String> STRING = new TestData<>(
             "STRING",
             "1234abcd",
@@ -151,7 +166,7 @@ public class PropertiesExtractorsTest {
     );
 
     private static final List<TestData<?>> testDataList = Arrays.asList(
-            BOOLEAN, BYTE, DOUBLE, FLOAT, INT, LONG, STRING
+            BOOLEAN, BYTE, DOUBLE, FLOAT, INT, LONG, SHORT, STRING
     );
 
     private static final Extractor<Properties, Composite> COMP_EXTRACTOR =
@@ -162,6 +177,7 @@ public class PropertiesExtractorsTest {
                     FLOAT.bindExtractor(),
                     INT.bindExtractor(),
                     LONG.bindExtractor(),
+                    SHORT.bindExtractor(),
                     STRING.bindExtractor(),
                     Composite::new
             );
@@ -174,6 +190,7 @@ public class PropertiesExtractorsTest {
                     FLOAT.bindOptExtractor().map(o -> o.orElse(null)),
                     INT.bindOptExtractor().map(o -> o.orElse(null)),
                     LONG.bindOptExtractor().map(o -> o.orElse(null)),
+                    SHORT.bindOptExtractor().map(o -> o.orElse(null)),
                     STRING.bindOptExtractor().map(o -> o.orElse(null)),
                     Composite::new
             );
