@@ -23,6 +23,12 @@ public class PropertiesExtractors {
     public static final ExtractorByName<Properties, Optional<Byte>> OPT_BYTE =
             BYTE.optional();
 
+    public static final ExtractorByName<Properties, Character> CHAR =
+            STRING.map(s -> s == null || s.isEmpty() ? null : Character.valueOf(s.charAt(0)));
+
+    public static final ExtractorByName<Properties, Optional<Character>> OPT_CHAR =
+            CHAR.optional();
+
     public static final ExtractorByName<Properties, Double> DOUBLE =
             STRING.map(s -> s == null ? null : Double.valueOf(s));
 

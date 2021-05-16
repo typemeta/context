@@ -7,6 +7,9 @@ import org.typemeta.context.extractors.byindex.ExtractorByIndex;
 import java.time.*;
 import java.util.*;
 
+/**
+ * Extractors for reading values from a list of {@link FieldReader} values.
+ */
 public class FieldReaderListExtractors {
 
     public static final class FieldReaderListExtractor<T> implements ExtractorByIndex<List<FieldReader>, T> {
@@ -43,6 +46,11 @@ public class FieldReaderListExtractors {
             new FieldReaderListExtractor<>(FieldReaderExtractors.BYTE);
 
     public static final ExtractorByIndex<List<FieldReader>, Optional<Byte>> OPT_BYTE = BYTE.optional();
+
+    public static final ExtractorByIndex<List<FieldReader>, Character> CHAR =
+            new FieldReaderListExtractor<>(FieldReaderExtractors.CHAR);
+
+    public static final ExtractorByIndex<List<FieldReader>, Optional<Character>> OPT_CHAR = CHAR.optional();
 
     public static final ExtractorByIndex<List<FieldReader>, Double> DOUBLE =
             new FieldReaderListExtractor<>(FieldReaderExtractors.DOUBLE);

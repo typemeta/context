@@ -21,6 +21,7 @@ public class FieldReaderExtractorTest {
     private static final class Composite {
         final boolean booleanField;
         final byte byteField;
+        final char charField;
         final double doubleField;
         final float floatField;
         final int intField;
@@ -31,6 +32,7 @@ public class FieldReaderExtractorTest {
         private Composite(
                 boolean booleanField,
                 byte byteField,
+                char charField,
                 double doubleField,
                 float floatField,
                 int intField,
@@ -40,6 +42,7 @@ public class FieldReaderExtractorTest {
         ) {
             this.booleanField = booleanField;
             this.byteField = byteField;
+            this.charField = charField;
             this.doubleField = doubleField;
             this.floatField = floatField;
             this.intField = intField;
@@ -47,6 +50,21 @@ public class FieldReaderExtractorTest {
             this.shortField = shortField;
             this.stringField = stringField;
         }
+
+        private Composite(Object[] args) {
+            this(
+                    (Boolean)args[0],
+                    (Byte)args[1],
+                    (Character) args[2],
+                    (Double)args[3],
+                    (Float)args[4],
+                    (Integer)args[5],
+                    (Long)args[6],
+                    (Short)args[7],
+                    (String)args[8]
+            );
+        }
+
     }
 
     private interface VectorAdd<T, VT extends FieldVector> {
@@ -112,6 +130,15 @@ public class FieldReaderExtractorTest {
             UInt1Vector::setSafe
     );
 
+    private static final TestData<Character, UInt2Vector> CHAR  = new TestData<>(
+            "char",
+            Arrays.asList((char)0, 'a', '0', '\n'),
+            FieldReaderListExtractors.CHAR,
+            FieldReaderListExtractors.OPT_CHAR,
+            UInt2Vector::new,
+            UInt2Vector::setSafe
+    );
+
     private static final TestData<Double, Float8Vector> DOUBLE  = new TestData<>(
             "double",
             Arrays.asList(0.0d, 1234.5678d, 1234e56, -1234.5678, -1234e56, 1234e-56, -1234e-56),
@@ -169,6 +196,7 @@ public class FieldReaderExtractorTest {
     private static final List<TestData<?, ?>> TEST_DATA = Arrays.asList(
             BOOLEAN,
             BYTE,
+            CHAR,
             DOUBLE,
             FLOAT,
             INT,
@@ -179,21 +207,23 @@ public class FieldReaderExtractorTest {
 
     private static final Extractor<List<FieldReader>, Composite> COMP_EXTRACTOR =
             Extractors.combine(
+                    Composite::new,
                     BOOLEAN.extractor().bind(0),
                     BYTE.extractor().bind(1),
-                    DOUBLE.extractor().bind(2),
-                    FLOAT.extractor().bind(3),
-                    INT.extractor().bind(4),
-                    LONG.extractor().bind(5),
-                    SHORT.extractor().bind(6),
-                    STRING.extractor().bind(7),
-                    Composite::new
+                    CHAR.extractor().bind(2),
+                    DOUBLE.extractor().bind(3),
+                    FLOAT.extractor().bind(4),
+                    INT.extractor().bind(5),
+                    LONG.extractor().bind(6),
+                    SHORT.extractor().bind(7),
+                    STRING.extractor().bind(8)
             );
 
     private static Composite createComposite(int i) {
         return new Composite(
                 BOOLEAN.getValue(i),
                 BYTE.getValue(i),
+                CHAR.getValue(i),
                 DOUBLE.getValue(i),
                 FLOAT.getValue(i),
                 INT.getValue(i),

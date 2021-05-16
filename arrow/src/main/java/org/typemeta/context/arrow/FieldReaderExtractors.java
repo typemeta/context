@@ -7,6 +7,9 @@ import org.typemeta.context.extractors.*;
 import java.time.*;
 import java.util.*;
 
+/**
+ * Extractors for reading values from an Arrow Flight {@link FieldReader}.
+ */
 public abstract class FieldReaderExtractors {
 
     /**
@@ -30,6 +33,9 @@ public abstract class FieldReaderExtractors {
 
     public static final Extractor<FieldReader, Byte> BYTE = FieldReader::readByte;
     public static final Extractor<FieldReader, Optional<Byte>> OPT_BYTE = optional(BYTE);
+
+    public static final Extractor<FieldReader, Character> CHAR = FieldReader::readCharacter;
+    public static final Extractor<FieldReader, Optional<Character>> OPT_CHAR = optional(CHAR);
 
     public static final DoubleExtractor<FieldReader> DOUBLE = FieldReader::readDouble;
     public static final OptDoubleExtractor<FieldReader> OPT_DOUBLE =

@@ -12,6 +12,7 @@ public class PropertiesExtractorsTest {
     private static final class Composite {
         final boolean booleanField;
         final byte byteField;
+        final char charField;
         final double doubleField;
         final float floatField;
         final int intField;
@@ -22,6 +23,7 @@ public class PropertiesExtractorsTest {
         private Composite(
                 boolean booleanField,
                 byte byteField,
+                char charField,
                 double doubleField,
                 float floatField,
                 int intField,
@@ -31,6 +33,7 @@ public class PropertiesExtractorsTest {
         ) {
             this.booleanField = booleanField;
             this.byteField = byteField;
+            this.charField = charField;
             this.doubleField = doubleField;
             this.floatField = floatField;
             this.intField = intField;
@@ -39,12 +42,30 @@ public class PropertiesExtractorsTest {
             this.stringField = stringField;
         }
 
+        private Composite(Object[] args) {
+            this(
+                    (Boolean)args[0],
+                    (Byte)args[1],
+                    (Character) args[2],
+                    (Double)args[3],
+                    (Float)args[4],
+                    (Integer)args[5],
+                    (Long)args[6],
+                    (Short)args[7],
+                    (String)args[8]
+            );
+        }
+
         public boolean booleanField() {
             return booleanField;
         }
 
         public byte byteField() {
             return byteField;
+        }
+
+        public char charField() {
+            return charField;
         }
 
         public double doubleField() {
@@ -84,7 +105,8 @@ public class PropertiesExtractorsTest {
                 String key,
                 T value,
                 ExtractorByName<Properties, T> extractor,
-                Function<Composite, T> fieldGetter) {
+                Function<Composite, T> fieldGetter
+        ) {
             this.key = key;
             this.value = value;
             this.extractor = extractor;
@@ -121,6 +143,13 @@ public class PropertiesExtractorsTest {
             (byte)123,
             PropertiesExtractors.BYTE,
             Composite::byteField
+    );
+
+    private static final TestData<Character> CHAR = new TestData<>(
+            "CHAR",
+            'x',
+            PropertiesExtractors.CHAR,
+            Composite::charField
     );
 
     private static final TestData<Double> DOUBLE = new TestData<>(
@@ -166,33 +195,35 @@ public class PropertiesExtractorsTest {
     );
 
     private static final List<TestData<?>> testDataList = Arrays.asList(
-            BOOLEAN, BYTE, DOUBLE, FLOAT, INT, LONG, SHORT, STRING
+            BOOLEAN, BYTE, CHAR, DOUBLE, FLOAT, INT, LONG, SHORT, STRING
     );
 
     private static final Extractor<Properties, Composite> COMP_EXTRACTOR =
             Extractors.combine(
+                    Composite::new,
                     BOOLEAN.bindExtractor(),
                     BYTE.bindExtractor(),
+                    CHAR.bindExtractor(),
                     DOUBLE.bindExtractor(),
                     FLOAT.bindExtractor(),
                     INT.bindExtractor(),
                     LONG.bindExtractor(),
                     SHORT.bindExtractor(),
-                    STRING.bindExtractor(),
-                    Composite::new
+                    STRING.bindExtractor()
             );
 
     private static final Extractor<Properties, Composite> COMP_OPT_EXTRACTOR =
             Extractors.combine(
+                    Composite::new,
                     BOOLEAN.bindOptExtractor().map(o -> o.orElse(null)),
                     BYTE.bindOptExtractor().map(o -> o.orElse(null)),
+                    CHAR.bindOptExtractor().map(o -> o.orElse(null)),
                     DOUBLE.bindOptExtractor().map(o -> o.orElse(null)),
                     FLOAT.bindOptExtractor().map(o -> o.orElse(null)),
                     INT.bindOptExtractor().map(o -> o.orElse(null)),
                     LONG.bindOptExtractor().map(o -> o.orElse(null)),
                     SHORT.bindOptExtractor().map(o -> o.orElse(null)),
-                    STRING.bindOptExtractor().map(o -> o.orElse(null)),
-                    Composite::new
+                    STRING.bindOptExtractor().map(o -> o.orElse(null))
             );
 
     private static final Properties PROPS = new Properties();
