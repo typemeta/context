@@ -5,7 +5,7 @@
 
     <groupId>org.typemeta</groupId>
     <artifactId>context</artifactId>
-    <version>0.1</version>
+    <version>0.1-SNAPSHOT</version>
 
     <name>context</name>
     <description>A Java combinator library for extracting and injecting values into a context</description>
@@ -46,7 +46,7 @@
         <connection>scm:git:git@github.com:typemeta/context.git</connection>
         <developerConnection>scm:git:git@github.com:typemeta/context.git</developerConnection>
         <url>http://github.com:typemeta/context/tree/master</url>
-        <tag>context-0.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
