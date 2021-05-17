@@ -5,11 +5,9 @@
 
     <groupId>org.typemeta</groupId>
     <artifactId>context</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
 
     <name>context</name>
-
-    <description>A framework for combinators for injectig and extracting values from a context</description>
 
     <packaging>pom</packaging>
 
@@ -145,11 +143,6 @@
                     <version>${maven-site-plugin.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>${maven-source-plugin.version}</version>
-                </plugin>
-                <plugin>
                     <groupId>org.sonatype.plugins</groupId>
                     <artifactId>nexus-staging-maven-plugin</artifactId>
                     <version>${nexus-staging-maven-plugin.version}</version>
@@ -196,19 +189,6 @@
                 </executions>
             </plugin>
 
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-source-plugin</artifactId>
-              <executions>
-                  <execution>
-                      <id>attach-sources</id>
-                      <goals>
-                          <goal>jar</goal>
-                      </goals>
-                  </execution>
-              </executions>
-             </plugin>
-            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
