@@ -8,6 +8,8 @@
     <version>0.1-SNAPSHOT</version>
 
     <name>context</name>
+    <description>A Java combinator library for extracting and injecting values into a context</description>
+    <url>https://github.com/typemeta/context</url>
 
     <packaging>pom</packaging>
 
@@ -41,15 +43,15 @@
     </properties>
 
     <scm>
-        <connection>scm:git:git@github.com:typemeta/${project.artifactId}.git</connection>
-        <developerConnection>scm:git:git@github.com:typemeta/${project.artifactId}.git</developerConnection>
-        <url>http://github.com:typemeta/${project.artifactId}/tree/master</url>
+        <connection>scm:git:git@github.com:typemeta/context.git</connection>
+        <developerConnection>scm:git:git@github.com:typemeta/context.git</developerConnection>
+        <url>http://github.com:typemeta/context/tree/master</url>
         <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
         <system>github</system>
-        <url>https://github.com/typemeta/${project.artifactId}/issues</url>
+        <url>https://github.com/typemeta/context/issues</url>
     </issueManagement>
 
     <distributionManagement>
