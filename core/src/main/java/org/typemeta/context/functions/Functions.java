@@ -122,11 +122,12 @@ public abstract class Functions {
         }
 
         /**
-         * Map a function over this function.
-         * Essentially {@link F#compose} without the wildcard generic types.
+         * Map a function over this function,
+         * to create a function that first applies this function
+         * and then applies {@code f} to the result.
          * @param f         the function to map with
          * @param <T>       the argument type to {@code f}
-         * @return          a function that first applies {@code f} and then applies this function to the result.
+         * @return          a function that first applies this function and then applies {@code f} to the result.
          */
         default <T> F<A, T> map(F<R, T> f) {
             return f.compose(this);
