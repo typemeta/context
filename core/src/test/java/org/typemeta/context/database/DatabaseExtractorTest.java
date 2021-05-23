@@ -1,6 +1,6 @@
 package org.typemeta.context.database;
 
-import org.junit.*;
+import org.junit.jupiter.api.*;
 import org.slf4j.*;
 import org.typemeta.context.extractors.Extractor;
 import org.typemeta.context.extractors.byname.ExtractorByName;
@@ -11,6 +11,7 @@ import java.sql.*;
 import java.time.*;
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.typemeta.context.database.DatabaseMeta.*;
 
 public class DatabaseExtractorTest {
@@ -62,7 +63,7 @@ public class DatabaseExtractorTest {
                 .forEach(sql -> Exceptions.wrap(() -> testDbConn.createStatement().execute(sql)));
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setupDatabase() throws Exception {
         Class.forName(DERBY_DRIVER).getDeclaredConstructor().newInstance();
 
@@ -73,7 +74,7 @@ public class DatabaseExtractorTest {
         loadScript("data.sql");
     }
 
-    @AfterClass
+    @AfterAll
     public static void shutdown() {
         if (testDbConn != null) {
             loadScript("cleanup.sql");
@@ -121,6 +122,7 @@ public class DatabaseExtractorTest {
                             } else {
                                 if ((prevValues[nCol] < NUMERIC_MAX[i])) {
                                     final Object value = optExtractors.get(javaType).bind(column.name).extract(rs);
+                                    assertNotNull(value);
                                 }
                             }
                         } else {
@@ -128,6 +130,7 @@ public class DatabaseExtractorTest {
                             final Extractor<ResultSet, ?> b = a.bind(column.name);
                             b.extract(rs);
                             final Object value = optExtractors.get(javaType).bind(column.name).extract(rs);
+                            assertNotNull(value);
                         }
                     }
                 }
@@ -158,10 +161,12 @@ public class DatabaseExtractorTest {
                             } else {
                                 if (prevValues[nCol] < NUMERIC_MAX[i]) {
                                     final Object value = extractors.get(javaType).bind(column.name).extract(rs);
+                                    assertNotNull(value);
                                 }
                             }
                         } else {
                             final Object value = extractors.get(javaType).bind(column.name).extract(rs);
+                            assertNotNull(value);
                         }
                     }
                 }

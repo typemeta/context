@@ -1,6 +1,6 @@
 package org.typemeta.context.database;
 
-import org.junit.*;
+import org.junit.jupiter.api.*;
 import org.slf4j.*;
 import org.typemeta.context.extractors.Extractor;
 import org.typemeta.context.injectors.Injector;
@@ -12,7 +12,7 @@ import java.sql.*;
 import java.time.*;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.typemeta.context.database.DatabaseMeta.*;
 
 public class DatabaseInjectorTest {
@@ -70,7 +70,7 @@ public class DatabaseInjectorTest {
                 });
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setupDatabase() throws Exception {
         Class.forName(DERBY_DRIVER).getDeclaredConstructor().newInstance();
 
@@ -80,7 +80,7 @@ public class DatabaseInjectorTest {
         loadScript("create.sql");
     }
 
-    @AfterClass
+    @AfterAll
     public static void shutdown() {
         if (testDbConn != null) {
             loadScript("cleanup.sql");

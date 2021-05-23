@@ -1,11 +1,13 @@
 package org.typemeta.context.properties;
 
-import org.junit.*;
+import org.junit.jupiter.api.Test;
 import org.typemeta.context.extractors.*;
 import org.typemeta.context.extractors.byname.ExtractorByName;
 
 import java.util.*;
 import java.util.function.Function;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PropertiesExtractorsTest {
 
@@ -235,28 +237,28 @@ public class PropertiesExtractorsTest {
     @Test
     public void testExtractors() {
         testDataList.forEach(td -> {
-            Assert.assertEquals(td.key, td.value, td.extractor.extract(PROPS, td.key));
+            assertEquals(td.value, td.extractor.extract(PROPS, td.key), td.key);
         });
     }
 
     @Test
     public void testExtractors2() {
         testDataList.forEach(td -> {
-            Assert.assertNull(td.key, td.extractor.extract(PROPS, "NO_SUCH_KEY"));
+            assertNull(td.extractor.extract(PROPS, "NO_SUCH_KEY"), td.key);
         });
     }
 
     @Test
     public void testOptExtractors() {
         testDataList.forEach(td -> {
-            Assert.assertEquals(td.key, Optional.of(td.value), td.optExtractor.extract(PROPS, td.key));
+            assertEquals(Optional.of(td.value), td.optExtractor.extract(PROPS, td.key), td.key);
         });
     }
 
     @Test
     public void testOptExtractors2() {
         testDataList.forEach(td -> {
-            Assert.assertEquals(td.key, Optional.empty(), td.optExtractor.extract(PROPS, "NO_SUCH_KEY"));
+            assertEquals(Optional.empty(), td.optExtractor.extract(PROPS, "NO_SUCH_KEY"), td.key);
         });
     }
 
@@ -264,7 +266,7 @@ public class PropertiesExtractorsTest {
     public void testCompositeExtractors() {
         final Composite comp = COMP_EXTRACTOR.extract(PROPS);
         testDataList.forEach(td -> {
-            Assert.assertEquals(td.key, td.value, td.getField(comp));
+            assertEquals(td.value, td.getField(comp), td.key);
         });
     }
 
@@ -272,7 +274,7 @@ public class PropertiesExtractorsTest {
     public void testCompositeOptExtractors() {
         final Composite comp = COMP_OPT_EXTRACTOR.extract(PROPS);
         testDataList.forEach(td -> {
-            Assert.assertEquals(td.key, td.value, td.getField(comp));
+            assertEquals(td.value, td.getField(comp), td.key);
         });
     }
 }

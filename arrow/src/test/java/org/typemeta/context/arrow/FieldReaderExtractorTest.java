@@ -5,6 +5,7 @@ import org.apache.arrow.vector.*;
 import org.apache.arrow.vector.complex.reader.FieldReader;
 import org.apache.arrow.vector.types.pojo.Field;
 import org.junit.*;
+import org.junit.jupiter.api.Test;
 import org.typemeta.context.extractors.*;
 import org.typemeta.context.extractors.byindex.ExtractorByIndex;
 
@@ -14,6 +15,7 @@ import java.util.function.*;
 import java.util.stream.*;
 
 import static java.util.stream.Collectors.toList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FieldReaderExtractorTest {
     private static final int N = 10;
@@ -260,7 +262,7 @@ public class FieldReaderExtractorTest {
             final Composite expected = createComposite(i);
             final Composite actual = COMP_EXTRACTOR.extract(frs);
 
-            Assert.assertEquals("" + i, expected, actual);
+            assertEquals(expected, actual, "" + i);
         }
     }
 }
