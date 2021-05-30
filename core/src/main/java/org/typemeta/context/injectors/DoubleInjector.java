@@ -31,7 +31,7 @@ public interface DoubleInjector<CTX> extends Injector<CTX, Double> {
 
     @Override
     default CTX inject(CTX ctx, Double value) {
-        return inject(ctx, value.doubleValue());
+        return injectDouble(ctx, value);
     }
 
     /**
