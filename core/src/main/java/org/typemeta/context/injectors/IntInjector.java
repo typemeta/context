@@ -3,7 +3,7 @@ package org.typemeta.context.injectors;
 import java.util.OptionalInt;
 
 /**
- * A {@link Injector} specialised for {@code int} values.
+ * A {@link Injector} specialised for integer values.
  * @param <CTX>     the context type
  */
 @FunctionalInterface
@@ -19,16 +19,17 @@ public interface IntInjector<CTX> extends Injector<CTX, Integer> {
     }
 
     /**
-     * Inject a value into a context.
+     * integer an integer value into a context.
+     * A variant of the {@link Injector#inject} method specialised for integer values.
      * @param ctx       the context
      * @param value     the value
      * @return          the new context
      */
-    CTX inject(CTX ctx, int value);
+    CTX injectInt(CTX ctx, int value);
 
     @Override
     default CTX inject(CTX ctx, Integer value) {
-        return inject(ctx, value.intValue());
+        return injectInt(ctx, value);
     }
 
     /**
@@ -36,11 +37,11 @@ public interface IntInjector<CTX> extends Injector<CTX, Integer> {
      * @return          the injector for optional values
      */
     default Injector<CTX, OptionalInt> optionalInt() {
-        return (ctx, optVal) -> optVal.isPresent() ? inject(ctx, optVal.getAsInt()) : ctx;
+        return (ctx, optVal) -> optVal.isPresent() ? injectInt(ctx, optVal.getAsInt()) : ctx;
     }
 
     /**
-     * A {@link Injector.Checked} specialised for {@code int} values.
+     * A {@link Injector.Checked} specialised for integer values.
      * @param <CTX>     the context type
      */
     @FunctionalInterface
@@ -57,16 +58,17 @@ public interface IntInjector<CTX> extends Injector<CTX, Integer> {
         }
 
         /**
-         * Inject a value into a context.
+         * integer an integer value into a context.
+         * A variant of the {@link Injector.Checked#inject} method specialised for integer values.
          * @param ctx       the context
          * @param value     the value
          * @return          the new context
          */
-        CTX inject(CTX ctx, int value) throws EX;
+        CTX injectInt(CTX ctx, int value) throws EX;
 
         @Override
         default CTX inject(CTX ctx, Integer value) throws EX {
-            return inject(ctx, value.intValue());
+            return injectInt(ctx, value);
         }
 
         /**
@@ -74,7 +76,7 @@ public interface IntInjector<CTX> extends Injector<CTX, Integer> {
          * @return          the injector for optional values
          */
         default Injector.Checked<CTX, OptionalInt, EX> optionalInt() {
-            return (ctx, optVal) -> optVal.isPresent() ? inject(ctx, optVal.getAsInt()) : ctx;
+            return (ctx, optVal) -> optVal.isPresent() ? injectInt(ctx, optVal.getAsInt()) : ctx;
         }
     }
 }

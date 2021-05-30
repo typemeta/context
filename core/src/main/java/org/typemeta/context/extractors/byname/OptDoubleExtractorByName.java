@@ -1,6 +1,5 @@
 package org.typemeta.context.extractors.byname;
 
-import org.typemeta.context.extractors.byindex.*;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.*;

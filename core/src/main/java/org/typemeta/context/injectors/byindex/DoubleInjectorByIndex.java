@@ -1,8 +1,10 @@
 package org.typemeta.context.injectors.byindex;
 
+import org.typemeta.context.injectors.DoubleInjector;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.OptionalDouble;
+import java.util.function.ToDoubleFunction;
 
 /**
  * A function to inject a double value into an context, given an index.
@@ -22,7 +24,8 @@ public interface DoubleInjectorByIndex<CTX> extends InjectorByIndex<CTX, Double>
     }
 
     /**
-     * A variant of the {@link InjectorByIndex#inject} method specialised for {@code double} values.
+     * Inject a double value into a context.
+     * A variant of the {@link InjectorByIndex#inject} method specialised for double values.
      * @param ctx       the context
      * @param index     the index
      * @param value     the value to be injected
@@ -32,6 +35,22 @@ public interface DoubleInjectorByIndex<CTX> extends InjectorByIndex<CTX, Double>
 
     default CTX inject(CTX ctx, int index, Double value) {
         return injectDouble(ctx, index, value);
+    }
+
+    /**
+     * Return an injector which first applies the given function to the value.
+     * A variant of the {@link InjectorByIndex#premap} method specialised for double values.
+     * @param f         the function
+     * @param <U>       the function return type
+     * @return          the new injector
+     */
+    default <U> InjectorByIndex<CTX, U> premapDouble(ToDoubleFunction<U> f) {
+        return (ctx, index, value) -> injectDouble(ctx, index, f.applyAsDouble(value));
+    }
+
+    @Override
+    default DoubleInjector<CTX> bind(int index) {
+        return (ctx, value) -> injectDouble(ctx, index, value);
     }
 
     /**
@@ -61,7 +80,8 @@ public interface DoubleInjectorByIndex<CTX> extends InjectorByIndex<CTX, Double>
         }
 
         /**
-         * A variant of the {@link InjectorByIndex.Checked#inject} method specialised for {@code double} values.
+         * Inject a double value into a context.
+         * A variant of the {@link InjectorByIndex.Checked#inject} method specialised for double values.
          * @param ctx       the context
          * @param index     the index
          * @param value     the value to be injected

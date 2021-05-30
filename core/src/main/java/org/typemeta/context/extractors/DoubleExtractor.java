@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.function.DoubleFunction;
 
 /**
- * A specialisation of {@link Extractor} for {@code double} values.
+ * A specialisation of {@link Extractor} for double values.
  * @param <CTX>     the context type
  */
 @FunctionalInterface
@@ -15,7 +15,7 @@ public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
      * Static constructor method.
      * @param extr      the extractor
      * @param <CTX>     the context type
-     * @return the extractor
+     * @return          the extractor
      */
     static <CTX> DoubleExtractor<CTX> of(DoubleExtractor<CTX> extr) {
         return extr;
@@ -40,9 +40,10 @@ public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
     }
 
     /**
-     * The extraction method, specialised to return an unboxed {@code double} value.
-     * @param ctx   the context
-     * @return the extracted value
+     * Extract a double value from the given context.
+     * A variant of the {@link Extractor#extract} method specialised for double values.
+     * @param ctx       the context
+     * @return          the extracted value
      */
     double extractDouble(CTX ctx);
 
@@ -52,10 +53,10 @@ public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
     }
 
     /**
-     * A variant of the {@link Extractor#map} method specialised for {@code double} values.
+     * A variant of the {@link Extractor#map} method specialised for double values.
      * @param f         the function
      * @param <U>       the function return type
-     * @return the mapped extractor
+     * @return          the mapped extractor
      */
     default <U> Extractor<CTX, U> mapDouble(DoubleFunction<U> f) {
         return ctx -> f.apply(extractDouble(ctx));
@@ -64,11 +65,11 @@ public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
     @Override
     default Extractor<CTX, Optional<Double>> optional() {
         // This extractor doesn't support nulls, so this won't work.
-        throw new RuntimeException("Cannot convert a DoubleExtractor into an optional extractor");
+        throw new RuntimeException("Cannot construct an optional extractor from a DoubleExtractor");
     }
 
     /**
-     * A specialisation of {@link Extractor.Checked} for {@code double} values.
+     * A specialisation of {@link Extractor.Checked} for double values.
      * @param <CTX>     the context type
      * @param <EX>      the exception type
      */
@@ -79,7 +80,7 @@ public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
          * @param extr      the extractor
          * @param <CTX>     the context type
          * @param <EX>      the exception type
-         * @return the extractor
+         * @return          the extractor
          */
         static <CTX, EX extends Exception> Checked<CTX, EX> of(Checked<CTX, EX> extr) {
             return extr;
@@ -106,7 +107,8 @@ public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
         }
 
         /**
-         * The extraction method, specialised to return an unboxed {@code double} value.
+         * Extract a double value from the given context.
+         * A variant of the {@link Extractor.Checked#extract} method specialised for double values.
          * @param ctx       the context
          * @return          the extracted value
          */
@@ -118,7 +120,7 @@ public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
         }
 
         /**
-         * A variant of the {@link Extractor.Checked#map} method specialised for {@code double} values.
+         * A variant of the {@link Extractor.Checked#map} method specialised for double values.
          * @param f         the function
          * @param <U>       the function return type
          * @return          the mapped extractor

@@ -53,13 +53,13 @@ public abstract class DatabaseExtractors {
             CheckedDatabaseExtractors.OPT_BYTE.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for {@code double} values.
+     * A {@code ExtractorByName} instance for double values.
      */
     public static final DoubleExtractorByName<ResultSet> DOUBLE =
             CheckedDatabaseExtractors.DOUBLE.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for optional {@code double} values.
+     * A {@code ExtractorByName} instance for optional double values.
      */
     public static final OptDoubleExtractorByName<ResultSet> OPT_DOUBLE =
             CheckedDatabaseExtractors.OPT_DOUBLE.unchecked();
@@ -77,25 +77,25 @@ public abstract class DatabaseExtractors {
             CheckedDatabaseExtractors.OPT_FLOAT.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for {@code int} values.
+     * A {@code ExtractorByName} instance for integer values.
      */
     public static final IntExtractorByName<ResultSet> INTEGER =
             CheckedDatabaseExtractors.INTEGER.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for optional {@code int} values.
+     * A {@code ExtractorByName} instance for optional integer values.
      */
     public static final OptIntExtractorByName<ResultSet> OPT_INTEGER =
             CheckedDatabaseExtractors.OPT_INTEGER.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for {@code long} values.
+     * A {@code ExtractorByName} instance for long values.
      */
     public static final LongExtractorByName<ResultSet> LONG =
             CheckedDatabaseExtractors.LONG.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for optional {@code long} values.
+     * A {@code ExtractorByName} instance for optional long values.
      */
     public static final OptLongExtractorByName<ResultSet> OPT_LONG =
             CheckedDatabaseExtractors.OPT_LONG.unchecked();

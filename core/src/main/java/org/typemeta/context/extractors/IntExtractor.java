@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.function.IntFunction;
 
 /**
- * A specialisation of {@code Extractor} for {@code int} values.
+ * A specialisation of {@code Extractor} for integer values.
  * @param <CTX>     the context type
  */
 @FunctionalInterface
@@ -15,7 +15,7 @@ public interface IntExtractor<CTX> extends Extractor<CTX, Integer> {
      * Static constructor method.
      * @param extr      the extractor
      * @param <CTX>     the context type
-     * @return the extractor
+     * @return          the extractor
      */
     static <CTX> IntExtractor<CTX> of(IntExtractor<CTX> extr) {
         return extr;
@@ -40,9 +40,10 @@ public interface IntExtractor<CTX> extends Extractor<CTX, Integer> {
     }
 
     /**
-     * The extraction method, specialised to return an unboxed {@code int} value.
-     * @param ctx   the context
-     * @return the extracted value
+     * Extract a integer value from the given context.
+     * A variant of the {@link Extractor#extract} method specialised for double values.
+     * @param ctx       the context
+     * @return          the extracted value
      */
     int extractInt(CTX ctx);
 
@@ -54,21 +55,21 @@ public interface IntExtractor<CTX> extends Extractor<CTX, Integer> {
     @Override
     default Extractor<CTX, Optional<Integer>> optional() {
         // This extractor doesn't support nulls, so this won't work.
-        throw new RuntimeException("Cannot convert a DoubleExtractor into an optional extractor");
+        throw new RuntimeException("Cannot construct an optional extractor from a IntExtractor");
     }
 
     /**
-     * A variant of the {@link Extractor#map} method specialised for {@code int} values.
+     * A variant of the {@link Extractor#map} method specialised for integer values.
      * @param f         the function
      * @param <U>       the function return type
-     * @return the mapped extractor
+     * @return          the mapped extractor
      */
     default <U> Extractor<CTX, U> mapInt(IntFunction<U> f) {
         return ctx -> f.apply(extractInt(ctx));
     }
 
     /**
-     * A specialisation of {@code ExtractorEx} for {@code int} values.
+     * A specialisation of {@code ExtractorEx} for integer values.
      * @param <CTX>     the context type
      * @param <EX>      the exception type
      */
@@ -79,7 +80,7 @@ public interface IntExtractor<CTX> extends Extractor<CTX, Integer> {
          * @param extr      the extractor
          * @param <CTX>     the context type
          * @param <EX>      the exception type
-         * @return the extractor
+         * @return          the extractor
          */
         static <CTX, EX extends Exception> Checked<CTX, EX> of(Checked<CTX, EX> extr) {
             return extr;
@@ -106,19 +107,20 @@ public interface IntExtractor<CTX> extends Extractor<CTX, Integer> {
         }
 
         /**
-         * The extraction method, specialised to return an unboxed {@code int} value.
+         * Extract a integer value from the given context.
+         * A variant of the {@link Extractor.Checked#extract} method specialised for integer values.
          * @param ctx       the context
          * @return          the extracted value
          */
-        int extractInt(CTX ctx);
+        int extractInt(CTX ctx) throws EX;
 
         @Override
-        default Integer extract(CTX ctx) {
+        default Integer extract(CTX ctx) throws EX {
             return extractInt(ctx);
         }
 
         /**
-         * A variant of the {@link Extractor.Checked#map} method specialised for {@code int} values.
+         * A variant of the {@link Extractor.Checked#map} method specialised for integer values.
          * @param f         the function
          * @param <U>       the function return type
          * @return          the mapped extractor

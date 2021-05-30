@@ -24,7 +24,7 @@ public abstract class PropertiesExtractors {
             BYTE.optional();
 
     public static final ExtractorByName<Properties, Character> CHAR =
-            STRING.map(s -> s == null || s.isEmpty() ? null : Character.valueOf(s.charAt(0)));
+            STRING.map(s -> s == null || s.isEmpty() ? null : s.charAt(0));
 
     public static final ExtractorByName<Properties, Optional<Character>> OPT_CHAR =
             CHAR.optional();

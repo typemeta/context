@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.function.DoubleFunction;
 
 /**
- * A {@code ExtractorByName} for optional {@code double} values.
+ * A {@code ExtractorByName} for optional double values.
  */
 @FunctionalInterface
 public interface OptDoubleExtractor<CTX> extends Extractor<CTX, OptionalDouble> {
@@ -33,7 +33,7 @@ public interface OptDoubleExtractor<CTX> extends Extractor<CTX, OptionalDouble> 
     }
 
     /**
-     * A {@link Extractor.Checked} for optional {@code double} values.
+     * A {@link Extractor.Checked} for optional double values.
      */
     @FunctionalInterface
     interface Checked<CTX, EX extends Exception> extends Extractor.Checked<CTX, OptionalDouble, EX> {

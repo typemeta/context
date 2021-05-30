@@ -34,7 +34,7 @@ public interface ExtractorByName<CTX, T> {
     T extract(CTX ctx, String name);
 
     /**
-     * Convert this extractor into another that applies a function to the result of this extractor.
+     * Convert this extractor into one that applies a function to the result of this extractor.
      * @param f         the function
      * @param <U>       the function return type
      * @return          the new extractor
@@ -84,7 +84,7 @@ public interface ExtractorByName<CTX, T> {
         T extract(CTX ctx, String name) throws EX;
 
         /**
-         * Convert this extractor into another that applies a function to the result of this extractor.
+         * Convert this extractor into one that applies a function to the result of this extractor.
          * @param f         the function
          * @param <U>       the function return type
          * @return          the new extractor

@@ -1,5 +1,6 @@
 package org.typemeta.context.injectors.byindex;
 
+import org.typemeta.context.injectors.LongInjector;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.OptionalLong;
@@ -22,7 +23,8 @@ public interface LongInjectorByIndex<CTX> extends InjectorByIndex<CTX, Long> {
     }
 
     /**
-     * A variant of the {@link InjectorByIndex#inject} method specialised for {@code long} values.
+     * Inject a long value into a context.
+     * A variant of the {@link InjectorByIndex#inject} method specialised for long values.
      * @param ctx       the context
      * @param index     the index
      * @param value     the value to be injected
@@ -32,6 +34,11 @@ public interface LongInjectorByIndex<CTX> extends InjectorByIndex<CTX, Long> {
 
     default CTX inject(CTX ctx, int index, Long value) {
         return injectLong(ctx, index, value);
+    }
+
+    @Override
+    default LongInjector<CTX> bind(int index) {
+        return (ctx, value) -> injectLong(ctx, index, value);
     }
 
     /**
@@ -61,7 +68,8 @@ public interface LongInjectorByIndex<CTX> extends InjectorByIndex<CTX, Long> {
         }
 
         /**
-         * A variant of the {@link InjectorByIndex.Checked#inject} method specialised for {@code long} values.
+         * Inject a long value into a context.
+         * A variant of the {@link InjectorByIndex.Checked#inject} method specialised for long values.
          * @param ctx       the context
          * @param index         the index
          * @param value     the value to be injected

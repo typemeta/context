@@ -1,11 +1,12 @@
 package org.typemeta.context.injectors.byindex;
 
+import org.typemeta.context.injectors.IntInjector;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.OptionalInt;
 
 /**
- * A function to inject a integer value into an context, given an index.
+ * A function to inject an integer value into an context, given an index.
  * Essentially a specialisation of {@link InjectorByIndex} for integer values.
  * @param <CTX>     the context type
  */
@@ -22,7 +23,8 @@ public interface IntInjectorByIndex<CTX> extends InjectorByIndex<CTX, Integer> {
     }
 
     /**
-     * A variant of the {@link InjectorByIndex#inject} method specialised for {@code int} values.
+     * Inject a integer value into a context.
+     * A variant of the {@link InjectorByIndex#inject} method specialised for integer values.
      * @param ctx       the context
      * @param index     the index
      * @param value     the value to be injected
@@ -32,6 +34,11 @@ public interface IntInjectorByIndex<CTX> extends InjectorByIndex<CTX, Integer> {
 
     default CTX inject(CTX ctx, int index, Integer value) {
         return injectInt(ctx, index, value);
+    }
+
+    @Override
+    default IntInjector<CTX> bind(int index) {
+        return (ctx, value) -> injectInt(ctx, index, value);
     }
 
     /**
@@ -61,7 +68,8 @@ public interface IntInjectorByIndex<CTX> extends InjectorByIndex<CTX, Integer> {
         }
 
         /**
-         * A variant of the {@link InjectorByIndex.Checked#inject} method specialised for {@code int} values.
+         * Inject a integer value into a context.
+         * A variant of the {@link InjectorByIndex.Checked#inject} method specialised for integer values.
          * @param ctx       the context
          * @param index     the index
          * @param value     the value to be injected

@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.function.LongFunction;
 
 /**
- * A {@code ExtractorByName} for optional {@code long} values.
+ * A {@code ExtractorByName} for optional long values.
  */
 @FunctionalInterface
 public interface OptLongExtractor<CTX> extends Extractor<CTX, OptionalLong> {
@@ -33,7 +33,7 @@ public interface OptLongExtractor<CTX> extends Extractor<CTX, OptionalLong> {
     }
 
     /**
-     * A {@link Extractor.Checked} for optional {@code long} values.
+     * A {@link Extractor.Checked} for optional long values.
      */
     @FunctionalInterface
     interface Checked<CTX, EX extends Exception> extends Extractor.Checked<CTX, OptionalLong, EX> {

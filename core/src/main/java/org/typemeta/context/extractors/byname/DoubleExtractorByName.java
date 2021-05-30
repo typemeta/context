@@ -7,7 +7,7 @@ import java.util.function.DoubleFunction;
 
 /**
  * A function to extract a double value from an context, given a name.
- * Essentially a specialisation of {@link ExtractorByName} for {@code double} values.
+ * Essentially a specialisation of {@link ExtractorByName} for double values.
  * @param <CTX>     the context type
  */
 @FunctionalInterface
@@ -23,7 +23,8 @@ public interface DoubleExtractorByName<CTX> extends ExtractorByName<CTX, Double>
     }
 
     /**
-     * The extraction method, specialised to return an unboxed {@code double} value.
+     * Extract a double value from the given context, for the given name.
+     * A variant of the {@link ExtractorByName#extract} method specialised for double values.
      * @param ctx       the context
      * @return          the extracted value
      */
@@ -42,7 +43,8 @@ public interface DoubleExtractorByName<CTX> extends ExtractorByName<CTX, Double>
     }
 
     /**
-     * A variant of the {@link ExtractorByName#map} method specialised for {@code double} values.
+     * Convert this extractor into one that applies a function to the result of this extractor.
+     * A variant of the {@link ExtractorByName#map} method specialised for double values.
      * @param f         the function
      * @param <U>       the function return type
      * @return          the mapped extractor
@@ -57,7 +59,7 @@ public interface DoubleExtractorByName<CTX> extends ExtractorByName<CTX, Double>
     }
 
     /**
-     * A specialisation of {@link ExtractorByName.Checked} for {@code double} values.
+     * A specialisation of {@link ExtractorByName.Checked} for double values.
      * @param <CTX>     the context type
      * @param <EX>      the exception type
      */
@@ -74,7 +76,8 @@ public interface DoubleExtractorByName<CTX> extends ExtractorByName<CTX, Double>
         }
 
         /**
-         * Extract a value of type {@code T} from the given context, for the given index.
+         * Extract a double value from the given context, for the given name.
+         * A variant of the {@link ExtractorByName.Checked#extract} method specialised for double values.
          * @param ctx       the context
          * @param name      the name
          * @return          the extracted value
@@ -88,13 +91,19 @@ public interface DoubleExtractorByName<CTX> extends ExtractorByName<CTX, Double>
         }
 
         /**
-         * A variant of the {@link ExtractorByName.Checked#map} method specialised for {@code double} values.
+         * Convert this extractor into one that applies a function to the result of this extractor.
+         * A variant of the {@link ExtractorByName.Checked#map} method specialised for double values.
          * @param f         the function
          * @param <U>       the function return type
          * @return          the mapped extractor
          */
         default <U> ExtractorByName.Checked<CTX, U, EX> mapDouble(DoubleFunction<U> f) {
             return (ctx, name) -> f.apply(extract(ctx, name));
+        }
+
+        @Override
+        default DoubleExtractor.Checked<CTX, EX> bind(String name) {
+            return rs -> extractDouble(rs, name);
         }
 
         /**

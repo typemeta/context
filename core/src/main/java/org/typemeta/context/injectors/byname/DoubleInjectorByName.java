@@ -1,5 +1,6 @@
 package org.typemeta.context.injectors.byname;
 
+import org.typemeta.context.injectors.DoubleInjector;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.OptionalDouble;
@@ -22,7 +23,8 @@ public interface DoubleInjectorByName<CTX> extends InjectorByName<CTX, Double> {
     }
 
     /**
-     * A variant of the {@link InjectorByName#inject} method specialised for {@code double} values.
+     * Inject a value into a context.
+     * A variant of the {@link InjectorByName#inject} method specialised for double values.
      * @param ctx       the context
      * @param name     the name
      * @param value     the value to be injected
@@ -32,6 +34,11 @@ public interface DoubleInjectorByName<CTX> extends InjectorByName<CTX, Double> {
 
     default CTX inject(CTX ctx, String name, Double value) {
         return injectDouble(ctx, name, value);
+    }
+
+    @Override
+    default DoubleInjector<CTX> bind(String name) {
+        return (ctx, value) -> injectDouble(ctx, name, value);
     }
 
     /**
@@ -61,7 +68,8 @@ public interface DoubleInjectorByName<CTX> extends InjectorByName<CTX, Double> {
         }
 
         /**
-         * A variant of the {@link InjectorByName.Checked#inject} method specialised for {@code double} values.
+         * Inject a value into a context.
+         * A variant of the {@link InjectorByName.Checked#inject} method specialised for double values.
          * @param ctx       the context
          * @param name     the name
          * @param value     the value to be injected

@@ -4,21 +4,19 @@ import org.apache.arrow.memory.*;
 import org.apache.arrow.vector.*;
 import org.apache.arrow.vector.complex.reader.FieldReader;
 import org.apache.arrow.vector.types.pojo.Field;
-import org.junit.*;
 import org.junit.jupiter.api.Test;
 import org.typemeta.context.extractors.*;
 import org.typemeta.context.extractors.byindex.ExtractorByIndex;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.function.*;
-import java.util.stream.*;
+import java.util.function.BiFunction;
 
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FieldReaderExtractorTest {
-    private static final int N = 10;
+    private static final int N = 16;
 
     private static final class Composite {
         final boolean booleanField;
@@ -139,7 +137,7 @@ public class FieldReaderExtractorTest {
 
     private static final TestData<Character, UInt2Vector> CHAR  = new TestData<>(
             "char",
-            Arrays.asList((char)0, 'a', '0', '\n'),
+            Arrays.asList((char)0, 'A', 'a', '0', '\n', '\r', '£', '@', '#'),
             FieldReaderListExtractors.CHAR,
             FieldReaderListExtractors.OPT_CHAR,
             UInt2Vector::new,
@@ -148,7 +146,7 @@ public class FieldReaderExtractorTest {
 
     private static final TestData<Double, Float8Vector> DOUBLE  = new TestData<>(
             "double",
-            Arrays.asList(0.0d, 1234.5678d, 1234e56, -1234.5678, -1234e56, 1234e-56, -1234e-56),
+            Arrays.asList(0.0d, -0.0d, 1234.5678d, 1234e56, -1234.5678, -1234e56, 1234e-56, -1234e-56),
             FieldReaderListExtractors.DOUBLE,
             FieldReaderListExtractors.OPT_DOUBLE,
             Float8Vector::new,
@@ -157,7 +155,7 @@ public class FieldReaderExtractorTest {
 
     private static final TestData<Float, Float4Vector> FLOAT  = new TestData<>(
             "float",
-            Arrays.asList(0.0f, 1234.5678f, (float) 1234e56, -1234.5678f, (float) -1234e56, (float) 1234e-56, (float) -1234e-56),
+            Arrays.asList(0.0f, -0.0f, 1234.5678f, (float) 1234e56, -1234.5678f, (float) -1234e56, (float) 1234e-56, (float) -1234e-56),
             FieldReaderListExtractors.FLOAT,
             FieldReaderListExtractors.OPT_FLOAT,
             Float4Vector::new,
@@ -175,7 +173,7 @@ public class FieldReaderExtractorTest {
 
     private static final TestData<Long, UInt8Vector> LONG  = new TestData<>(
             "long",
-            Arrays.asList(0L, 123L, 123456L, -123L, -123456L),
+            Arrays.asList(0L, 123L, 123456L, -123L, -123456L, 123456789012345L, -123456789012345L),
             FieldReaderListExtractors.LONG,
             FieldReaderListExtractors.OPT_LONG,
             UInt8Vector::new,
@@ -248,7 +246,6 @@ public class FieldReaderExtractorTest {
                 TEST_DATA.stream()
                         .map(td -> td.createVector(allocator))
                         .collect(toList());
-        vectors.forEach(FieldVector::allocateNew);
 
         final List<Field> fields = vectors.stream().map(FieldVector::getField).collect(toList());
         final VectorSchemaRoot vectorSchemaRoot = new VectorSchemaRoot(fields, vectors);
@@ -262,7 +259,7 @@ public class FieldReaderExtractorTest {
             final Composite expected = createComposite(i);
             final Composite actual = COMP_EXTRACTOR.extract(frs);
 
-            assertEquals(expected, actual, "" + i);
+            assertEquals(expected, actual, "Row " + i);
         }
     }
 }

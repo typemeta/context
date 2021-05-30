@@ -23,7 +23,8 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
     }
 
     /**
-     * The extraction method, specialised to return an unboxed {@code long} value.
+     * Extract a long value from the given context, for the given name.
+     * A variant of the {@link ExtractorByName#extract method specialised for long values.
      * @param ctx       the context
      * @return          the extracted value
      */
@@ -35,7 +36,8 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
     }
 
     /**
-     * A variant of the {@link ExtractorByName#map} method specialised for {@code long} values.
+     * Convert this extractor into one that applies a function to the result of this extractor.
+     * A variant of the {@link ExtractorByName#map} method specialised for long values.
      * @param f         the function
      * @param <U>       the function return type
      * @return          the mapped extractor
@@ -50,7 +52,7 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
     }
 
     /**
-     * A specialisation of {@link ExtractorByName.Checked} for {@code long} values.
+     * A specialisation of {@link ExtractorByName.Checked} for long values.
      * @param <CTX>     the context type
      * @param <EX>      the exception type
      */
@@ -68,7 +70,8 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
         }
 
         /**
-         * The extraction method, specialised to return an unboxed {@code long} value.
+         * Extract a long value from the given context, for the given name.
+         * A variant of the {@link ExtractorByName.Checked#extract method specialised for long values.
          * @param ctx       the context
          * @return          the extracted value
          * @throws EX       if the extraction fails
@@ -81,13 +84,19 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
         }
 
         /**
-         * A variant of the {@link ExtractorByName.Checked#map} method specialised for {@code long} values.
+         * Convert this extractor into one that applies a function to the result of this extractor.
+         * A variant of the {@link ExtractorByName.Checked#map} method specialised for long values.
          * @param f         the function
          * @param <U>       the function return type
          * @return          the mapped extractor
          */
         default <U> ExtractorByName.Checked<CTX, U, EX> mapLong(LongFunction<U> f) {
             return (ctx, name) -> f.apply(extract(ctx, name));
+        }
+
+        @Override
+        default LongExtractor.Checked<CTX, EX> bind(String name) {
+            return rs -> extractLong(rs, name);
         }
 
         /**

@@ -89,7 +89,7 @@ public interface InjectorByIndex<CTX, T> {
         }
 
         /**
-         * Return an injector which first applies the given function to the value.
+         * Convert this injector into one which first applies the given function to the value.
          * @param f         the function
          * @param <U>       the function return type
          * @return          the new injector

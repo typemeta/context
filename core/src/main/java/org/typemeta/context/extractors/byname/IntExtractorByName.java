@@ -6,7 +6,7 @@ import org.typemeta.context.utils.Exceptions;
 import java.util.function.IntFunction;
 
 /**
- * A function to extract a integer value from an context, given a name.
+ * A function to extract an integer value from an context, given a name.
  * Essentially a specialisation of {@link ExtractorByName} for integer values.
  * @param <CTX>     the context type
  */
@@ -23,7 +23,8 @@ public interface IntExtractorByName<CTX> extends ExtractorByName<CTX, Integer> {
     }
 
     /**
-     * The extraction method, specialised to return an unboxed {@code int} value.
+     * Extract an integer value from the given context, for the given name.
+     * A variant of the {@link ExtractorByName#extract} method specialised for integer values.
      * @param ctx       the context
      * @return          the extracted value
      */
@@ -35,7 +36,8 @@ public interface IntExtractorByName<CTX> extends ExtractorByName<CTX, Integer> {
     }
 
     /**
-     * A variant of the {@link ExtractorByName#map} method specialised for {@code int} values.
+     * Convert this extractor into one that applies a function to the result of this extractor.
+     * A variant of the {@link ExtractorByName#map} method specialised for integer values.
      * @param f         the function
      * @param <U>       the function return type
      * @return          the mapped extractor
@@ -50,7 +52,8 @@ public interface IntExtractorByName<CTX> extends ExtractorByName<CTX, Integer> {
     }
 
     /**
-     * A specialisation of {@link ExtractorByName.Checked} for {@code int} values.
+     * Convert this extractor into one that applies a function to the result of this extractor.
+     * A specialisation of {@link ExtractorByName.Checked} for integer values.
      * @param <CTX>     the context type
      * @param <EX>      the exception type
      */
@@ -68,7 +71,8 @@ public interface IntExtractorByName<CTX> extends ExtractorByName<CTX, Integer> {
         }
 
         /**
-         * The extraction method, specialised to return an unboxed {@code int} value.
+         * Extract an integer value from the given context, for the given name.
+         * A variant of the {@link ExtractorByName.Checked#extract} method specialised for integer values.
          * @param ctx       the context
          * @return          the extracted value
          * @throws EX       if the extraction fails
@@ -81,13 +85,19 @@ public interface IntExtractorByName<CTX> extends ExtractorByName<CTX, Integer> {
         }
 
         /**
-         * A variant of the {@link ExtractorByName.Checked#map} method specialised for {@code int} values.
+         * Convert this extractor into one that applies a function to the result of this extractor.
+         * A variant of the {@link ExtractorByName.Checked#map} method specialised for integer values.
          * @param f         the function
          * @param <U>       the function return type
          * @return          the mapped extractor
          */
         default <U> ExtractorByName.Checked<CTX, U, EX> mapInt(IntFunction<U> f) {
             return (ctx, name) -> f.apply(extract(ctx, name));
+        }
+
+        @Override
+        default IntExtractor.Checked<CTX, EX> bind(String name) {
+            return rs -> extractInt(rs, name);
         }
 
         /**

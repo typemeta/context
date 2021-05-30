@@ -1,9 +1,11 @@
 package org.typemeta.context.injectors;
 
+import org.typemeta.context.injectors.byname.InjectorByName;
+
 import java.util.OptionalDouble;
 
 /**
- * A {@link Injector} specialised for {@code double} values.
+ * A {@link Injector} specialised for double values.
  * @param <CTX>     the context type
  */
 @FunctionalInterface
@@ -19,12 +21,13 @@ public interface DoubleInjector<CTX> extends Injector<CTX, Double> {
     }
 
     /**
-     * Inject a value into a context.
+     * Inject a double value into a context.
+     * A variant of the {@link Injector#inject} method specialised for double values.
      * @param ctx       the context
      * @param value     the value
      * @return          the new context
      */
-    CTX inject(CTX ctx, double value);
+    CTX injectDouble(CTX ctx, double value);
 
     @Override
     default CTX inject(CTX ctx, Double value) {
@@ -40,7 +43,7 @@ public interface DoubleInjector<CTX> extends Injector<CTX, Double> {
     }
 
     /**
-     * A {@link Injector.Checked} specialised for {@code double} values.
+     * A {@link Injector.Checked} specialised for double values.
      * @param <CTX>     the context type
      */
     @FunctionalInterface
@@ -57,16 +60,17 @@ public interface DoubleInjector<CTX> extends Injector<CTX, Double> {
         }
 
         /**
-         * Inject a value into a context.
+         * Inject a double value into a context.
+         * A variant of the {@link Injector.Checked#inject} method specialised for double values.
          * @param ctx       the context
          * @param value     the value
          * @return          the new context
          */
-        CTX inject(CTX ctx, double value) throws EX;
+        CTX injectDouble(CTX ctx, double value) throws EX;
 
         @Override
         default CTX inject(CTX ctx, Double value) throws EX {
-            return inject(ctx, value.doubleValue());
+            return injectDouble(ctx, value);
         }
 
         /**
@@ -74,7 +78,7 @@ public interface DoubleInjector<CTX> extends Injector<CTX, Double> {
          * @return          the injector for optional values
          */
         default Injector.Checked<CTX, OptionalDouble, EX> optionalDbl() {
-            return (ctx, optVal) -> optVal.isPresent() ? inject(ctx, optVal.getAsDouble()) : ctx;
+            return (ctx, optVal) -> optVal.isPresent() ? injectDouble(ctx, optVal.getAsDouble()) : ctx;
         }
     }
 }

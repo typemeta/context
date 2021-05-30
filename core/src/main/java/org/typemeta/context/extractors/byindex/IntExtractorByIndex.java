@@ -7,7 +7,7 @@ import java.util.function.IntFunction;
 
 /**
  * A function to extract a int value from an context, given an index.
- * Essentially a specialisation of {@link ExtractorByIndex} for {@code int} values.
+ * Essentially a specialisation of {@link ExtractorByIndex} for integer values.
  * @param <CTX>     the context type
  */
 @FunctionalInterface
@@ -23,7 +23,8 @@ public interface IntExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Integer>
     }
 
     /**
-     * The extraction method, specialised to return an unboxed {@code int} value.
+     * Extract an integer value from the given context, for the given index.
+     * A variant of the {@link ExtractorByIndex#extract} method specialised for integer values.
      * @param ctx       the context
      * @return          the extracted value
      */
@@ -42,7 +43,7 @@ public interface IntExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Integer>
     }
 
     /**
-     * Convert this extractor into another that applies a function to the result of this extractor.
+     * Convert this extractor into one that applies a function to the result of this extractor.
      * @param f         the function
      * @param <U>       the function return type
      * @return          the new extractor
@@ -53,7 +54,7 @@ public interface IntExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Integer>
 
     @Override
     default IntExtractor<CTX> bind(int index) {
-        return rs -> extract(rs, index);
+        return rs -> extractInteger(rs, index);
     }
 
     /**
@@ -75,7 +76,8 @@ public interface IntExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Integer>
         }
 
         /**
-         * Extract a value of type {@code T} from the given context, for the given index.
+         * Extract an integer value from the given context, for the given index.
+         * A variant of the {@link ExtractorByIndex.Checked#extract} method specialised for integer values.
          * @param ctx       the context
          * @param index     the index
          * @return          the extracted value
@@ -89,13 +91,18 @@ public interface IntExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Integer>
         }
         
         /**
-         * A variant of the {@link ExtractorByIndex.Checked#map} method specialised for {@code int} values.
+         * A variant of the {@link ExtractorByIndex.Checked#map} method specialised for integer values.
          * @param f         the function
          * @param <U>       the function return type
          * @return          the new extractor
          */
         default <U> ExtractorByIndex.Checked<CTX, U, EX> mapInteger(IntFunction<U> f) {
             return (rs, index) -> f.apply(extract(rs, index));
+        }
+
+        @Override
+        default IntExtractor.Checked<CTX, EX> bind(int index) {
+            return rs -> extractInteger(rs, index);
         }
 
         /**

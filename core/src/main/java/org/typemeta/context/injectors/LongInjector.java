@@ -3,7 +3,7 @@ package org.typemeta.context.injectors;
 import java.util.OptionalLong;
 
 /**
- * A {@link Injector} specialised for {@code long} values.
+ * A {@link Injector} specialised for long values.
  * @param <CTX>     the context type
  */
 @FunctionalInterface
@@ -19,16 +19,17 @@ public interface LongInjector<CTX> extends Injector<CTX, Long> {
     }
 
     /**
-     * Inject a value into a context.
+     * integer a long value into a context.
+     * A variant of the {@link Injector#inject} method specialised for long values.
      * @param ctx       the context
      * @param value     the value
      * @return          the new context
      */
-    CTX inject(CTX ctx, long value);
+    CTX injectLong(CTX ctx, long value);
 
     @Override
     default CTX inject(CTX ctx, Long value) {
-        return inject(ctx, value.longValue());
+        return injectLong(ctx, value);
     }
 
     /**
@@ -36,11 +37,11 @@ public interface LongInjector<CTX> extends Injector<CTX, Long> {
      * @return          the injector for optional values
      */
     default Injector<CTX, OptionalLong> optionalLong() {
-        return (ctx, optVal) -> optVal.isPresent() ? inject(ctx, optVal.getAsLong()) : ctx;
+        return (ctx, optVal) -> optVal.isPresent() ? injectLong(ctx, optVal.getAsLong()) : ctx;
     }
 
     /**
-     * A {@link Injector.Checked} specialised for {@code long} values.
+     * A {@link Injector.Checked} specialised for long values.
      * @param <CTX>     the context type
      */
     @FunctionalInterface
@@ -57,16 +58,17 @@ public interface LongInjector<CTX> extends Injector<CTX, Long> {
         }
 
         /**
-         * Inject a value into a context.
+         * integer a long value into a context.
+         * A variant of the {@link Injector.Checked#inject} method specialised for long values.
          * @param ctx       the context
          * @param value     the value
          * @return          the new context
          */
-        CTX inject(CTX ctx, long value) throws EX;
+        CTX injectLong(CTX ctx, long value) throws EX;
 
         @Override
         default CTX inject(CTX ctx, Long value) throws EX {
-            return inject(ctx, value.longValue());
+            return injectLong(ctx, value);
         }
 
         /**
@@ -74,7 +76,7 @@ public interface LongInjector<CTX> extends Injector<CTX, Long> {
          * @return          the injector for optional values
          */
         default Injector.Checked<CTX, OptionalLong, EX> optionalLong() {
-            return (ctx, optVal) -> optVal.isPresent() ? inject(ctx, optVal.getAsLong()) : ctx;
+            return (ctx, optVal) -> optVal.isPresent() ? injectLong(ctx, optVal.getAsLong()) : ctx;
         }
     }
 }

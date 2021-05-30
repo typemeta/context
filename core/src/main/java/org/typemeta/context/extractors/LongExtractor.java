@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.function.LongFunction;
 
 /**
- * A specialisation of {@code Extractor} for {@code long} values.
+ * A specialisation of {@code Extractor} for long values.
  * @param <CTX>     the context type
  */
 @FunctionalInterface
@@ -15,7 +15,7 @@ public interface LongExtractor<CTX> extends Extractor<CTX, Long> {
      * Static constructor method.
      * @param extr      the extractor
      * @param <CTX>     the context type
-     * @return the extractor
+     * @return          the extractor
      */
     static <CTX> LongExtractor<CTX> of(LongExtractor<CTX> extr) {
         return extr;
@@ -40,9 +40,10 @@ public interface LongExtractor<CTX> extends Extractor<CTX, Long> {
     }
 
     /**
-     * The extraction method, specialised to return an unboxed {@code long} value.
+     * Extract a long value from the given context.
+     * A variant of the {@link Extractor#extract} method specialised for long values.
      * @param ctx       the context
-     * @return the extracted value
+     * @return          the extracted value
      */
     long extractLong(CTX ctx);
 
@@ -52,10 +53,10 @@ public interface LongExtractor<CTX> extends Extractor<CTX, Long> {
     }
 
     /**
-     * A variant of the {@link Extractor#map} method specialised for {@code long} values.
+     * A variant of the {@link Extractor#map} method specialised for long values.
      * @param f         the function
      * @param <U>       the function return type
-     * @return the mapped extractor
+     * @return          the mapped extractor
      */
     default <U> Extractor<CTX, U> mapLong(LongFunction<U> f) {
         return ctx -> f.apply(extractLong(ctx));
@@ -64,11 +65,11 @@ public interface LongExtractor<CTX> extends Extractor<CTX, Long> {
     @Override
     default Extractor<CTX, Optional<Long>> optional() {
         // This extractor doesn't support nulls, so this won't work.
-        throw new RuntimeException("Cannot convert a DoubleExtractor into an optional extractor");
+        throw new RuntimeException("Cannot construct an optional extractor from a LongExtractor");
     }
 
     /**
-     * A specialisation of {@code ExtractorEx} for {@code long} values.
+     * A specialisation of {@code ExtractorEx} for long values.
      * @param <CTX>     the context type
      * @param <EX>      the exception type
      */
@@ -79,7 +80,7 @@ public interface LongExtractor<CTX> extends Extractor<CTX, Long> {
          * @param extr      the extractor
          * @param <CTX>     the context type
          * @param <EX>      the exception type
-         * @return the extractor
+         * @return          the extractor
          */
         static <CTX, EX extends Exception> Checked<CTX, EX> of(Checked<CTX, EX> extr) {
             return extr;
@@ -106,19 +107,20 @@ public interface LongExtractor<CTX> extends Extractor<CTX, Long> {
         }
 
         /**
-         * The extraction method, specialised to return an unboxed {@code long} value.
+         * Extract a long value from the given context.
+         * A variant of the {@link Extractor.Checked#extract} method specialised for long values.
          * @param ctx       the context
          * @return          the extracted value
          */
-        long extractLong(CTX ctx);
+        long extractLong(CTX ctx) throws EX;
 
         @Override
-        default Long extract(CTX ctx) {
+        default Long extract(CTX ctx) throws EX {
             return extractLong(ctx);
         }
 
         /**
-         * A variant of the {@link Extractor.Checked#map} method specialised for {@code long} values.
+         * A variant of the {@link Extractor.Checked#map} method specialised for long values.
          * @param f         the function
          * @param <U>       the function return type
          * @return          the mapped extractor

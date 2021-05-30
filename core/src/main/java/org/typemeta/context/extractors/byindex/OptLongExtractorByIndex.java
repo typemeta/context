@@ -1,6 +1,5 @@
 package org.typemeta.context.extractors.byindex;
 
-import org.typemeta.context.extractors.Extractor;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.*;
@@ -38,11 +37,6 @@ public interface OptLongExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Opti
                 return Optional.empty();
             }
         };
-    }
-
-    @Override
-    default Extractor<CTX, OptionalLong> bind(int index) {
-        return ctx -> extract(ctx, index);
     }
 
     /**

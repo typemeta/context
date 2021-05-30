@@ -25,8 +25,7 @@ public interface ExtractorByIndex<CTX, T> {
     }
 
     /**
-     * Extract a value of type {@code T} from the given context,
-     * for the given index.
+     * Extract a value of type {@code T} from the given context, for the given index.
      * @param ctx       the context
      * @param index     the index
      * @return          the extracted value
@@ -34,7 +33,7 @@ public interface ExtractorByIndex<CTX, T> {
     T extract(CTX ctx, int index);
 
     /**
-     * Convert this extractor into another that applies a function to the result of this extractor.
+     * Convert this extractor into one that applies a function to the result of this extractor.
      * @param f         the function
      * @param <U>       the function return type
      * @return          the new extractor
@@ -74,8 +73,7 @@ public interface ExtractorByIndex<CTX, T> {
         }
 
         /**
-         * Extract a value of type {@code T} from the given context,
-         * for the given index.
+         * Extract a value of type {@code T} from the given context, for the given index.
          * @param ctx       the context
          * @param index     the index
          * @return          the extracted value
@@ -84,7 +82,7 @@ public interface ExtractorByIndex<CTX, T> {
         T extract(CTX ctx, int index) throws EX;
 
         /**
-         * Convert this extractor into another that applies a function to the result of this extractor.
+         * Convert this extractor into one that applies a function to the result of this extractor.
          * @param f         the function
          * @param <U>       the function return type
          * @return          the new extractor

@@ -56,13 +56,13 @@ public abstract class CheckedDatabaseExtractors {
             optional(BYTE);
 
     /**
-     * A {@code ExtractorByName.Checked} instance for {@code double} values.
+     * A {@code ExtractorByName.Checked} instance for double values.
      */
     public static final DoubleExtractorByName.Checked<ResultSet, SQLException> DOUBLE =
             ResultSet::getDouble;
 
     /**
-     * A {@code ExtractorByName.Checked} instance for optional {@code double} values.
+     * A {@code ExtractorByName.Checked} instance for optional double values.
      */
     public static final OptDoubleExtractorByName.Checked<ResultSet, SQLException> OPT_DOUBLE =
             (rs, name) -> {
@@ -87,13 +87,13 @@ public abstract class CheckedDatabaseExtractors {
             optional(FLOAT);
 
     /**
-     * A {@code ExtractorByName} instance for {@code int} values.
+     * A {@code ExtractorByName} instance for integer values.
      */
     public static final IntExtractorByName.Checked<ResultSet, SQLException> INTEGER =
             ResultSet::getInt;
 
     /**
-     * A {@code ExtractorByName.Checked} instance for optional {@code int} values.
+     * A {@code ExtractorByName.Checked} instance for optional integer values.
      */
     public static final OptIntExtractorByName.Checked<ResultSet, SQLException> OPT_INTEGER =
             (rs, name) -> {
@@ -106,13 +106,13 @@ public abstract class CheckedDatabaseExtractors {
             };
 
     /**
-     * A {@code ExtractorByName.Checked} instance for {@code long} values.
+     * A {@code ExtractorByName.Checked} instance for long values.
      */
     public static final LongExtractorByName.Checked<ResultSet, SQLException> LONG =
             ResultSet::getLong;
 
     /**
-     * A {@code ExtractorByName.Checked} instance for optional {@code long} values.
+     * A {@code ExtractorByName.Checked} instance for optional long values.
      */
     public static final OptLongExtractorByName.Checked<ResultSet, SQLException> OPT_LONG =
             (rs, name) -> {

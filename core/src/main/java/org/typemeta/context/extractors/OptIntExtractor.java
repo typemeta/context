@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.function.IntFunction;
 
 /**
- * A {@code ExtractorByName} for optional {@code int} values.
+ * A {@code ExtractorByName} for optional integer values.
  */
 @FunctionalInterface
 public interface OptIntExtractor<CTX> extends Extractor<CTX, OptionalInt> {
@@ -33,7 +33,7 @@ public interface OptIntExtractor<CTX> extends Extractor<CTX, OptionalInt> {
     }
 
     /**
-     * A {@link Extractor.Checked} for optional {@code int} values.
+     * A {@link Extractor.Checked} for optional integer values.
      */
     @FunctionalInterface
     interface Checked<CTX, EX extends Exception> extends Extractor.Checked<CTX, OptionalInt, EX> {

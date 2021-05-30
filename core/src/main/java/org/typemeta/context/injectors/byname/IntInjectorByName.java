@@ -1,11 +1,12 @@
 package org.typemeta.context.injectors.byname;
 
+import org.typemeta.context.injectors.IntInjector;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.OptionalInt;
 
 /**
- * A function to inject a integer value into an context, given an name.
+ * A function to inject an integer value into an context, given an name.
  * Essentially a specialisation of {@link InjectorByName} for integer values.
  * @param <CTX>     the context type
  */
@@ -22,7 +23,8 @@ public interface IntInjectorByName<CTX> extends InjectorByName<CTX, Integer> {
     }
 
     /**
-     * A variant of the {@link InjectorByName#inject} method specialised for {@code int} values.
+     * Inject a value into a context.
+     * A variant of the {@link InjectorByName#inject} method specialised for integer values.
      * @param ctx       the context
      * @param name      the name
      * @param value     the value to be injected
@@ -32,6 +34,11 @@ public interface IntInjectorByName<CTX> extends InjectorByName<CTX, Integer> {
 
     default CTX inject(CTX ctx, String name, Integer value) {
         return injectInt(ctx, name, value);
+    }
+
+    @Override
+    default IntInjector<CTX> bind(String name) {
+        return (ctx, value) -> injectInt(ctx, name, value);
     }
 
     /**
@@ -61,7 +68,8 @@ public interface IntInjectorByName<CTX> extends InjectorByName<CTX, Integer> {
         }
 
         /**
-         * A variant of the {@link InjectorByName.Checked#inject} method specialised for {@code int} values.
+         * Inject a value into a context.
+         * A variant of the {@link InjectorByName.Checked#inject} method specialised for integer values.
          * @param ctx       the context
          * @param name      the name
          * @param value     the value to be injected
