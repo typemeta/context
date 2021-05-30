@@ -105,12 +105,17 @@ public class FieldReaderExtractorTest {
             return testValues.get(i % testValues.size());
         }
 
-        VT createVector(BufferAllocator allocator) {
-            return vecCtor.apply(name, allocator);
+        void addToVector(VT vec, int i) {
+            vecAdd.add(vec, i, getValue(i));
         }
 
-        void addToVector(FieldVector vec, int i) {
-            vecAdd.add((VT)vec, i, getValue(i));
+        VT createVector(BufferAllocator allocator) {
+            final VT fv = vecCtor.apply(name, allocator);
+            fv.allocateNew();
+            for (int i = 0; i < N; ++i) {
+                addToVector(fv, i);
+            }
+            return fv;
         }
     }
 
@@ -240,14 +245,9 @@ public class FieldReaderExtractorTest {
         final BufferAllocator allocator = new RootAllocator();
 
         final List<FieldVector> vectors =
-                TEST_DATA.stream().map(td -> {
-                        final FieldVector fv = td.createVector(allocator);
-                        fv.allocateNew();
-                        for (int i = 0; i < N; ++i) {
-                            td.addToVector(fv, i);
-                        }
-                        return fv;
-                }).collect(toList());
+                TEST_DATA.stream()
+                        .map(td -> td.createVector(allocator))
+                        .collect(toList());
         vectors.forEach(FieldVector::allocateNew);
 
         final List<Field> fields = vectors.stream().map(FieldVector::getField).collect(toList());

@@ -1,8 +1,8 @@
-package org.typemeta.context.injectors.byindex;
+package org.typemeta.context.injectors.byname;
 
-public abstract class CheckedInjectByIndexes {
+public abstract class CheckedInjectorByNames {
     /**
-     * Create a {@link InjectorByIndex.Checked} for enum values
+     * Create a {@link InjectorByName.Checked} for enum values
      * @param strInjr   the string injector
      * @param <CTX>     the context type
      * @param <E>       the enum type
@@ -10,7 +10,7 @@ public abstract class CheckedInjectByIndexes {
      * @return          the enum injector
      */
     public static <CTX, E extends Enum<E>, EX extends Exception>
-    InjectorByIndex.Checked<CTX, E, EX> enumInjector(InjectorByIndex.Checked<CTX, String, EX> strInjr) {
+    InjectorByName.Checked<CTX, E, EX> enumInjector(InjectorByName.Checked<CTX, String, EX> strInjr) {
         return strInjr.premap(Enum::name);
     }
 }

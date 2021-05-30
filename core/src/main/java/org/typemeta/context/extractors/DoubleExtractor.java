@@ -2,6 +2,7 @@ package org.typemeta.context.extractors;
 
 import org.typemeta.context.utils.Exceptions;
 
+import java.util.Optional;
 import java.util.function.DoubleFunction;
 
 /**
@@ -58,6 +59,12 @@ public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
      */
     default <U> Extractor<CTX, U> mapDouble(DoubleFunction<U> f) {
         return ctx -> f.apply(extractDouble(ctx));
+    }
+
+    @Override
+    default Extractor<CTX, Optional<Double>> optional() {
+        // This extractor doesn't support nulls, so this won't work.
+        throw new RuntimeException("Cannot convert a DoubleExtractor into an optional extractor");
     }
 
     /**

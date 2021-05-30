@@ -7,7 +7,7 @@ import org.typemeta.context.utils.Exceptions;
 import java.util.Optional;
 
 /**
- * A function to extract a value from an context, given a index.
+ * A function to extract a value from an context, given an index.
  * @param <CTX>     the context type
  * @param <T>       the value type
  */
@@ -44,7 +44,7 @@ public interface ExtractorByIndex<CTX, T> {
     }
 
     /**
-     * Bind this extractor to a index, giving us an {@link Extractor}.
+     * Bind this extractor to an index, giving us an {@link Extractor}.
      * @param index     the index
      * @return          the extractor
      */
@@ -54,7 +54,7 @@ public interface ExtractorByIndex<CTX, T> {
 
     /**
      * Convert this extractor into one that extracts optional values.
-     * The option extractor converts null values to {@code Optional.empty}.
+     * The optional extractor converts null values to {@code Optional.empty}.
      * @return          the extractor function for the optional value
      */
     default ExtractorByIndex<CTX, Optional<T>> optional() {
@@ -94,7 +94,7 @@ public interface ExtractorByIndex<CTX, T> {
         }
 
         /**
-         * Bind this extractor to a index, giving us an {@link Extractor}.
+         * Bind this extractor to an index, giving us an {@link Extractor}.
          * @param index     the index
          * @return          the extractor
          */
@@ -104,7 +104,7 @@ public interface ExtractorByIndex<CTX, T> {
 
         /**
          * Convert this extractor into one that extracts optional values.
-         * The option extractor converts null values to {@code Optional.empty}.
+         * The optional extractor converts null values to {@code Optional.empty}.
          * @return          the extractor function for the optional value
          */
         default Checked<CTX, Optional<T>, EX> optional() {

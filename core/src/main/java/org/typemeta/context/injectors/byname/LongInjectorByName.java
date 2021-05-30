@@ -1,55 +1,55 @@
-package org.typemeta.context.injectors.byindex;
+package org.typemeta.context.injectors.byname;
 
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.OptionalLong;
 
 /**
- * A function to inject a long value into an context, given an index.
- * Essentially a specialisation of {@link InjectByIndex} for long values.
+ * A function to inject a long value into an context, given an name.
+ * Essentially a specialisation of {@link InjectorByName} for long values.
  * @param <CTX>     the context type
  */
 @FunctionalInterface
-public interface LongInjectByIndex<CTX> extends InjectByIndex<CTX, Long> {
+public interface LongInjectorByName<CTX> extends InjectorByName<CTX, Long> {
     /**
      * Static constructor.
      * @param injr      the injector
      * @param <CTX>     the context type
      * @return          the injector
      */
-    static <CTX> LongInjectByIndex<CTX> of(LongInjectByIndex<CTX> injr) {
+    static <CTX> LongInjectorByName<CTX> of(LongInjectorByName<CTX> injr) {
         return injr;
     }
 
     /**
-     * A variant of the {@link InjectByIndex#inject} method specialised for {@code long} values.
+     * A variant of the {@link InjectorByName#inject} method specialised for {@code long} values.
      * @param ctx       the context
-     * @param index     the index
+     * @param name      the name
      * @param value     the value to be injected
      * @return          the context
      */
-    CTX injectLong(CTX ctx, int index, long value);
+    CTX injectLong(CTX ctx, String name, long value);
 
-    default CTX inject(CTX ctx, int index, Long value) {
-        return injectLong(ctx, index, value);
+    default CTX inject(CTX ctx, String name, Long value) {
+        return injectLong(ctx, name, value);
     }
 
     /**
      * Convert this injector into one that accepts optional values.
      * @return          the injector for optional values
      */
-    default InjectByIndex<CTX, OptionalLong> optionalLong() {
-        return (ctx, index, optVal) ->
-                optVal.isPresent() ? inject(ctx, index, optVal.getAsLong()) : ctx;
+    default InjectorByName<CTX, OptionalLong> optionalLong() {
+        return (ctx, name, optVal) ->
+                optVal.isPresent() ? inject(ctx, name, optVal.getAsLong()) : ctx;
     }
 
     /**
-     * A variation of {@link LongInjectByIndex} that may throw an exception.
+     * A variation of {@link LongInjectorByName} that may throw an exception.
      * @param <CTX>     the context type
      * @param <EX>      the exception type
      */
     @FunctionalInterface
-    interface Checked<CTX, EX extends Exception> extends InjectByIndex.Checked<CTX, Long, EX> {
+    interface Checked<CTX, EX extends Exception> extends InjectorByName.Checked<CTX, Long, EX> {
         /**
          * Static constructor.
          * @param injr      the injector
@@ -61,36 +61,36 @@ public interface LongInjectByIndex<CTX> extends InjectByIndex<CTX, Long> {
         }
 
         /**
-         * A variant of the {@link InjectByIndex.Checked#inject} method specialised for {@code long} values.
+         * A variant of the {@link InjectorByName.Checked#inject} method specialised for {@code long} values.
          * @param ctx       the context
-         * @param index         the index
+         * @param name      the name
          * @param value     the value to be injected
          * @return          the context
          */
-        CTX injectLong(CTX ctx, int index, long value) throws EX;
+        CTX injectLong(CTX ctx, String name, long value) throws EX;
 
         @Override
-        default CTX inject(CTX ctx, int index, Long value) throws EX {
-            return injectLong(ctx, index, value);
+        default CTX inject(CTX ctx, String name, Long value) throws EX {
+            return injectLong(ctx, name, value);
         }
 
         /**
          * Convert this injector into one that accepts optional values.
          * @return          the injector for optional values
          */
-        default InjectByIndex.Checked<CTX, OptionalLong, EX> optionalLong() {
-            return (ctx, index, optVal) ->
-                    optVal.isPresent() ? inject(ctx, index, optVal.getAsLong()) : ctx;
+        default InjectorByName.Checked<CTX, OptionalLong, EX> optionalLong() {
+            return (ctx, name, optVal) ->
+                    optVal.isPresent() ? inject(ctx, name, optVal.getAsLong()) : ctx;
         }
 
         /**
          * Convert this extractor to an unchecked extractor (one that doesn't throw a checked exception).
          * @return          the unchecked extractor
          */
-        default LongInjectByIndex<CTX> unchecked() {
-            return (ctx, index, value)  -> {
+        default LongInjectorByName<CTX> unchecked() {
+            return (ctx, name, value)  -> {
                 try {
-                    return inject(ctx, index, value);
+                    return inject(ctx, name, value);
                 } catch (Exception ex) {
                     return Exceptions.throwUnchecked(ex);
                 }

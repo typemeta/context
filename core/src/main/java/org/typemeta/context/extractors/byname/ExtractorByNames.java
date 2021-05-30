@@ -16,5 +16,4 @@ public class ExtractorByNames {
     ) {
         return strExtr.map(s -> Enum.valueOf(enumType, s));
     }
-
 }

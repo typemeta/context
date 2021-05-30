@@ -2,6 +2,7 @@ package org.typemeta.context.extractors;
 
 import org.typemeta.context.utils.Exceptions;
 
+import java.util.Optional;
 import java.util.function.IntFunction;
 
 /**
@@ -48,6 +49,12 @@ public interface IntExtractor<CTX> extends Extractor<CTX, Integer> {
     @Override
     default Integer extract(CTX ctx) {
         return extractInt(ctx);
+    }
+
+    @Override
+    default Extractor<CTX, Optional<Integer>> optional() {
+        // This extractor doesn't support nulls, so this won't work.
+        throw new RuntimeException("Cannot convert a DoubleExtractor into an optional extractor");
     }
 
     /**

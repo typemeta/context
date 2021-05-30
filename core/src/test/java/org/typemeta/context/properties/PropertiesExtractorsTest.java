@@ -3,6 +3,8 @@ package org.typemeta.context.properties;
 import org.junit.jupiter.api.Test;
 import org.typemeta.context.extractors.*;
 import org.typemeta.context.extractors.byname.ExtractorByName;
+import org.typemeta.context.injectors.Injector;
+import org.typemeta.context.injectors.byname.InjectorByName;
 
 import java.util.*;
 import java.util.function.Function;
@@ -95,10 +97,11 @@ public class PropertiesExtractorsTest {
         }
     }
 
-
     private static final class TestData<T> {
         final String key;
         final T value;
+        final InjectorByName<Properties, T> injector;
+        final InjectorByName<Properties, Optional<T>> optInjector;
         final ExtractorByName<Properties, T> extractor;
         final ExtractorByName<Properties, Optional<T>> optExtractor;
         final Function<Composite, T> fieldGetter;
@@ -106,18 +109,37 @@ public class PropertiesExtractorsTest {
         private TestData(
                 String key,
                 T value,
+                InjectorByName<Properties, T> injector,
                 ExtractorByName<Properties, T> extractor,
                 Function<Composite, T> fieldGetter
         ) {
             this.key = key;
             this.value = value;
+            this.injector = injector;
+            this.optInjector = injector.optional();
             this.extractor = extractor;
             this.optExtractor = extractor.optional();
             this.fieldGetter = fieldGetter;
         }
 
         void set(Properties props) {
-            props.put(key, Objects.toString(value));
+            injector.inject(props, key, value);
+        }
+
+        void setOptValue(Properties props) {
+            optInjector.inject(props, key, Optional.of(value));
+        }
+
+        void setOptEmpty(Properties props) {
+            optInjector.inject(props, key, Optional.empty());
+        }
+
+        Injector<Properties, T> bindInjector() {
+            return injector.bind(key);
+        }
+
+        Injector<Properties, Optional<T>> bindOptInjector() {
+            return optInjector.bind(key);
         }
 
         Extractor<Properties, T> bindExtractor() {
@@ -136,6 +158,7 @@ public class PropertiesExtractorsTest {
     private static final TestData<Boolean> BOOLEAN = new TestData<>(
             "BOOLEAN",
             false,
+            PropertiesInjectors.BOOLEAN,
             PropertiesExtractors.BOOLEAN,
             Composite::booleanField
     );
@@ -143,6 +166,7 @@ public class PropertiesExtractorsTest {
     private static final TestData<Byte> BYTE = new TestData<>(
             "BYTE",
             (byte)123,
+            PropertiesInjectors.BYTE,
             PropertiesExtractors.BYTE,
             Composite::byteField
     );
@@ -150,6 +174,7 @@ public class PropertiesExtractorsTest {
     private static final TestData<Character> CHAR = new TestData<>(
             "CHAR",
             'x',
+            PropertiesInjectors.CHAR,
             PropertiesExtractors.CHAR,
             Composite::charField
     );
@@ -157,6 +182,7 @@ public class PropertiesExtractorsTest {
     private static final TestData<Double> DOUBLE = new TestData<>(
             "DOUBLE",
             123.456d,
+            PropertiesInjectors.DOUBLE,
             PropertiesExtractors.DOUBLE,
             Composite::doubleField
     );
@@ -164,6 +190,7 @@ public class PropertiesExtractorsTest {
     private static final TestData<Float> FLOAT = new TestData<>(
             "FLOAT",
             456.789f,
+            PropertiesInjectors.FLOAT,
             PropertiesExtractors.FLOAT,
             Composite::floatField
     );
@@ -171,13 +198,15 @@ public class PropertiesExtractorsTest {
     private static final TestData<Integer> INT = new TestData<>(
             "INT",
             123456,
-            PropertiesExtractors.INT,
+            PropertiesInjectors.INTEGER,
+            PropertiesExtractors.INTEGER,
             Composite::intField
     );
 
     private static final TestData<Long> LONG = new TestData<>(
             "LONG",
             123456l,
+            PropertiesInjectors.LONG,
             PropertiesExtractors.LONG,
             Composite::longField
     );
@@ -185,6 +214,7 @@ public class PropertiesExtractorsTest {
     private static final TestData<Short> SHORT = new TestData<>(
             "SHORT",
             (short)123456,
+            PropertiesInjectors.SHORT,
             PropertiesExtractors.SHORT,
             Composite::shortField
     );
@@ -192,6 +222,7 @@ public class PropertiesExtractorsTest {
     private static final TestData<String> STRING = new TestData<>(
             "STRING",
             "1234abcd",
+            PropertiesInjectors.STRING,
             PropertiesExtractors.STRING,
             Composite::stringField
     );
@@ -229,9 +260,13 @@ public class PropertiesExtractorsTest {
             );
 
     private static final Properties PROPS = new Properties();
+    private static final Properties OPT_PROPS = new Properties();
+    private static final Properties EMPTY_OPT_PROPS = new Properties();
 
     static {
         testDataList.forEach(td -> td.set(PROPS));
+        testDataList.forEach(td -> td.setOptValue(OPT_PROPS));
+        testDataList.forEach(td -> td.setOptEmpty(EMPTY_OPT_PROPS));
     }
 
     @Test
@@ -252,6 +287,8 @@ public class PropertiesExtractorsTest {
     public void testOptExtractors() {
         testDataList.forEach(td -> {
             assertEquals(Optional.of(td.value), td.optExtractor.extract(PROPS, td.key), td.key);
+            assertEquals(Optional.of(td.value), td.optExtractor.extract(OPT_PROPS, td.key), td.key);
+            assertEquals(Optional.empty(), td.optExtractor.extract(EMPTY_OPT_PROPS, td.key), td.key);
         });
     }
 
@@ -273,6 +310,14 @@ public class PropertiesExtractorsTest {
     @Test
     public void testCompositeOptExtractors() {
         final Composite comp = COMP_OPT_EXTRACTOR.extract(PROPS);
+        testDataList.forEach(td -> {
+            assertEquals(td.value, td.getField(comp), td.key);
+        });
+    }
+
+    @Test
+    public void testCompositeOptExtractors2() {
+        final Composite comp = COMP_OPT_EXTRACTOR.extract(OPT_PROPS);
         testDataList.forEach(td -> {
             assertEquals(td.value, td.getField(comp), td.key);
         });

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.*;
 import org.slf4j.*;
 import org.typemeta.context.extractors.Extractor;
 import org.typemeta.context.injectors.Injector;
-import org.typemeta.context.injectors.byindex.InjectByIndex;
+import org.typemeta.context.injectors.byindex.InjectorByIndex;
 import org.typemeta.context.utils.Exceptions;
 
 import java.sql.Date;
@@ -18,7 +18,7 @@ import static org.typemeta.context.database.DatabaseMeta.*;
 public class DatabaseInjectorTest {
     private static final Logger logger = LoggerFactory.getLogger(DatabaseInjectorTest.class);
 
-    private static final Map<Class<?>, InjectByIndex<PreparedStatement, ?>> injectors;
+    private static final Map<Class<?>, InjectorByIndex<PreparedStatement, ?>> injectors;
 
     static {
         injectors = new HashMap<>();
@@ -37,7 +37,7 @@ public class DatabaseInjectorTest {
         injectors.put(Time.class, DatabaseInjectors.SQLTIME);
     }
 
-    private static final Map<Class<?>, InjectByIndex<PreparedStatement, ?>> optInjectors;
+    private static final Map<Class<?>, InjectorByIndex<PreparedStatement, ?>> optInjectors;
 
     static {
         optInjectors = new HashMap<>();

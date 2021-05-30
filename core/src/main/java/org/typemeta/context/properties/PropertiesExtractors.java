@@ -4,7 +4,7 @@ import org.typemeta.context.extractors.byname.ExtractorByName;
 
 import java.util.*;
 
-public class PropertiesExtractors {
+public abstract class PropertiesExtractors {
     public static final ExtractorByName<Properties, String> STRING =
             ExtractorByName.of(Properties::getProperty);
 
@@ -43,10 +43,10 @@ public class PropertiesExtractors {
     public static final ExtractorByName<Properties, Optional<Float>> OPT_FLOAT =
             FLOAT.optional();
 
-    public static final ExtractorByName<Properties, Integer> INT =
+    public static final ExtractorByName<Properties, Integer> INTEGER =
             STRING.map(s -> s == null ? null : Integer.valueOf(s));
 
-    public static final ExtractorByName<Properties, OptionalInt> OPT_INT =
+    public static final ExtractorByName<Properties, OptionalInt> OPT_INTEGER =
             STRING.map(s ->
                     s == null ? OptionalInt.empty() : OptionalInt.of(Integer.parseInt(s))
             );

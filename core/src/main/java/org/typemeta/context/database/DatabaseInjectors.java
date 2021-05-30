@@ -13,8 +13,8 @@ import java.util.*;
  */
 public abstract class DatabaseInjectors {
 
-    public static <T> InjectByIndex<PreparedStatement, Optional<T>> optional(
-            InjectByIndex<PreparedStatement, T> injr
+    public static <T> InjectorByIndex<PreparedStatement, Optional<T>> optional(
+            InjectorByIndex<PreparedStatement, T> injr
     ) {
         return (ps, n, optValue) -> {
             if (optValue.isPresent()) {
@@ -30,8 +30,8 @@ public abstract class DatabaseInjectors {
         };
     }
 
-    public static <T> InjectByIndex<PreparedStatement, OptionalDouble> optional(
-            DoubleInjectByIndex<PreparedStatement> injr
+    public static <T> InjectorByIndex<PreparedStatement, OptionalDouble> optional(
+            DoubleInjectorByIndex<PreparedStatement> injr
     ) {
         return (ps, n, optValue) -> {
             if (optValue.isPresent()) {
@@ -47,8 +47,8 @@ public abstract class DatabaseInjectors {
         };
     }
 
-    public static <T> InjectByIndex<PreparedStatement, OptionalInt> optional(
-            IntInjectByIndex<PreparedStatement> injr
+    public static <T> InjectorByIndex<PreparedStatement, OptionalInt> optional(
+            IntInjectorByIndex<PreparedStatement> injr
     ) {
         return (ps, n, optValue) -> {
             if (optValue.isPresent()) {
@@ -64,8 +64,8 @@ public abstract class DatabaseInjectors {
         };
     }
 
-    public static <T> InjectByIndex<PreparedStatement, OptionalLong> optional(
-            LongInjectByIndex<PreparedStatement> injr
+    public static <T> InjectorByIndex<PreparedStatement, OptionalLong> optional(
+            LongInjectorByIndex<PreparedStatement> injr
     ) {
         return (ps, n, optValue) -> {
             if (optValue.isPresent()) {
@@ -81,94 +81,94 @@ public abstract class DatabaseInjectors {
         };
     }
 
-    public static final InjectByIndex<PreparedStatement, Boolean> BOOLEAN =
+    public static final InjectorByIndex<PreparedStatement, Boolean> BOOLEAN =
             CheckedDatabaseInjectors.BOOLEAN.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Optional<Boolean>> OPT_BOOLEAN =
+    public static final InjectorByIndex<PreparedStatement, Optional<Boolean>> OPT_BOOLEAN =
             CheckedDatabaseInjectors.OPT_BOOLEAN.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Byte> BYTE =
+    public static final InjectorByIndex<PreparedStatement, Byte> BYTE =
             CheckedDatabaseInjectors.BYTE.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Optional<Byte>> OPT_BYTE =
+    public static final InjectorByIndex<PreparedStatement, Optional<Byte>> OPT_BYTE =
             CheckedDatabaseInjectors.OPT_BYTE.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Double> DOUBLE =
+    public static final InjectorByIndex<PreparedStatement, Double> DOUBLE =
             CheckedDatabaseInjectors.DOUBLE.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, OptionalDouble> OPT_DOUBLE =
+    public static final InjectorByIndex<PreparedStatement, OptionalDouble> OPT_DOUBLE =
             CheckedDatabaseInjectors.OPT_DOUBLE.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Float> FLOAT =
+    public static final InjectorByIndex<PreparedStatement, Float> FLOAT =
             CheckedDatabaseInjectors.FLOAT.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Optional<Float>> OPT_FLOAT =
+    public static final InjectorByIndex<PreparedStatement, Optional<Float>> OPT_FLOAT =
             CheckedDatabaseInjectors.OPT_FLOAT.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Integer> INTEGER =
+    public static final InjectorByIndex<PreparedStatement, Integer> INTEGER =
             CheckedDatabaseInjectors.INTEGER.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, OptionalInt> OPT_INTEGER =
+    public static final InjectorByIndex<PreparedStatement, OptionalInt> OPT_INTEGER =
             CheckedDatabaseInjectors.OPT_INTEGER.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Long> LONG =
+    public static final InjectorByIndex<PreparedStatement, Long> LONG =
             CheckedDatabaseInjectors.LONG.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, OptionalLong> OPT_LONG =
+    public static final InjectorByIndex<PreparedStatement, OptionalLong> OPT_LONG =
             CheckedDatabaseInjectors.OPT_LONG.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Short> SHORT =
+    public static final InjectorByIndex<PreparedStatement, Short> SHORT =
             CheckedDatabaseInjectors.SHORT.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Optional<Short>> OPT_SHORT =
+    public static final InjectorByIndex<PreparedStatement, Optional<Short>> OPT_SHORT =
             CheckedDatabaseInjectors.OPT_SHORT.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, String> STRING =
+    public static final InjectorByIndex<PreparedStatement, String> STRING =
             CheckedDatabaseInjectors.STRING.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Optional<String>> OPT_STRING =
+    public static final InjectorByIndex<PreparedStatement, Optional<String>> OPT_STRING =
             CheckedDatabaseInjectors.OPT_STRING.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Optional<String>> OPT_EMPTY_STRING =
+    public static final InjectorByIndex<PreparedStatement, Optional<String>> OPT_EMPTY_STRING =
             (ctx, n, optVal) ->
                     optVal.map(String::isEmpty).orElse(false) ?
                             STRING.inject(ctx, n, optVal.get()) :
                             ctx;
 
-    public static final InjectByIndex<PreparedStatement, Date> SQLDATE =
+    public static final InjectorByIndex<PreparedStatement, Date> SQLDATE =
             CheckedDatabaseInjectors.SQLDATE.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Optional<Date>> OPT_SQLDATE =
+    public static final InjectorByIndex<PreparedStatement, Optional<Date>> OPT_SQLDATE =
             CheckedDatabaseInjectors.OPT_SQLDATE.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, LocalDate> LOCALDATE =
+    public static final InjectorByIndex<PreparedStatement, LocalDate> LOCALDATE =
             CheckedDatabaseInjectors.LOCALDATE.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Optional<LocalDate>> OPT_LOCALDATE =
+    public static final InjectorByIndex<PreparedStatement, Optional<LocalDate>> OPT_LOCALDATE =
             CheckedDatabaseInjectors.OPT_LOCALDATE.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Time> SQLTIME =
+    public static final InjectorByIndex<PreparedStatement, Time> SQLTIME =
             CheckedDatabaseInjectors.SQLTIME.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Optional<Time>> OPT_SQLTIME =
+    public static final InjectorByIndex<PreparedStatement, Optional<Time>> OPT_SQLTIME =
             CheckedDatabaseInjectors.OPT_SQLTIME.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, LocalTime> LOCALTIME =
+    public static final InjectorByIndex<PreparedStatement, LocalTime> LOCALTIME =
             CheckedDatabaseInjectors.LOCALTIME.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Optional<LocalTime>> OPT_LOCALTIME =
+    public static final InjectorByIndex<PreparedStatement, Optional<LocalTime>> OPT_LOCALTIME =
             CheckedDatabaseInjectors.OPT_LOCALTIME.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Timestamp> SQLTIMESTAMP =
+    public static final InjectorByIndex<PreparedStatement, Timestamp> SQLTIMESTAMP =
             CheckedDatabaseInjectors.SQLTIMESTAMP.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Optional<Timestamp>> OPT_SQLTIMESTAMP =
+    public static final InjectorByIndex<PreparedStatement, Optional<Timestamp>> OPT_SQLTIMESTAMP =
             CheckedDatabaseInjectors.OPT_SQLTIMESTAMP.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, LocalDateTime> LOCALDATETIME =
+    public static final InjectorByIndex<PreparedStatement, LocalDateTime> LOCALDATETIME =
             CheckedDatabaseInjectors.LOCALDATETIME.unchecked();
 
-    public static final InjectByIndex<PreparedStatement, Optional<LocalDateTime>> OPT_LOCALDATETIME =
+    public static final InjectorByIndex<PreparedStatement, Optional<LocalDateTime>> OPT_LOCALDATETIME =
             CheckedDatabaseInjectors.OPT_LOCALDATETIME.unchecked();
 
 }

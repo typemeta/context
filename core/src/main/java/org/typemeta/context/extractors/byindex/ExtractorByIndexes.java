@@ -1,19 +1,18 @@
-package org.typemeta.context.extractors.byname;
+package org.typemeta.context.extractors.byindex;
 
-public class CheckedExtractorByNames {
+public class ExtractorByIndexes {
 
     /**
-     * Create a {@link ExtractorByName.Checked} for enum values.
+     * Create a {@code ExtractorByIndex} for enum values.
      * @param enumType  the enum type class
      * @param strExtr   the string extractor
      * @param <CTX>     the context type
      * @param <E>       the enum type
      * @return          the enum extractor
      */
-    public static <CTX, E extends Enum<E>, EX extends Exception>
-    ExtractorByName.Checked<CTX, E, EX> enumExtractor(
+    static <CTX, E extends Enum<E>> ExtractorByIndex<CTX, E> enumExtractor(
             Class<E> enumType,
-            ExtractorByName.Checked<CTX, String, EX> strExtr
+            ExtractorByIndex<CTX, String> strExtr
     ) {
         return strExtr.map(s -> Enum.valueOf(enumType, s));
     }

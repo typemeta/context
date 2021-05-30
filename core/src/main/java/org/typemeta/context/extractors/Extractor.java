@@ -73,7 +73,7 @@ public interface Extractor<CTX, T> {
 
     /**
      * Convert this extractor into one that extracts optional values.
-     * The option extractor converts null values to {@code Optional.empty}.
+     * The optional extractor converts null values to {@code Optional.empty}.
      * @return          the extractor function for the optional value
      */
     default Extractor<CTX, Optional<T>> optional() {
@@ -151,7 +151,7 @@ public interface Extractor<CTX, T> {
 
         /**
          * Convert this extractor into one that extracts optional values.
-         * The option extractor converts null values to {@code Optional.empty}.
+         * The optional extractor converts null values to {@code Optional.empty}.
          * @return          the extractor function for the optional value
          */
         default Checked<CTX, Optional<T>, EX> optional() {

@@ -1,55 +1,55 @@
-package org.typemeta.context.injectors.byindex;
+package org.typemeta.context.injectors.byname;
 
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.OptionalInt;
 
 /**
- * A function to inject a integer value into an context, given an index.
- * Essentially a specialisation of {@link InjectByIndex} for integer values.
+ * A function to inject a integer value into an context, given an name.
+ * Essentially a specialisation of {@link InjectorByName} for integer values.
  * @param <CTX>     the context type
  */
 @FunctionalInterface
-public interface IntInjectByIndex<CTX> extends InjectByIndex<CTX, Integer> {
+public interface IntInjectorByName<CTX> extends InjectorByName<CTX, Integer> {
     /**
      * Static constructor.
      * @param injr      the injector
      * @param <CTX>     the context type
      * @return          the injector
      */
-    static <CTX> IntInjectByIndex<CTX> of(IntInjectByIndex<CTX> injr) {
+    static <CTX> IntInjectorByName<CTX> of(IntInjectorByName<CTX> injr) {
         return injr;
     }
 
     /**
-     * A variant of the {@link InjectByIndex#inject} method specialised for {@code int} values.
+     * A variant of the {@link InjectorByName#inject} method specialised for {@code int} values.
      * @param ctx       the context
-     * @param index     the index
+     * @param name      the name
      * @param value     the value to be injected
      * @return          the context
      */
-    CTX injectInt(CTX ctx, int index, int value);
+    CTX injectInt(CTX ctx, String name, int value);
 
-    default CTX inject(CTX ctx, int index, Integer value) {
-        return injectInt(ctx, index, value);
+    default CTX inject(CTX ctx, String name, Integer value) {
+        return injectInt(ctx, name, value);
     }
 
     /**
      * Convert this injector into one that accepts optional values.
      * @return          the injector for optional values
      */
-    default InjectByIndex<CTX, OptionalInt> optionalInt() {
-        return (ctx, index, optVal) ->
-                optVal.isPresent() ? inject(ctx, index, optVal.getAsInt()) : ctx;
+    default InjectorByName<CTX, OptionalInt> optionalInt() {
+        return (ctx, name, optVal) ->
+                optVal.isPresent() ? inject(ctx, name, optVal.getAsInt()) : ctx;
     }
 
     /**
-     * A variation of {@link IntInjectByIndex} that may throw an exception.
+     * A variation of {@link IntInjectorByName} that may throw an exception.
      * @param <CTX>     the context type
      * @param <EX>      the exception type
      */
     @FunctionalInterface
-    interface Checked<CTX, EX extends Exception> extends InjectByIndex.Checked<CTX, Integer, EX> {
+    interface Checked<CTX, EX extends Exception> extends InjectorByName.Checked<CTX, Integer, EX> {
         /**
          * Static constructor.
          * @param injr      the injector
@@ -61,36 +61,36 @@ public interface IntInjectByIndex<CTX> extends InjectByIndex<CTX, Integer> {
         }
 
         /**
-         * A variant of the {@link InjectByIndex.Checked#inject} method specialised for {@code int} values.
+         * A variant of the {@link InjectorByName.Checked#inject} method specialised for {@code int} values.
          * @param ctx       the context
-         * @param index     the index
+         * @param name      the name
          * @param value     the value to be injected
          * @return          the context
          */
-        CTX injectInt(CTX ctx, int index, int value) throws EX;
+        CTX injectInt(CTX ctx, String name, int value) throws EX;
 
         @Override
-        default CTX inject(CTX ctx, int index, Integer value) throws EX {
-            return injectInt(ctx, index, value);
+        default CTX inject(CTX ctx, String name, Integer value) throws EX {
+            return injectInt(ctx, name, value);
         }
 
         /**
          * Convert this injector into one that accepts optional values.
          * @return          the injector for optional values
          */
-        default InjectByIndex.Checked<CTX, OptionalInt, EX> optionalInt() {
-            return (ctx, index, optVal) ->
-                    optVal.isPresent() ? inject(ctx, index, optVal.getAsInt()) : ctx;
+        default InjectorByName.Checked<CTX, OptionalInt, EX> optionalInt() {
+            return (ctx, name, optVal) ->
+                    optVal.isPresent() ? inject(ctx, name, optVal.getAsInt()) : ctx;
         }
 
         /**
          * Convert this extractor to an unchecked extractor (one that doesn't throw a checked exception).
          * @return          the unchecked extractor
          */
-        default IntInjectByIndex<CTX> unchecked() {
-            return (ctx, index, value)  -> {
+        default IntInjectorByName<CTX> unchecked() {
+            return (ctx, name, value)  -> {
                 try {
-                    return inject(ctx, index, value);
+                    return inject(ctx, name, value);
                 } catch (Exception ex) {
                     return Exceptions.throwUnchecked(ex);
                 }

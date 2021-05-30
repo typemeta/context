@@ -2,6 +2,7 @@ package org.typemeta.context.extractors;
 
 import org.typemeta.context.utils.Exceptions;
 
+import java.util.Optional;
 import java.util.function.LongFunction;
 
 /**
@@ -58,6 +59,12 @@ public interface LongExtractor<CTX> extends Extractor<CTX, Long> {
      */
     default <U> Extractor<CTX, U> mapLong(LongFunction<U> f) {
         return ctx -> f.apply(extractLong(ctx));
+    }
+
+    @Override
+    default Extractor<CTX, Optional<Long>> optional() {
+        // This extractor doesn't support nulls, so this won't work.
+        throw new RuntimeException("Cannot convert a DoubleExtractor into an optional extractor");
     }
 
     /**

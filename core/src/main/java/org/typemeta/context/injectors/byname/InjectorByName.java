@@ -1,4 +1,4 @@
-package org.typemeta.context.injectors.byindex;
+package org.typemeta.context.injectors.byname;
 
 import org.typemeta.context.functions.Functions;
 import org.typemeta.context.injectors.Injector;
@@ -7,12 +7,12 @@ import org.typemeta.context.utils.Exceptions;
 import java.util.Optional;
 
 /**
- * A {@link InjectByIndex} is an injector that binds to a number.
+ * A {@link InjectorByName} is an injector that binds to a name.
  * @param <CTX>     the context type
  * @param <T>       the value type
  */
 @FunctionalInterface
-public interface InjectByIndex<CTX, T> {
+public interface InjectorByName<CTX, T> {
     /**
      * Static constructor.
      * @param injr      the injector
@@ -20,26 +20,26 @@ public interface InjectByIndex<CTX, T> {
      * @param <T>       the value type
      * @return          the injector
      */
-    static <CTX, T> InjectByIndex<CTX, T> of(InjectByIndex<CTX, T> injr) {
+    static <CTX, T> InjectorByName<CTX, T> of(InjectorByName<CTX, T> injr) {
         return injr;
     }
 
     /**
      * Inject a value into a context.
      * @param ctx       the context
-     * @param index     the index
+     * @param name      the name
      * @param value     the value to be injected
      * @return          the new context
      */
-    CTX inject(CTX ctx, int index, T value);
+    CTX inject(CTX ctx, String name, T value);
 
     /**
-     * Bind this injector to an index.
-     * @param index     the index
+     * Bind this injector to an name.
+     * @param name      the name
      * @return          the new injector
      */
-    default Injector<CTX, T> bind(int index) {
-        return (ctx, value) -> inject(ctx, index, value);
+    default Injector<CTX, T> bind(String name) {
+        return (ctx, value) -> inject(ctx, name, value);
     }
 
     /**
@@ -48,21 +48,21 @@ public interface InjectByIndex<CTX, T> {
      * @param <U>       the function return type
      * @return          the new injector
      */
-    default <U> InjectByIndex<CTX, U> premap(Functions.F<U, T> f) {
-        return (ctx, index, value) -> inject(ctx, index, f.apply(value));
+    default <U> InjectorByName<CTX, U> premap(Functions.F<U, T> f) {
+        return (ctx, name, value) -> inject(ctx, name, f.apply(value));
     }
 
     /**
      * Convert this injector into one that accepts optional values.
      * @return          the injector for optional values
      */
-    default InjectByIndex<CTX, Optional<T>> optional() {
-        return (ctx, index, optVal) ->
-                optVal.isPresent() ? inject(ctx, index, optVal.get()) : ctx;
+    default InjectorByName<CTX, Optional<T>> optional() {
+        return (ctx, name, optVal) ->
+                optVal.isPresent() ? inject(ctx, name, optVal.get()) : ctx;
     }
 
     /**
-     * A variation of {@link InjectByIndex} that may throw an exception.
+     * A variation of {@link InjectorByName} that may throw an exception.
      * @param <CTX>     the context type
      * @param <T>       the value type
      * @param <EX>      the exception type
@@ -72,20 +72,20 @@ public interface InjectByIndex<CTX, T> {
         /**
          * Inject a value into a context.
          * @param ctx       the context
-         * @param index     the index
+         * @param name      the name
          * @param value     the value
          * @return          the new context
          * @throws EX       if the injection fails
          */
-        CTX inject(CTX ctx, int index, T value) throws EX;
+        CTX inject(CTX ctx, String name, T value) throws EX;
 
         /**
-         * Bind this injector to an index.
-         * @param n         the index
+         * Bind this injector to an name.
+         * @param name      the name
          * @return          the new injector
          */
-        default Injector.Checked<CTX, T, EX> bind(int n) {
-            return (ctx, value) -> inject(ctx, n, value);
+        default Injector.Checked<CTX, T, EX> bind(String name) {
+            return (ctx, value) -> inject(ctx, name, value);
         }
 
         /**
@@ -103,17 +103,17 @@ public interface InjectByIndex<CTX, T> {
          * @return          the injector for optional values
          */
         default Checked<CTX, Optional<T>, EX> optional() {
-            return (ctx, index, optVal) -> optVal.isPresent() ? inject(ctx, index, optVal.get()) : ctx;
+            return (ctx, name, optVal) -> optVal.isPresent() ? inject(ctx, name, optVal.get()) : ctx;
         }
 
         /**
          * Return an unchecked equivalent of this injector.
          * @return an unchecked equivalent of this injector
          */
-        default InjectByIndex<CTX, T> unchecked() {
-            return (ctx, index, value) -> {
+        default InjectorByName<CTX, T> unchecked() {
+            return (ctx, name, value) -> {
                 try {
-                    return inject(ctx, index, value);
+                    return inject(ctx, name, value);
                 } catch (Exception ex) {
                     return Exceptions.throwUnchecked(ex);
                 }
