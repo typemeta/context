@@ -1,7 +1,6 @@
 package org.typemeta.context.injectors.byname;
 
 import org.typemeta.context.injectors.LongInjector;
-import org.typemeta.context.injectors.byindex.InjectorByIndex;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.OptionalLong;

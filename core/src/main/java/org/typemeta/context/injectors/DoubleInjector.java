@@ -1,7 +1,5 @@
 package org.typemeta.context.injectors;
 
-import org.typemeta.context.injectors.byname.InjectorByName;
-
 import java.util.OptionalDouble;
 
 /**
