@@ -8,12 +8,13 @@ import java.time.*;
 import java.util.*;
 
 /**
- * A set of extraction functions and combinator functions.
+ * A set of combinator functions for extracting values from database {@link ResultSet} objects.
+ * These injectors may throw {@link SQLException} exceptions.
  */
 public abstract class CheckedDatabaseExtractors {
 
     /**
-     * A combinator function to convert a {@link ExtractorByName.Checked} into one for {@link Optional} values.
+     * Convert a {@code ResultSet} extractor extractor into one for {@link Optional} values.
      * @param extr      the extractor function for the value type
      * @param <T>       the value type
      * @return          the extractor function for the optional value
@@ -32,37 +33,37 @@ public abstract class CheckedDatabaseExtractors {
     }
 
     /**
-     * An {@code ExtractorByName.Checked} instance for {@link boolean} values.
+     * A {@code ResultSet} extractor for {@link Boolean} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Boolean, SQLException> BOOLEAN =
             ResultSet::getBoolean;
 
     /**
-     * A {@code ExtractorByName.Checked} instance for optional {@code boolean} values.
+     * A {@code ResultSet} extractor for optional {@code Boolean} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Optional<Boolean>, SQLException> OPT_BOOLEAN =
             optional(BOOLEAN);
 
     /**
-     * An {@code ExtractorByName.Checked} instance for {@link byte} values.
+     *A {@code ResultSet} extractor for {@link Byte} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Byte, SQLException> BYTE =
             ResultSet::getByte;
 
     /**
-     * A {@code ExtractorByName.Checked} instance for optional {@code byte} values.
+     * A {@code ResultSet} extractor for optional {@code Byte} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Optional<Byte>, SQLException> OPT_BYTE =
             optional(BYTE);
 
     /**
-     * A {@code ExtractorByName.Checked} instance for double values.
+     * A {@code ResultSet} extractor for double values.
      */
     public static final DoubleExtractorByName.Checked<ResultSet, SQLException> DOUBLE =
             ResultSet::getDouble;
 
     /**
-     * A {@code ExtractorByName.Checked} instance for optional double values.
+     * A {@code ResultSet} extractor for optional double values.
      */
     public static final OptDoubleExtractorByName.Checked<ResultSet, SQLException> OPT_DOUBLE =
             (rs, name) -> {
@@ -75,13 +76,13 @@ public abstract class CheckedDatabaseExtractors {
             };
 
     /**
-     * An {@code ExtractorByName.Checked} instance for {@code float} values.
+     * A {@code ResultSet} extractor for {@code Float} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Float, SQLException> FLOAT =
             ResultSet::getFloat;
 
     /**
-     * A {@code ExtractorByName.Checked} instance for optional {@code float} values.
+     * A {@code ResultSet} extractor for optional {@code Float} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Optional<Float>, SQLException> OPT_FLOAT =
             optional(FLOAT);
@@ -93,7 +94,7 @@ public abstract class CheckedDatabaseExtractors {
             ResultSet::getInt;
 
     /**
-     * A {@code ExtractorByName.Checked} instance for optional integer values.
+     * A {@code ResultSet} extractor for optional integer values.
      */
     public static final OptIntExtractorByName.Checked<ResultSet, SQLException> OPT_INTEGER =
             (rs, name) -> {
@@ -106,13 +107,13 @@ public abstract class CheckedDatabaseExtractors {
             };
 
     /**
-     * A {@code ExtractorByName.Checked} instance for long values.
+     * A {@code ResultSet} extractor for long values.
      */
     public static final LongExtractorByName.Checked<ResultSet, SQLException> LONG =
             ResultSet::getLong;
 
     /**
-     * A {@code ExtractorByName.Checked} instance for optional long values.
+     * A {@code ResultSet} extractor for optional long values.
      */
     public static final OptLongExtractorByName.Checked<ResultSet, SQLException> OPT_LONG =
             (rs, name) -> {
@@ -125,108 +126,108 @@ public abstract class CheckedDatabaseExtractors {
             };
 
     /**
-     * A {@code ExtractorByName.Checked} instance for {@code short} values.
+     * A {@code ResultSet} extractor for {@code Short} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Short, SQLException> SHORT =
             ResultSet::getShort;
 
     /**
-     * A {@code ExtractorByName.Checked} instance for optional {@code short} values.
+     * A {@code ResultSet} extractor for optional {@code Short} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Optional<Short>, SQLException> OPT_SHORT =
             optional(SHORT);
 
     /**
-     * A {@code ExtractorByName.Checked} instance for {@code string} values.
+     * A {@code ResultSet} extractor for {@link String} values.
      */
     public static final ExtractorByName.Checked<ResultSet, String, SQLException> STRING =
             ResultSet::getString;
 
     /**
-     * A {@code ExtractorByName.Checked} instance for optional {@code string} values.
+     * A {@code ResultSet} extractor for optional {@code String} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Optional<String>, SQLException> OPT_STRING =
             optional(STRING);
 
     /**
-     * A {@code ExtractorByName.Checked} instance for optional {@code string} values.
-     * This converter will convert empty strings to an empty optional value.
+     * A {@code ResultSet} extractor for optional {@code String} values.
+     * This extractor will convert empty strings to an empty optional value.
      */
     public static final ExtractorByName.Checked<ResultSet, Optional<String>, SQLException> OPT_NONEMPTY_STRING =
             optional(STRING)
                     .map(oi -> oi.flatMap(s -> s.isEmpty() ? Optional.empty() : Optional.of(s)));
 
     /**
-     * An extractor for {@link Date} values.
+     * A {@code ResultSet} extractor for {@link Date} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Date, SQLException> SQLDATE =
             ResultSet::getDate;
 
     /**
-     * An extractor for optional {@code Date} values.
+     * A {@code ResultSet} extractor for optional {@code Date} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Optional<Date>, SQLException> OPT_SQLDATE =
             optional(SQLDATE);
 
     /**
-     * An extractor for {@link LocalDate} values.
+     * A {@code ResultSet} extractor for {@link LocalDate} values.
      */
     public static final ExtractorByName.Checked<ResultSet, LocalDate, SQLException> LOCALDATE =
             SQLDATE.map(Date::toLocalDate);
 
     /**
-     * An extractor for optional {@code LocalDate} values.
+     * A {@code ResultSet} extractor for optional {@code LocalDate} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Optional<LocalDate>, SQLException> OPT_LOCALDATE =
             optional(SQLDATE)
                     .map(od -> od.map(Date::toLocalDate));
 
     /**
-     * An extractor for {@link Time} values.
+     * A {@code ResultSet} extractor for {@link Time} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Time, SQLException> SQLTIME =
             ResultSet::getTime;
 
     /**
-     * An extractor for optional {@code Time} values.
+     * A {@code ResultSet} extractor for optional {@code Time} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Optional<Time>, SQLException> OPT_SQLTIME =
             optional(SQLTIME);
 
     /**
-     * An extractor for {@link LocalTime} values.
+     * A {@code ResultSet} extractor for {@link LocalTime} values.
      */
     public static final ExtractorByName.Checked<ResultSet, LocalTime, SQLException> LOCALTIME =
             SQLTIME.map(Time::toLocalTime);
 
     /**
-     * An extractor for optional {@code LocalTime} values.
+     * A {@code ResultSet} extractor for optional {@code LocalTime} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Optional<LocalTime>, SQLException> OPT_LOCALTIME =
             optional(SQLTIME)
                     .map(od -> od.map(Time::toLocalTime));
 
     /**
-     * An extractor for {@link Timestamp} values.
+     * A {@code ResultSet} extractor for {@link Timestamp} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Timestamp, SQLException> SQLTIMESTAMP =
             ResultSet::getTimestamp;
 
     /**
-     * An extractor for optional {@code Time} values.
+     * A {@code ResultSet} extractor for optional {@code Time} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Optional<Timestamp>, SQLException> OPT_SQLTIMESTAMP =
             optional(SQLTIMESTAMP);
 
     /**
-     * An extractor for {@link LocalDateTime} values.
+     * A {@code ResultSet} extractor for {@link LocalDateTime} values.
      */
     public static final ExtractorByName.Checked<ResultSet, LocalDateTime, SQLException> LOCALDATETIME =
             SQLTIMESTAMP.map(Timestamp::toInstant)
                     .map(inst -> LocalDateTime.ofInstant(inst, ZoneId.systemDefault()));
 
     /**
-     * An extractor for optional {@code LocalDateTime} values.
+     * A {@code ResultSet} extractor for optional {@code LocalDateTime} values.
      */
     public static final ExtractorByName.Checked<ResultSet, Optional<LocalDateTime>, SQLException> OPT_LOCALDATETIME =
             optional(SQLTIMESTAMP)

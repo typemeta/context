@@ -20,7 +20,6 @@ public abstract class Exceptions {
         throw (X) ex;
     }
 
-
     /**
      * Wrap a function which throws a checked exception
      * into one that that throws a hidden checked exception.

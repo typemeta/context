@@ -7,15 +7,16 @@ import java.time.*;
 import java.util.Optional;
 
 /**
- * A set of database value extractor combinator functions.
+ * A set of combinator functions for extracting values from database {@link ResultSet} objects.
+ * These functions catch any {@link SQLException} exceptions and rethrow as as an unchecked exception.
  */
 public abstract class DatabaseExtractors {
 
     /**
-     * A combinator function to convert a {@link ExtractorByName} into one for {@link Optional} values.
+     * Convert a {@link ResultSet} extractor into one that extracts an {@link Optional} value.
      * @param extr      the extractor function for the value type
      * @param <T>       the value type
-     * @return          the extractor function for the optional value
+     * @return          the optional value extractor
      */
     public static <T> ExtractorByName<ResultSet, Optional<T>> optional(ExtractorByName<ResultSet, T> extr) {
         return ExtractorByName.Checked.<ResultSet, Optional<T>, SQLException>of((ResultSet rs, String name) -> {
@@ -29,177 +30,177 @@ public abstract class DatabaseExtractors {
     }
 
     /**
-     * An {@code ExtractorByName} instance for {@code boolean} values.
+     * A {@code ResultSet} extractor for {@link Boolean} values.
      */
     public static final ExtractorByName<ResultSet, Boolean> BOOLEAN =
             CheckedDatabaseExtractors.BOOLEAN.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for optional {@code boolean} values.
+     * A {@code ResultSet} extractor for optional {@code Boolean} values.
      */
     public static final ExtractorByName<ResultSet, Optional<Boolean>> OPT_BOOLEAN =
             CheckedDatabaseExtractors.OPT_BOOLEAN.unchecked();
 
     /**
-     * An {@code ExtractorByName} instance for {@code byte} values.
+     * A {@code ResultSet} extractor for {@link Byte} values.
      */
     public static final ExtractorByName<ResultSet, Byte> BYTE =
             CheckedDatabaseExtractors.BYTE.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for optional {@code byte} values.
+     * A {@code ResultSet} extractor for optional {@code Byte} values.
      */
     public static final ExtractorByName<ResultSet, Optional<Byte>> OPT_BYTE =
             CheckedDatabaseExtractors.OPT_BYTE.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for double values.
+     * A {@code ResultSet} extractor for double values.
      */
     public static final DoubleExtractorByName<ResultSet> DOUBLE =
             CheckedDatabaseExtractors.DOUBLE.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for optional double values.
+     * A {@code ResultSet} extractor for optional double values.
      */
     public static final OptDoubleExtractorByName<ResultSet> OPT_DOUBLE =
             CheckedDatabaseExtractors.OPT_DOUBLE.unchecked();
 
     /**
-     * An {@code ExtractorByName} instance for {@code float} values.
+     * A {@code ResultSet} extractor for {@link Float} values.
      */
     public static final ExtractorByName<ResultSet, Float> FLOAT =
             CheckedDatabaseExtractors.FLOAT.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for optional {@code float} values.
+     * A {@code ResultSet} extractor for optional {@code Float} values.
      */
     public static final ExtractorByName<ResultSet, Optional<Float>> OPT_FLOAT =
             CheckedDatabaseExtractors.OPT_FLOAT.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for integer values.
+     * A {@code ResultSet} extractor for integer values.
      */
     public static final IntExtractorByName<ResultSet> INTEGER =
             CheckedDatabaseExtractors.INTEGER.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for optional integer values.
+     * A {@code ResultSet} extractor for optional integer values.
      */
     public static final OptIntExtractorByName<ResultSet> OPT_INTEGER =
             CheckedDatabaseExtractors.OPT_INTEGER.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for long values.
+     * A {@code ResultSet} extractor for long values.
      */
     public static final LongExtractorByName<ResultSet> LONG =
             CheckedDatabaseExtractors.LONG.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for optional long values.
+     * A {@code ResultSet} extractor for optional long values.
      */
     public static final OptLongExtractorByName<ResultSet> OPT_LONG =
             CheckedDatabaseExtractors.OPT_LONG.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for {@code short} values.
+     * A {@code ResultSet} extractor for {@link Short} values.
      */
     public static final ExtractorByName<ResultSet, Short> SHORT =
             CheckedDatabaseExtractors.SHORT.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for optional {@code short} values.
+     * A {@code ResultSet} extractor for optional {@code Short} values.
      */
     public static final ExtractorByName<ResultSet, Optional<Short>> OPT_SHORT =
             CheckedDatabaseExtractors.OPT_SHORT.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for {@code string} values.
+     * A {@code ResultSet} extractor for {@link String} values.
      */
     public static final ExtractorByName<ResultSet, String> STRING =
             CheckedDatabaseExtractors.STRING.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for optional {@code string} values.
+     * A {@code ResultSet} extractor for optional {@code String} values.
      */
     public static final ExtractorByName<ResultSet, Optional<String>> OPT_STRING =
             CheckedDatabaseExtractors.OPT_STRING.unchecked();
 
     /**
-     * A {@code ExtractorByName} instance for optional {@code string} values.
-     * This converter will convert empty strings to an empty optional value.
+     * A {@code ResultSet} extractor for optional {@code String} values.
+     * This extractor will convert empty strings to an empty optional value.
      */
     public static final ExtractorByName<ResultSet, Optional<String>> OPT_NONEMPTY_STRING =
             CheckedDatabaseExtractors.OPT_NONEMPTY_STRING.unchecked();
 
     /**
-     * An extractor for {@link Date} values.
+     * A {@code ResultSet} extractor for {@link Date} values.
      */
     public static final ExtractorByName<ResultSet, Date> SQLDATE =
             CheckedDatabaseExtractors.SQLDATE.unchecked();
 
     /**
-     * An extractor for optional {@code Date} values.
+     * A {@code ResultSet} extractor for optional {@code Date} values.
      */
     public static final ExtractorByName<ResultSet, Optional<Date>> OPT_SQLDATE =
             CheckedDatabaseExtractors.OPT_SQLDATE.unchecked();
 
 
     /**
-     * An extractor for {@link LocalDate} values.
+     * A {@code ResultSet} extractor for {@link LocalDate} values.
      */
     public static final ExtractorByName<ResultSet, LocalDate> LOCALDATE =
             CheckedDatabaseExtractors.LOCALDATE.unchecked();
 
     /**
-     * An extractor for optional {@code LocalDate} values.
+     * A {@code ResultSet} extractor for optional {@code LocalDate} values.
      */
     public static final ExtractorByName<ResultSet, Optional<LocalDate>> OPT_LOCALDATE =
             CheckedDatabaseExtractors.OPT_LOCALDATE.unchecked();
 
     /**
-     * An extractor for {@link Time} values.
+     * A {@code ResultSet} extractor for {@link Time} values.
      */
     public static final ExtractorByName<ResultSet, Time> SQLTIME =
             CheckedDatabaseExtractors.SQLTIME.unchecked();
 
     /**
-     * An extractor for optional {@code Time} values.
+     * A {@code ResultSet} extractor for optional {@code Time} values.
      */
     public static final ExtractorByName<ResultSet, Optional<Time>> OPT_SQLTIME =
             CheckedDatabaseExtractors.OPT_SQLTIME.unchecked();
 
     /**
-     * An extractor for {@link LocalTime} values.
+     * A {@code ResultSet} extractor for {@link LocalTime} values.
      */
     public static final ExtractorByName<ResultSet, LocalTime> LOCALTIME =
             CheckedDatabaseExtractors.LOCALTIME.unchecked();
 
     /**
-     * An extractor for optional {@code LocalTime} values.
+     * A {@code ResultSet} extractor for optional {@code LocalTime} values.
      */
     public static final ExtractorByName<ResultSet, Optional<LocalTime>> OPT_LOCALTIME =
             CheckedDatabaseExtractors.OPT_LOCALTIME.unchecked();
 
     /**
-     * An extractor for {@link Timestamp} values.
+     * A {@code ResultSet} extractor for {@link Timestamp} values.
      */
     public static final ExtractorByName<ResultSet, Timestamp> SQLTIMESTAMP =
             CheckedDatabaseExtractors.SQLTIMESTAMP.unchecked();
 
     /**
-     * An extractor for optional {@code Time} values.
+     * A {@code ResultSet} extractor for optional {@code Time} values.
      */
     public static final ExtractorByName<ResultSet, Optional<Timestamp>> OPT_SQLTIMESTAMP =
             CheckedDatabaseExtractors.OPT_SQLTIMESTAMP.unchecked();
 
     /**
-     * An extractor for {@link LocalDateTime} values.
+     * A {@code ResultSet} extractor for {@link LocalDateTime} values.
      */
     public static final ExtractorByName<ResultSet, LocalDateTime> LOCALDATETIME =
             CheckedDatabaseExtractors.LOCALDATETIME.unchecked();
 
     /**
-     * An extractor for optional {@code LocalDateTime} values.
+     * A {@code ResultSet} extractor for optional {@code LocalDateTime} values.
      */
     public static final ExtractorByName<ResultSet, Optional<LocalDateTime>> OPT_LOCALDATETIME =
             CheckedDatabaseExtractors.OPT_LOCALDATETIME.unchecked();
