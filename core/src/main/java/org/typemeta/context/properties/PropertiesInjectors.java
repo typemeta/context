@@ -13,10 +13,7 @@ public abstract class PropertiesInjectors {
      * A {@code Properties} injector for {@link String} values.
      */
     public static final InjectorByName<Properties, String> STRING =
-            InjectorByName.of((props, key, value) -> {
-                props.setProperty(key, value);
-                return props;
-            });
+            InjectorByName.of(Properties::setProperty);
 
     /**
      * A {@code Properties} injector for optional {@code String} values.

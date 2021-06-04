@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/typemeta/context.svg?branch=master)](https://travis-ci.org/typemeta/funcj)
 [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/typemeta/context.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/typemeta/funcj/context:java)
 
-*Context* is a Java library that provides a combinator framework for building *extractors*,
+*Context* is a zero-dependency Java library that provides a combinator framework for building *extractors*,
 that can read values from a context,
 and *injectors*, that can write values into a context.
 
@@ -30,6 +30,8 @@ Add this dependency to your project pom.xml:
     <version>${context-core.version}</version>
 </dependency>
 ```
+
+(and define `context-core.version` accordingly)
 
 ## Example
 
@@ -89,5 +91,26 @@ final Config config2 = EXTR.extract(props);
 *Combinators* are an approach to organising libraries
 by providing a set of primitive constructs,
 along with a set of functions that can combine existing constructs to form new ones.
+Context provides two sets of combinators, injector and extractors.
+
+## Injectors
+
+Injectors inject a value into a context.
+The primary interface is `Injector`, which essentially looks as follows:
+
+```java
+@FunctionalInterface
+public interface Injector<CTX, T> {
+    CTX inject(CTX ctx, T value);
+    
+    // ...
+}
+```
+
+I.e. an injector is a function that takes a context and a value,
+injects the value into the context, and returns the context.
+
+Since it's a Single Abstract Method interface we can easily construct an injector:
+
 
 WIP

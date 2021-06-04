@@ -1,6 +1,7 @@
 package org.typemeta.context.injectors.byname;
 
-import org.typemeta.context.injectors.IntInjector;
+import org.typemeta.context.injectors.*;
+import org.typemeta.context.injectors.byindex.DoubleInjectorByIndex;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.OptionalInt;
@@ -20,6 +21,28 @@ public interface IntInjectorByName<CTX> extends InjectorByName<CTX, Integer> {
      */
     static <CTX> IntInjectorByName<CTX> of(IntInjectorByName<CTX> injr) {
         return injr;
+    }
+
+    /**
+     * A variant of {@code Injector} that modifies the given context as a side-effect.
+     * @param <CTX>
+     */
+    @FunctionalInterface
+    interface SideEffect<CTX> {
+        void inject(CTX ctx, String name, int value);
+    }
+
+    /**
+     * Construct an injector from a {@link Injector.SideEffect} function.
+     * @param f         a function that injects the value as a side effect
+     * @param <CTX>     the context type
+     * @return          the extractor
+     */
+    static <CTX> IntInjectorByName<CTX> of(SideEffect<CTX> f) {
+        return (ctx, name, value) -> {
+            f.inject(ctx, name, value);
+            return ctx;
+        };
     }
 
     /**
@@ -65,6 +88,30 @@ public interface IntInjectorByName<CTX> extends InjectorByName<CTX, Integer> {
          */
         static <CTX, EX extends Exception> Checked<CTX, EX> of(Checked<CTX, EX> injr) {
             return injr;
+        }
+
+        /**
+         * A variant of {@code Injector} that modifies the given context as a side-effect.
+         * @param <CTX>     the context type
+         * @param <EX>      the exception type
+         */
+        @FunctionalInterface
+        interface SideEffect<CTX, EX extends Exception> {
+            void inject(CTX ctx, String name, int value) throws EX;
+        }
+
+        /**
+         * Construct an injector from a {@link Injector.SideEffect} function.
+         * @param f         a function that injects the value as a side effect
+         * @param <CTX>     the context type
+         * @param <EX>      the exception type
+         * @return          the extractor
+         */
+        static <CTX, EX extends Exception> Checked<CTX, EX> of(SideEffect<CTX, EX> f) {
+            return (ctx, name, value) -> {
+                f.inject(ctx, name, value);
+                return ctx;
+            };
         }
 
         /**
