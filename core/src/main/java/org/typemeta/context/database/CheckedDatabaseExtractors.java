@@ -8,8 +8,8 @@ import java.time.*;
 import java.util.*;
 
 /**
- * A set of combinator functions for extracting values from database {@link ResultSet} objects.
- * These injectors may throw {@link SQLException} exceptions.
+ * A set of extractors for extracting values from database {@link ResultSet} objects.
+ * These extractors may throw {@link SQLException} exceptions.
  */
 public abstract class CheckedDatabaseExtractors {
 

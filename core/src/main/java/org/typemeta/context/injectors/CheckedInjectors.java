@@ -3,7 +3,8 @@ package org.typemeta.context.injectors;
 public abstract class CheckedInjectors {
 
     /**
-     * Combinator function for building an injector from an array of injectors.
+     * Construct an injector by combining the given injectors.
+     * The new injector applies each of the given injectors in turn.
      * @param exs       the array of the extractors
      * @param <CTX>     the context type
      * @param <T>       the injector value type

@@ -8,7 +8,7 @@ import java.time.*;
 import java.util.*;
 
 /**
- * Extractors for reading values from an Arrow Flight {@link FieldReader}.
+ * A set of extractors for extracting values from database {@link FieldReader} objects.
  */
 public abstract class FieldReaderExtractors {
 
@@ -50,11 +50,11 @@ public abstract class FieldReaderExtractors {
     public static final Extractor<FieldReader, Float> FLOAT = FieldReader::readFloat;
     public static final Extractor<FieldReader, Optional<Float>> OPT_FLOAT = optional(FLOAT);
 
-    public static final IntExtractor<FieldReader> INT = FieldReader::readInteger;
-    public static final OptIntExtractor<FieldReader> OPT_INT =
+    public static final IntExtractor<FieldReader> INTEGER = FieldReader::readInteger;
+    public static final OptIntExtractor<FieldReader> OPT_INTEGER =
             fr -> {
                 if (fr.isSet()) {
-                    return OptionalInt.of(INT.extract(fr));
+                    return OptionalInt.of(INTEGER.extract(fr));
                 } else {
                     return OptionalInt.empty();
                 }

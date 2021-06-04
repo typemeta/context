@@ -8,7 +8,7 @@ import java.time.*;
 import java.util.*;
 
 /**
- * A set of database combinator functions for injecting values into database {@link PreparedStatement} objects.
+ * A set of injectors for injecting values into database {@link PreparedStatement} objects.
  * These injectors may throw {@link SQLException} exceptions.
  */
 public abstract class CheckedDatabaseInjectors {
@@ -119,7 +119,7 @@ public abstract class CheckedDatabaseInjectors {
     public static final InjectorByIndex.Checked<PreparedStatement, OptionalInt, SQLException> OPT_INTEGER =
             (PreparedStatement ps, int n, OptionalInt optValue) -> {
                 if (optValue.isPresent()) {
-                    ps.setDouble(n, optValue.getAsInt());
+                    ps.setInt(n, optValue.getAsInt());
                 } else {
                     ps.setNull(n, Types.DOUBLE);
                 }
@@ -156,7 +156,7 @@ public abstract class CheckedDatabaseInjectors {
                 if (value != null) {
                     ps.setShort(n, value);
                 } else {
-                    ps.setNull(n, Types.BOOLEAN);
+                    ps.setNull(n, Types.SMALLINT);
                 }
                 return ps;
             };

@@ -9,7 +9,7 @@ import java.time.*;
 import java.util.*;
 
 /**
- * A set of database combinator functions for injecting values into database {@link PreparedStatement} objects.
+ * A set of injectors for injecting values into database {@link PreparedStatement} objects.
  * These functions catch any {@link SQLException} exceptions and rethrow as as an unchecked exception.
  */
 public abstract class DatabaseInjectors {

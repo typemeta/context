@@ -165,8 +165,8 @@ public class FieldReaderExtractorTest {
     private static final TestData<Integer, UInt4Vector> INT  = new TestData<>(
             "int",
             Arrays.asList(0, 123, 123456, -123, -123456),
-            FieldReaderListExtractors.INT,
-            FieldReaderListExtractors.OPT_INT,
+            FieldReaderListExtractors.INTEGER,
+            FieldReaderListExtractors.OPT_INTEGER,
             UInt4Vector::new,
             UInt4Vector::setSafe
     );

@@ -1,6 +1,6 @@
 package org.typemeta.context.injectors.byindex;
 
-public abstract class CheckedInjectByIndexes {
+public abstract class CheckedInjectorByIndexes {
     /**
      * Create a {@link InjectorByIndex.Checked} for enum values
      * @param strInjr   the string injector

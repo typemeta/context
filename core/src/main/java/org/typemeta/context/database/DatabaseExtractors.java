@@ -7,8 +7,8 @@ import java.time.*;
 import java.util.Optional;
 
 /**
- * A set of combinator functions for extracting values from database {@link ResultSet} objects.
- * These functions catch any {@link SQLException} exceptions and rethrow as as an unchecked exception.
+ * A set of extractors for extracting values from database {@link ResultSet} objects.
+ * These extractors catch any {@link SQLException} exceptions and rethrow as as an unchecked exception.
  */
 public abstract class DatabaseExtractors {
 
