@@ -67,7 +67,7 @@ final Config config = new Config(
 final Properties props = new Properties();
 ```
 
-we can define an injector, which will inject a `Config` object to a `Properties` object:
+we can define an injector, which will inject a `Config` object into a `Properties` object:
 
 ```java
 final Injector<Properties, Config> INJR =
@@ -118,7 +118,8 @@ public interface Extractor<CTX, T> {
 
 I.e. an extractor is a function that takes a context,
 extracts a value and returns it.
-The simplest possible type of context is one that can only hold one value,
+Contexts can be any type that supports the retrieval of values.
+By way of example, the simplest possible type of context is one that can hold at most one value,
 namely the Java `Optional` type.
 We can define an extractor for Optional:
 
@@ -146,8 +147,11 @@ assert(len == 4);
 
 Extractors can be built for more interesting types of context,
 such as the Java `Properties` type.
-However, unlike `Optional`, in order to be able to extract a value from a `Properties` object,
-a property key is required. Therefore we need a slightly different type of extractor:
+However, unlike `Optional`,
+in order to be able to extract a value from a `Properties` object,
+a property key is required.
+Therefore we need a slightly different type of extractor,
+that adds an extra string parameter to the `extract` method:
 
 ```java
 @FunctionalInterface
@@ -162,6 +166,56 @@ public interface ExtractorByName<CTX, T> {
 }
 ```
 
+We can construct an instance of this type of extractor as before:
+
+```java
+final ExtractorByName<Properties, String> getProp = Properties::getProperty;
+```
+
+and can use it by calling the extract method with a `Properties` object and a key name:
+
+```java
+final String javaVer = getPropVal.extract(System.getProperties(), "java.version");
+```
+
+Alternatively, we can bind this `ExtractorByName` to a name,
+which gives us a standard `Extractor`:
+
+```java
+final Extractor<Properties, String> getJavaVer = getPropVal.bind("java.version");
+final String javaVer = getJavaVer.extract(System.getProperties());
+System.out.println(javaVer);
+```
+
+### ExtractorByIndex
+
+An `ExtractorByIndex` is similar to `ExtractorByName`,
+where the `extract` method expects an integer index instead of a name.
+
+```java
+@FunctionalInterface
+public interface ExtractorByIndex<CTX, T> {
+    T extract(CTX ctx, int index);
+
+    default Extractor<CTX, T> bind(int index) {
+        return ctx -> extract(ctx, index);
+    }
+    
+    // ...
+}
+```
+
+As before, an `ExtractorByIndex` can be bound to an integer value, to create a standard extractor.
+
+### Combinators
+
+*{document combine and other combinator methods}*
+
+### Reader Monad
+
+The `Extractor` type is an essentially the ubiquitous
+[Reader Monad](http://learnyouahaskell.com/for-a-few-monads-more#reader),
+also known as the function monad.
 
 ## Injectors
 

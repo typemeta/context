@@ -1,6 +1,7 @@
 package org.typemeta.context.properties;
 
 import org.typemeta.context.extractors.*;
+import org.typemeta.context.extractors.byname.ExtractorByName;
 import org.typemeta.context.injectors.*;
 
 import java.time.LocalDate;
@@ -75,17 +76,9 @@ public class Example {
             );
 
     public static void main(String[] args) {
-
-        final Extractor<Optional<String>, String> optGet = Optional::get;
-
-        final Optional<String> optStr = Optional.of("test");
-
-        final String s = optGet.extract(optStr);
-        assert(s.equals("test"));
-
-        final Extractor<Optional<String>, Integer> optLen = optGet.map(String::length);
-        final int len = optLen.extract(optStr);
-        assert(len == 4);
+        example1();
+        example2();
+        example3();
     }
 
     private static void example1() {
@@ -104,10 +97,34 @@ public class Example {
         final Config after = EXTR.extract(props);
 
         assert(before.equals(after));
-
     }
 
     private static void example2() {
 
+        final Extractor<Optional<String>, String> optGet = Optional::get;
+
+        final Optional<String> optStr = Optional.of("test");
+
+        final String s = optGet.extract(optStr);
+        assert(s.equals("test"));
+
+        final Extractor<Optional<String>, Integer> optLen = optGet.map(String::length);
+        final int len = optLen.extract(optStr);
+        assert(len == 4);
+    }
+
+    private static void example3() {
+        final ExtractorByName<Properties, String> getPropVal = Properties::getProperty;
+
+        {
+            final String javaVer = getPropVal.extract(System.getProperties(), "java.version");
+            System.out.println(javaVer);
+        }
+
+        {
+            final Extractor<Properties, String> getJavaVer = getPropVal.bind("java.version");
+            final String javaVer = getJavaVer.extract(System.getProperties());
+            System.out.println(javaVer);
+        }
     }
 }
