@@ -75,6 +75,20 @@ public class Example {
             );
 
     public static void main(String[] args) {
+
+        final Extractor<Optional<String>, String> optGet = Optional::get;
+
+        final Optional<String> optStr = Optional.of("test");
+
+        final String s = optGet.extract(optStr);
+        assert(s.equals("test"));
+
+        final Extractor<Optional<String>, Integer> optLen = optGet.map(String::length);
+        final int len = optLen.extract(optStr);
+        assert(len == 4);
+    }
+
+    private static void example1() {
         final Config before = new Config(
                 LocalDate.of(2021, 04, 19),
                 OptionalInt.of(24),
@@ -90,5 +104,10 @@ public class Example {
         final Config after = EXTR.extract(props);
 
         assert(before.equals(after));
+
+    }
+
+    private static void example2() {
+
     }
 }

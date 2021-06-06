@@ -7,6 +7,14 @@
 that can read values from a context,
 and *injectors*, that can write values into a context.
 
+A context is anything that acts as either a source of values (for extractors)
+or as a target for values (for injectors).
+Examples of contexts include Java `Properties` objects, JDBC `ResultSet` objects (for database extractors),
+and JDBC `PreparedStatement` objects ( for database injectors).
+
+The library provides implemenetation of extractors and injectos for the above context types,
+but can can support any type of context.
+
 # Getting Started
 
 ## Requirements
@@ -86,12 +94,74 @@ final Extractor<Properties, Config> EXTR =
 final Config config2 = EXTR.extract(props);
 ```
 
-# Background
+# User Guide
 
 *Combinators* are an approach to organising libraries
 by providing a set of primitive constructs,
 along with a set of functions that can combine existing constructs to form new ones.
-Context provides two sets of combinators, injector and extractors.
+Context provides two sets of combinators, extractors and injectors.
+
+## Extractors
+
+Extractors extract a value from a context.
+The primary interface is `Extractor`, which essentially looks as follows:
+
+```java
+@FunctionalInterface
+public interface Extractor<CTX, T> {
+    
+    T extract(CTX ctx);
+    
+    // ...
+}
+```
+
+I.e. an extractor is a function that takes a context,
+extracts a value and returns it.
+The simplest possible type of context is one that can only hold one value,
+namely the Java `Optional` type.
+We can define an extractor for Optional:
+
+```java
+Extractor<Optional<String>, String> optGet = Optional::get;
+```
+
+and use it to extract a value from an optional value:
+
+```java
+final Optional<String> optStr = Optional.of("test");
+final String s = optGet.extract(optStr);
+assert(s.equals("test"));
+```
+
+We can convert this extractor into one for a different type by mapping a function over the extractor:
+
+```java
+final Extractor<Optional<String>, Integer> optLen = optGet.map(String::length);
+final int len = optLen.extract(optStr);
+assert(len == 4);
+```
+
+### ExtractorByName
+
+Extractors can be built for more interesting types of context,
+such as the Java `Properties` type.
+However, unlike `Optional`, in order to be able to extract a value from a `Properties` object,
+a property key is required. Therefore we need a slightly different type of extractor:
+
+```java
+@FunctionalInterface
+public interface ExtractorByName<CTX, T> {
+    T extract(CTX ctx, String name);
+
+    default Extractor<CTX, T> bind(String name) {
+        return ctx -> extract(ctx, name);
+    }
+    
+    // ...
+}
+```
+
 
 ## Injectors
 
@@ -101,6 +171,7 @@ The primary interface is `Injector`, which essentially looks as follows:
 ```java
 @FunctionalInterface
 public interface Injector<CTX, T> {
+    
     CTX inject(CTX ctx, T value);
     
     // ...
@@ -108,9 +179,13 @@ public interface Injector<CTX, T> {
 ```
 
 I.e. an injector is a function that takes a context and a value,
-injects the value into the context, and returns the context.
-
+injects the value into the context, and returns the updated context.
+The simplest possible context is an Optional value.
 Since it's a Single Abstract Method interface we can easily construct an injector:
 
+```java
+final Extractor<Optional<String>, String> optGet = Optional::get;
+```
 
+To use it we just pass an Optional value to the
 WIP

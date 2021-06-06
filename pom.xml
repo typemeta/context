@@ -13,11 +13,6 @@
 
     <packaging>pom</packaging>
 
-    <modules>
-        <module>arrow</module>
-        <module>core</module>
-    </modules>
-    
     <properties>
         <java.version>8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -83,6 +78,76 @@
             <url>https://opensource.org/licenses/MIT</url>
         </license>
     </licenses>
+
+    <modules>
+        <module>core</module>
+    </modules>
+
+    <profiles>
+
+        <profile>
+            <id>full</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>arrow</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>noarrow</id>
+        </profile>
+
+        <profile>
+            <id>release</id>
+            <activation>
+                <property>
+                    <!-- Automatically set to true on mvn release:perform -->
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <modules>
+                <module>arrow</module>
+            </modules>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>${maven-source-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven-gpg-plugin.version}</version>
+                        <configuration>
+                            <executable>gpg</executable>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
 
     <dependencyManagement>
 
@@ -324,52 +389,5 @@
             </plugin>
         </plugins>
     </reporting>
-
-    <profiles>
-        <profile>
-            <id>release</id>
-            <activation>
-                <property>
-                    <!-- Automatically set to true on mvn release:perform -->
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>${maven-source-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>${maven-gpg-plugin.version}</version>
-                        <configuration>
-                            <executable>gpg</executable>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
 </project>
