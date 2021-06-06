@@ -4,8 +4,9 @@ jdk:
 #  - oraclejdk8
   - openjdk8
 
-script:
-  mvn test -B -P noarrow
+install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -P noarrow
+
+script: mvn test -B -P noarrow
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
