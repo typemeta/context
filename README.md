@@ -1,6 +1,6 @@
-[<img src="https://img.shields.io/maven-central/v/org.typemeta/context.svg"/>](https://search.maven.org/#search%7Cga%7C1%7Cfuncj)
-[![Javadocs](https://www.javadoc.io/badge/org.typemeta/context.svg)](https://www.javadoc.io/doc/org.typemeta/funcj)
-[![Build Status](https://travis-ci.com/typemeta/context.svg?branch=master)](https://travis-ci.com/typemeta/funcj)
+[<img src="https://img.shields.io/maven-central/v/org.typemeta/context.svg"/>](https://search.maven.org/#search%7Cga%7C1%7Ccontext)
+[![Javadocs](https://www.javadoc.io/badge/org.typemeta/context.svg)](https://www.javadoc.io/doc/org.typemeta/context)
+[![Build Status](https://travis-ci.com/typemeta/context.svg?branch=master)](https://travis-ci.com/typemeta/context)
 
 *Context* is a zero-dependency Java library that provides a combinator framework for building *extractors*,
 that can read values from a context,
