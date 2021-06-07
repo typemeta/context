@@ -4,7 +4,6 @@ import org.junit.jupiter.api.*;
 import org.slf4j.*;
 import org.typemeta.context.extractors.Extractor;
 import org.typemeta.context.extractors.byname.ExtractorByName;
-import org.typemeta.context.utils.Exceptions;
 
 import java.sql.Date;
 import java.sql.*;
@@ -60,7 +59,13 @@ public class DatabaseExtractorTest {
     static void loadScript(String path) {
         logger.info("Loading script " + path);
         SqlUtils.loadMultiResource(path)
-                .forEach(sql -> Exceptions.wrap(() -> testDbConn.createStatement().execute(sql)));
+                .forEach(sql -> {
+                    try (final Statement stmt = testDbConn.createStatement()) {
+                        stmt.execute(sql);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                });
     }
 
     @BeforeAll

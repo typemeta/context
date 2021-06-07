@@ -5,7 +5,6 @@ import org.slf4j.*;
 import org.typemeta.context.extractors.Extractor;
 import org.typemeta.context.injectors.Injector;
 import org.typemeta.context.injectors.byindex.InjectorByIndex;
-import org.typemeta.context.utils.Exceptions;
 
 import java.sql.Date;
 import java.sql.*;
@@ -62,10 +61,10 @@ public class DatabaseInjectorTest {
         logger.info("Loading script " + path);
         SqlUtils.loadMultiResource(path)
                 .forEach(sql -> {
-                    try {
-                        testDbConn.createStatement().execute(sql);
+                    try (final Statement stmt = testDbConn.createStatement()) {
+                        stmt.execute(sql);
                     } catch (SQLException ex) {
-                        Exceptions.throwUnchecked(ex);
+                        throw new RuntimeException(ex);
                     }
                 });
     }
