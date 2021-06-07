@@ -72,6 +72,17 @@ public interface Extractor<CTX, T> {
     }
 
     /**
+     * Construct an extractor that transform the context that this extractor applies to,
+     * by applying a function to the context, before the extractor is applied.
+     * @param f         the function
+     * @param <CTX0>    the transformed context type
+     * @return          the new extractor
+     */
+    default <CTX0> Extractor<CTX0, T> mapContext(Functions.F<CTX0, CTX> f) {
+        return ctx0 -> extract(f.apply(ctx0));
+    }
+
+    /**
      * Convert this extractor into one that extracts optional values.
      * The optional extractor converts null values to {@code Optional.empty}.
      * @return          the extractor function for the optional value
