@@ -73,7 +73,7 @@ public interface Extractor<CTX, T> {
 
     /**
      * Construct an extractor that transform the context that this extractor applies to,
-     * by applying a function to the context, before the extractor is applied.
+     * by applying a function to the context before the extractor is applied.
      * @param f         the function
      * @param <CTX0>    the transformed context type
      * @return          the new extractor

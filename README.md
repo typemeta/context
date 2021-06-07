@@ -91,6 +91,7 @@ final Extractor<Properties, Config> EXTR =
         );
 
 final Config config2 = EXTR.extract(props);
+assert(config2.equals(config));
 ```
 
 # User Guide
@@ -155,11 +156,8 @@ that adds an extra string parameter to the `extract` method:
 ```java
 @FunctionalInterface
 public interface ExtractorByName<CTX, T> {
+    
     T extract(CTX ctx, String name);
-
-    default Extractor<CTX, T> bind(String name) {
-        return ctx -> extract(ctx, name);
-    }
     
     // ...
 }
@@ -194,17 +192,82 @@ where the `extract` method expects an integer index instead of a name.
 ```java
 @FunctionalInterface
 public interface ExtractorByIndex<CTX, T> {
+    
     T extract(CTX ctx, int index);
-
-    default Extractor<CTX, T> bind(int index) {
-        return ctx -> extract(ctx, index);
-    }
     
     // ...
 }
 ```
 
 As before, an `ExtractorByIndex` can be bound to an integer value, to create a standard extractor.
+
+### Checked Extractors
+
+At first glance, the JDBC `ResultSet` class seems like a suitable candidate for converting into an extractor.
+However the `ResultSet` get methods (e.g. `getBoolean`) all throw a `SQLException` in their signature.
+This prevents us from creating an extractor directly:
+
+```java
+// Compile error as getBoolean throws an exception in its signature
+final ExtractorByName<ResultSet, Boolean> BOOLEAN = ResultSet::getBoolean;
+```
+
+To address this, each extractor interface contains an interface named `Checked`, e.g. `Extractor.Checked`.
+Each `Checked` interface is similar to its parent, with one difference - the extract method throws an exception.
+The exact type of exception is specified as a type argument to the interface:
+
+```java
+@FunctionalInterface
+interface Checked<CTX, T, EX extends Exception> {
+    
+    T extract(CTX ctx) throws EX;
+    
+    // ...
+}
+```
+
+These interfaces can then be used to construct extractors from methods that throw an exception, e.g.:
+
+```java
+final ExtractorByName.Checked<ResultSet, Boolean, SQLException> BOOLEAN = ResultSet::getBoolean;
+```
+
+We can also convert a `Checked` extractor instance to an unchecked one by calling `Checked.unchecked`:
+
+```java
+final ExtractorByName<ResultSet, Boolean, SQLException> BOOLEAN2 = BOOLEAN.unchecked();
+```
+
+### Primitive Specialiations
+
+The generic type parameter `T` in the extractor interfaces specifies the type of the extracted value.
+Currently generic types do not support primitive types (byte, int etc) directly,
+which means their boxed equivalents (Byte, Integer, ...) must be used.
+This introduces the possibility of null values, as well as a slight performance overhead.
+If the value being extracted cannot be null then there exists specialised equivalents of the extractor interfaces:
+
+| Base Type | Double Specialisation | Integer Specialisation | Long Specialisation |
+|---|---|---|---|
+| `Extractor` | `DoubleExtractor` | `IntegerExtractor` | `LongExtractor` |
+| `ExtractorByName` | `DoubleExtractorByName` | `IntegerExtractorByName` | `LongExtractorByName` |
+| `ExtractorByIndex` | `DoubleExtractorByIndex` | `IntegerExtractorByIndex` | `LongExtractorByIndex` |
+
+Each specialised class provides an alternative extract method that supports the primitive type:
+
+```java
+
+public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
+
+    double extractDouble(CTX ctx);
+
+    @Override
+    default Double extract(CTX ctx) {
+        return extractDouble(ctx);
+    }
+    
+    // ...
+}
+```
 
 ### Combinators
 
