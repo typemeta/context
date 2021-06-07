@@ -176,7 +176,7 @@ final String javaVer = getPropVal.extract(System.getProperties(), "java.version"
 ```
 
 Alternatively, we can bind this `ExtractorByName` to a name,
-which gives us a standard `Extractor`:
+which then gives us a standard `Extractor`:
 
 ```java
 final Extractor<Properties, String> getJavaVer = getPropVal.bind("java.version");
@@ -187,7 +187,7 @@ System.out.println(javaVer);
 ### ExtractorByIndex
 
 An `ExtractorByIndex` is similar to `ExtractorByName`,
-where the `extract` method expects an integer index instead of a name.
+where instead the `extract` method expects an integer index instead of a name.
 
 ```java
 @FunctionalInterface
@@ -204,16 +204,16 @@ As before, an `ExtractorByIndex` can be bound to an integer value, to create a s
 ### Checked Extractors
 
 At first glance, the JDBC `ResultSet` class seems like a suitable candidate for converting into an extractor.
-However the `ResultSet` get methods (e.g. `getBoolean`) all throw a `SQLException` in their signature.
+However the `ResultSet` get methods (e.g. `ResultSet.getBoolean`) all throw a `SQLException` in their signature.
 This prevents us from creating an extractor directly:
 
 ```java
-// Compile error as getBoolean throws an exception in its signature
+// Compile error.
 final ExtractorByName<ResultSet, Boolean> BOOLEAN = ResultSet::getBoolean;
 ```
 
-To address this, each extractor interface contains an interface named `Checked`, e.g. `Extractor.Checked`.
-Each `Checked` interface is similar to its parent, with one difference - the extract method throws an exception.
+To address this, each extractor interface contains an inner interface named `Checked`, e.g. `Extractor.Checked`.
+Each `Checked` interface is similar to its outer interface, with one difference - the extract method throws an exception.
 The exact type of exception is specified as a type argument to the interface:
 
 ```java
@@ -235,16 +235,17 @@ final ExtractorByName.Checked<ResultSet, Boolean, SQLException> BOOLEAN = Result
 We can also convert a `Checked` extractor instance to an unchecked one by calling `Checked.unchecked`:
 
 ```java
-final ExtractorByName<ResultSet, Boolean, SQLException> BOOLEAN2 = BOOLEAN.unchecked();
+final ExtractorByName<ResultSet, Boolean> BOOLEAN2 = BOOLEAN.unchecked();
 ```
 
-### Primitive Specialiations
+### Specialiations
 
 The generic type parameter `T` in the extractor interfaces specifies the type of the extracted value.
 Currently generic types do not support primitive types (byte, int etc) directly,
 which means their boxed equivalents (Byte, Integer, ...) must be used.
 This introduces the possibility of null values, as well as a slight performance overhead.
-If the value being extracted cannot be null then there exists specialised equivalents of the extractor interfaces:
+If the value being extracted can never be null then there exists specialised equivalents of the extractor interfaces,
+which can be used instead:
 
 | Base Type | Double Specialisation | Integer Specialisation | Long Specialisation |
 |---|---|---|---|
@@ -269,9 +270,41 @@ public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
 }
 ```
 
+### Constructors
+
+There are various ways to construct an extractor.
+The first and most common is to construct one via a lambda or method reference:
+
+```java
+Extractor<Optional<String>, String> optGet = Optional::get;
+```
+
+Each extractor type also has a static `of` constructor method (e.g. `Extractor.of`)
+that can be used where the lambda can't be used directly, e.g.:
+
+```java
+// Commpile error
+final ExtractorByName<ResultSet, Boolean> BOOLEAN = ResultSet::getBoolean.unchecked();
+
+// Ok.
+final ExtractorByName<ResultSet, Boolean> BOOLEAN =
+        ExtractorByName.of(ResultSet::getBoolean).unchecked();
+```
+
+Each extractor type also provides some basic extractors:
+
+```java
+// The id extractor always returns the context.
+final Extractor<Properties, Properties> id = Extractor.id();
+
+// konst always retrns the given value (and ignores the context).
+final Extractor<Properties, String> konst = Extractor.konst("test");
+```
+
 ### Combinators
 
-*{document combine and other combinator methods}*
+The library provides a number of methods that can be used to construct new extractors
+from existing ones.
 
 ### Reader Monad
 
