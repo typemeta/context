@@ -9,7 +9,7 @@ and *injectors*, that can write values into a context.
 A context is anything that acts as either a source of values (for extractors)
 or as a target for values (for injectors).
 Examples of contexts include Java `Properties` objects, JDBC `ResultSet` objects (for database extractors),
-and JDBC `PreparedStatement` objects ( for database injectors).
+and JDBC `PreparedStatement` objects (for database injectors).
 
 The library provides implemenetation of extractors and injectos for the above context types,
 but can can support any type of context.
@@ -256,7 +256,6 @@ which can be used instead:
 Each specialised class provides an alternative extract method that supports the primitive type:
 
 ```java
-
 public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
 
     double extractDouble(CTX ctx);
@@ -280,7 +279,7 @@ Extractor<Optional<String>, String> optGet = Optional::get;
 ```
 
 Each extractor type also has a static `of` constructor method (e.g. `Extractor.of`)
-that can be used where the lambda can't be used directly, e.g.:
+that can be used where a lambda or method reference can't be used directly, e.g.:
 
 ```java
 // Commpile error
@@ -297,8 +296,8 @@ Each extractor type also provides some basic extractors:
 // The id extractor always returns the context.
 final Extractor<Properties, Properties> id = Extractor.id();
 
-// konst always retrns the given value (and ignores the context).
-final Extractor<Properties, String> konst = Extractor.konst("test");
+// konst always returns the given value (and ignores the context).
+final Extractor<Properties, String> alwaysRed = Extractor.konst("Red");
 ```
 
 ### Combinators
@@ -306,6 +305,73 @@ final Extractor<Properties, String> konst = Extractor.konst("test");
 The library provides a number of methods that can be used to construct new extractors
 from existing ones.
 
+The extractor `map` method creates an extractor that
+applies a function to result of the given extractor.
+E.g.:
+
+```java
+final ExtractorByName<Properties, String> getPropVal = Properties::getProperty;
+final Extractor<Properties, LocalDate> getJavaVerDate =
+        getPropVal.bind("java.version.date")
+                .map(s -> LocalDate.parse(s, DateTimeFormatter.ISO_LOCAL_DATE));
+
+final LocalDate javaVerDate = getJavaVerDate.extract(System.getProperties());
+System.out.println(javaVerDate);
+```
+
+The `flatMap` method creates a new extractor by chaining two extractors together, e.g.:
+
+```java
+// Build a simple properties map.
+final Properties props = new Properties();
+props.put("keyA", "valueA");
+props.put("keyB", "valueB");
+props.put("whichKey", "keyA");
+
+// Define some extractors.
+final ExtractorByName<Properties, String> getPropVal = Properties::getProperty;
+final Extractor<Properties, String> getKey = getPropVal.bind("whichKey");
+
+// Use flatMap to compose getKey and getPropVal.
+final Extractor<Properties, String> getKeyVal = getKey.flatMap(key -> getPropVal.bind(key));
+
+// Test it.
+final String value = getKeyVal.extract(props);
+
+// Outputs "valueA".
+System.out.println(value);
+```
+
+The `mapContext` method creates an extractor that applies a function to the context,
+before applying the given extractor, e.g.:
+
+```java
+final ExtractorByIndex<String, Character> getChar = String::charAt;
+
+// Convert getChar into an extractor that operates on integer values.
+final Extractor<Integer, Character> getFirstHexChar =
+        getChar.bind(0).mapContext(Integer::toHexString);
+
+final char c = getFirstHexChar.extract(987654);
+
+// Prints "f".
+System.out.println("c=" + c);
+```
+
+The `optional` method converts an extractor into one that extracts optional values.
+If the extracted value is null then it's converted to an empty optional value.
+
+```java
+final ExtractorByName<Properties, String> getPropVal = Properties::getProperty;
+final ExtractorByName<Properties, Optional<String>> getPropOptVal = getPropVal.optional();
+
+final Optional<String> empty = getPropOptVal.extract(System.getProperties(), "no_such_key");
+assert(!empty.isPresent());
+
+final Optional<String> notEmpty = getPropOptVal.extract(System.getProperties(), "java.home");
+assert(notEmpty.isPresent());
+```
+        
 ### Reader Monad
 
 The `Extractor` type is an essentially the ubiquitous
