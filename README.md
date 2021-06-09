@@ -104,7 +104,7 @@ Context provides two sets of combinators, extractors and injectors.
 ## Extractors
 
 Extractors extract a value from a context.
-The primary interface is `Extractor`, which essentially looks as follows:
+The primary interface is `Extractor`, which has one abstract method:
 
 ```java
 @FunctionalInterface
@@ -135,7 +135,7 @@ final String s = optGet.extract(optStr);
 assert(s.equals("test"));
 ```
 
-We can convert this extractor into one for a different type by mapping a function over the extractor:
+We can convert this extractor into one for a different type by mapping a function over it:
 
 ```java
 final Extractor<Optional<String>, Integer> optLen = optGet.map(String::length);
@@ -146,7 +146,7 @@ assert(len == 4);
 ### ExtractorByName
 
 Extractors can be built for more interesting types of context,
-such as the Java `Properties` type.
+such as the Java `Properties` class.
 However, unlike `Optional`,
 in order to be able to extract a value from a `Properties` object,
 a property key is required.
@@ -371,7 +371,7 @@ assert(!empty.isPresent());
 final Optional<String> notEmpty = getPropOptVal.extract(System.getProperties(), "java.home");
 assert(notEmpty.isPresent());
 ```
-        
+
 ### Reader Monad
 
 The `Extractor` type is an essentially the ubiquitous
