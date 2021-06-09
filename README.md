@@ -238,10 +238,10 @@ We can also convert a `Checked` extractor instance to an unchecked one by callin
 final ExtractorByName<ResultSet, Boolean> BOOLEAN2 = BOOLEAN.unchecked();
 ```
 
-### Specialiations
+### Specialisations
 
 The generic type parameter `T` in the extractor interfaces specifies the type of the extracted value.
-Currently generic types do not support primitive types (byte, int etc) directly,
+Currently Java generic types do not support primitive types (byte, int etc) directly,
 which means their boxed equivalents (Byte, Integer, ...) must be used.
 This introduces the possibility of null values, as well as a slight performance overhead.
 If the value being extracted can never be null then there exists specialised equivalents of the extractor interfaces,
@@ -294,7 +294,7 @@ Each extractor type also provides some basic extractors:
 
 ```java
 // The id extractor always returns the context.
-final Extractor<Properties, Properties> id = Extractor.id();
+final Extractor<Properties, Properties> getProps = Extractor.id();
 
 // konst always returns the given value (and ignores the context).
 final Extractor<Properties, String> alwaysRed = Extractor.konst("Red");
@@ -302,8 +302,10 @@ final Extractor<Properties, String> alwaysRed = Extractor.konst("Red");
 
 ### Combinators
 
-The library provides a number of methods that can be used to construct new extractors
+The library also provides a number of methods that can be used to construct new extractors
 from existing ones.
+
+#### The `map` method
 
 The extractor `map` method creates an extractor that
 applies a function to result of the given extractor.
@@ -318,6 +320,8 @@ final Extractor<Properties, LocalDate> getJavaVerDate =
 final LocalDate javaVerDate = getJavaVerDate.extract(System.getProperties());
 System.out.println(javaVerDate);
 ```
+
+#### The `flatMap` method
 
 The `flatMap` method creates a new extractor by chaining two extractors together, e.g.:
 
@@ -342,6 +346,8 @@ final String value = getKeyVal.extract(props);
 System.out.println(value);
 ```
 
+#### The `mapContext` method
+
 The `mapContext` method creates an extractor that applies a function to the context,
 before applying the given extractor, e.g.:
 
@@ -357,6 +363,8 @@ final char c = getFirstHexChar.extract(987654);
 // Prints "f".
 System.out.println("c=" + c);
 ```
+
+#### The `optional` method
 
 The `optional` method converts an extractor into one that extracts optional values.
 If the extracted value is null then it's converted to an empty optional value.
