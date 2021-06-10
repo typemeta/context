@@ -8,6 +8,7 @@ import org.typemeta.context.injectors.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Example {
     static class Config {
@@ -77,108 +78,134 @@ public class Example {
                     Config::new
             );
 
-    public static void main(String[] args) {
-        example1();
-        example2();
-        example3();
-        example4();
-        example5();
-        example6();
-        example7();
-    }
-
-    private static void example1() {
-        final Config before = new Config(
-                LocalDate.of(2021, 04, 19),
-                OptionalInt.of(24),
-                "DEV"
-        );
-
-        final Properties props = new Properties();
-
-        INJR.inject(props, before);
-
-        final Config after = EXTR.extract(props);
-
-        assert(before.equals(after));
-
-        System.out.println("before=" + before);
-        System.out.println("after=" + after);
-    }
-
-    private static void example2() {
-
-        final Extractor<Optional<String>, String> optGet = Optional::get;
-
-        final Optional<String> optStr = Optional.of("test");
-
-        final String s = optGet.extract(optStr);
-        assert(s.equals("test"));
-        System.out.println("s=" + s);
-
-        final Extractor<Optional<String>, Integer> optLen = optGet.map(String::length);
-        final int len = optLen.extract(optStr);
-        assert(len == 4);
-        System.out.println("len=" + len);
-    }
-
-    private static void example3() {
-        final ExtractorByName<Properties, String> getPropVal = Properties::getProperty;
-
-        {
-            final String javaVer = getPropVal.extract(System.getProperties(), "java.version");
-            System.out.println(javaVer);
+    public static class ExtractorExamples {
+        public static void main(String[] args) {
+            example1();
+            example2();
+            example3();
+            example4();
+            example5();
+            example6();
+            example7();
         }
 
-        {
-            final Extractor<Properties, String> getJavaVer = getPropVal.bind("java.version");
-            final String javaVer = getJavaVer.extract(System.getProperties());
-            System.out.println(javaVer);
+        private static void example1() {
+            final Config before = new Config(
+                    LocalDate.of(2021, 04, 19),
+                    OptionalInt.of(24),
+                    "DEV"
+            );
+
+            final Properties props = new Properties();
+
+            INJR.inject(props, before);
+
+            final Config after = EXTR.extract(props);
+
+            assert (before.equals(after));
+
+            System.out.println("before=" + before);
+            System.out.println("after=" + after);
+        }
+
+        private static void example2() {
+
+            final Extractor<Optional<String>, String> optGet = Optional::get;
+
+            final Optional<String> optStr = Optional.of("test");
+
+            final String s = optGet.extract(optStr);
+            assert (s.equals("test"));
+            System.out.println("s=" + s);
+
+            final Extractor<Optional<String>, Integer> optLen = optGet.map(String::length);
+            final int len = optLen.extract(optStr);
+            assert (len == 4);
+            System.out.println("len=" + len);
+        }
+
+        private static void example3() {
+            final ExtractorByName<Properties, String> getPropVal = Properties::getProperty;
+
+            {
+                final String javaVer = getPropVal.extract(System.getProperties(), "java.version");
+                System.out.println(javaVer);
+            }
+
+            {
+                final Extractor<Properties, String> getJavaVer = getPropVal.bind("java.version");
+                final String javaVer = getJavaVer.extract(System.getProperties());
+                System.out.println(javaVer);
+            }
+        }
+
+        private static void example4() {
+            final ExtractorByName<Properties, String> getPropVal = Properties::getProperty;
+            final Extractor<Properties, LocalDate> getJavaVerDate =
+                    getPropVal.bind("java.version.date")
+                            .map(s -> LocalDate.parse(s, DateTimeFormatter.ISO_LOCAL_DATE));
+            final LocalDate javaVerDate = getJavaVerDate.extract(System.getProperties());
+            System.out.println(javaVerDate);
+        }
+
+        private static void example5() {
+            final Properties props = new Properties();
+            props.put("keyA", "valueA");
+            props.put("kayB", "valueB");
+            props.put("whichKey", "keyA");
+
+            final ExtractorByName<Properties, String> getPropVal = Properties::getProperty;
+            final Extractor<Properties, String> getKey = getPropVal.bind("whichKey");
+
+            final Extractor<Properties, String> getKeyVal = getKey.flatMap(key -> getPropVal.bind(key));
+
+            final String value = getKeyVal.extract(props);
+            System.out.println(value);
+        }
+
+        private static void example6() {
+            final ExtractorByIndex<String, Character> getChar = String::charAt;
+            final Extractor<Integer, Character> getFirstHexChar = getChar.bind(0).mapContext(Integer::toHexString);
+            final char c = getFirstHexChar.extract(987654);
+            System.out.println("c=" + c);
+        }
+
+        private static void example7() {
+            final ExtractorByName<Properties, String> getPropVal = Properties::getProperty;
+            final ExtractorByName<Properties, Optional<String>> getPropOptVal = getPropVal.optional();
+
+            final Optional<String> empty = getPropOptVal.extract(System.getProperties(), "no_such_key");
+            System.out.println("empty=" + empty);
+            assert (!empty.isPresent());
+
+
+            final Optional<String> notEmpty = getPropOptVal.extract(System.getProperties(), "java.home");
+            System.out.println("notEmpty=" + notEmpty);
+            assert (notEmpty.isPresent());
         }
     }
 
-    private static void example4() {
-        final ExtractorByName<Properties, String> getPropVal = Properties::getProperty;
-        final Extractor<Properties, LocalDate> getJavaVerDate =
-                getPropVal.bind("java.version.date")
-                        .map(s -> LocalDate.parse(s, DateTimeFormatter.ISO_LOCAL_DATE));
-        final LocalDate javaVerDate = getJavaVerDate.extract(System.getProperties());
-        System.out.println(javaVerDate);
-    }
+    public static class InjectorExamples {
+        public static void main(String[] args) {
+            example1();
+            example2();
+        }
 
-    private static void example5() {
-        final Properties props = new Properties();
-        props.put("keyA", "valueA");
-        props.put("kayB", "valueB");
-        props.put("whichKey", "keyA");
+        private static void example1() {
+            final Injector<Optional<String>, String> setOptVal = (os, s) -> Optional.ofNullable(s);
 
-        final ExtractorByName<Properties, String> getPropVal = Properties::getProperty;
-        final Extractor<Properties, String> getKey = getPropVal.bind("whichKey");
+            final Optional<String> os = setOptVal.inject(Optional.empty(), "test");
 
-        final Extractor<Properties, String> getKeyVal = getKey.flatMap(key -> getPropVal.bind(key));
+            assert(os.get().equals("test"));
+        }
 
-        final String value = getKeyVal.extract(props);
-        System.out.println(value);
-    }
+        private static void example2() {
+            final Injector<AtomicInteger, Integer> setAtomVal = Injector.of(AtomicInteger::set);
 
-    private static void example6() {
-        final ExtractorByIndex<String, Character> getChar = String::charAt;
-        final Extractor<Integer, Character> getFirstHexChar = getChar.bind(0).mapContext(Integer::toHexString);
-        final char c = getFirstHexChar.extract(987654);
-        System.out.println("c=" + c);
-    }
+            final AtomicInteger ai = new AtomicInteger(0);
+            setAtomVal.inject(ai, 100);
 
-    private static void example7() {
-        final ExtractorByName<Properties, String> getPropVal = Properties::getProperty;
-        final ExtractorByName<Properties, Optional<String>> getPropOptVal = getPropVal.optional();
-
-        final Optional<String> empty = getPropOptVal.extract(System.getProperties(), "no_such_key");
-        System.out.println("empty=" + empty);
-        assert(!empty.isPresent());
-
-
-        final Optional<String> notEmpty = getPropOptVal.extract(System.getProperties(), "java.home");
-        System.out.println("notEmpty=" + notEmpty);
-        assert(notEmpty.isPresent());
+            assert(ai.get() == 100);
+        }
     }
 }

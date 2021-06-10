@@ -69,20 +69,20 @@ final Properties props = new Properties();
 we can define an injector, which will inject a `Config` object into a `Properties` object:
 
 ```java
-final Injector<Properties, Config> INJR =
+final Injector<Properties, Config> setConfigProp =
         Injectors.combine(
             PropertiesInjectors.LOCALDATE.bind("endDate").premap(Config::endDate),
             PropertiesInjectors.OPT_INTEGER.bind("numThreads").premap(Config::numThreads),
             PropertiesInjectors.STRING.bind("env").premap(Config::env)
         );
 
-INJR.inject(props, config);
+        setConfigProp.inject(props, config);
 ```
 
 and an extractor, which will extract a `Config` object from a `Properties` object:
 
 ```java
-final Extractor<Properties, Config> EXTR =
+final Extractor<Properties, Config> getConfigProp =
         Extractors.combine(
                 PropertiesExtractors.LOCALDATE.bind("endDate"),
                 PropertiesExtractors.OPT_INTEGER.bind("numThreads"),
@@ -90,7 +90,7 @@ final Extractor<Properties, Config> EXTR =
                 Config::new
         );
 
-final Config config2 = EXTR.extract(props);
+final Config config2 = getConfigProp.extract(props);
 assert(config2.equals(config));
 ```
 
@@ -117,11 +117,10 @@ public interface Extractor<CTX, T> {
 ```
 
 I.e. an extractor is a function that takes a context,
-extracts a value and returns it.
+extracts a value and returns the extracted value.
 Contexts can be any type that supports the retrieval of values.
-By way of example, the simplest possible type of context is one that can hold at most one value,
-namely the Java `Optional` type.
-We can define an extractor for Optional:
+Taking the Java `Optional` type as an example context,
+we can define an extractor for Optional:
 
 ```java
 Extractor<Optional<String>, String> optGet = Optional::get;
@@ -305,7 +304,7 @@ final Extractor<Properties, String> alwaysRed = Extractor.konst("Red");
 The library also provides a number of methods that can be used to construct new extractors
 from existing ones.
 
-#### The `map` method
+#### `map`
 
 The extractor `map` method creates an extractor that
 applies a function to result of the given extractor.
@@ -321,7 +320,7 @@ final LocalDate javaVerDate = getJavaVerDate.extract(System.getProperties());
 System.out.println(javaVerDate);
 ```
 
-#### The `flatMap` method
+#### `flatMap`
 
 The `flatMap` method creates a new extractor by chaining two extractors together, e.g.:
 
@@ -346,7 +345,7 @@ final String value = getKeyVal.extract(props);
 System.out.println(value);
 ```
 
-#### The `mapContext` method
+#### `mapContext`
 
 The `mapContext` method creates an extractor that applies a function to the context,
 before applying the given extractor, e.g.:
@@ -364,7 +363,7 @@ final char c = getFirstHexChar.extract(987654);
 System.out.println("c=" + c);
 ```
 
-#### The `optional` method
+#### `optional`
 
 The `optional` method converts an extractor into one that extracts optional values.
 If the extracted value is null then it's converted to an empty optional value.
@@ -380,11 +379,40 @@ final Optional<String> notEmpty = getPropOptVal.extract(System.getProperties(), 
 assert(notEmpty.isPresent());
 ```
 
+#### `combine`
+
+`combine` is a standalone method that can be used to combine one more extractors
+into one that extractors an object.
+The extractors being combined correspond to the fields that comprise the object.
+
+The `Config` example earlier in this guide illustrates the usage:
+
+```java
+final Extractor<Properties, Config> EXTR =
+        Extractors.combine(
+                PropertiesExtractors.LOCALDATE.bind("endDate"),
+                PropertiesExtractors.OPT_INTEGER.bind("numThreads"),
+                PropertiesExtractors.STRING.bind("env"),
+                Config::new
+        );
+
+final Config config2 = EXTR.extract(props);
+assert(config2.equals(config));
+```
+
+In the above example, the three extractors being combined correspond
+to the three fields that comprise the `Config` class.
+So `combine` creates an extractor for `Config`,
+by calling each field extractor to extract the field values,
+and then calling the given constructor for `Config`.
+
 ### Reader Monad
 
-The `Extractor` type is an essentially the ubiquitous
+As a side note, the `Extractor` type is in fact the ubiquitous
 [Reader Monad](http://learnyouahaskell.com/for-a-few-monads-more#reader),
 also known as the function monad.
+
+The `konst` and `flatMap` methods correspond to the monadic `pure` (aka `return`) and `bind` respectively.
 
 ## Injectors
 
@@ -403,12 +431,27 @@ public interface Injector<CTX, T> {
 
 I.e. an injector is a function that takes a context and a value,
 injects the value into the context, and returns the updated context.
-The simplest possible context is an Optional value.
-Since it's a Single Abstract Method interface we can easily construct an injector:
+The injector can either modify the context as a side-effect and return the updated context,
+or return a new context value.
 
 ```java
-final Extractor<Optional<String>, String> optGet = Optional::get;
+// Example 1: Injector returns new context.
+
+final Injector<Optional<String>, String> setOptVal = (os, s) -> Optional.ofNullable(s);
+
+final Optional<String> os = setOptVal.inject(Optional.empty(), "test");
+
+assert(os.get().equals("test"));
+
+// Example 2: Injector modifies context value in place.
+
+final Injector<AtomicInteger, Integer> setAtomVal = Injector.of(AtomicInteger::set);
+
+final AtomicInteger ai = new AtomicInteger(0);
+setAtomVal.inject(ai, 100);
+
+assert(ai.get() == 100);
 ```
 
-To use it we just pass an Optional value to the
+
 WIP
