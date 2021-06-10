@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 /**
- * A function to extract a value from an context.
+ * A function to extract a value from a context.
  * @param <CTX>     the context type
  * @param <T>       the extracted value type
  */

@@ -203,7 +203,7 @@ As before, an `ExtractorByIndex` can be bound to an integer value, to create a s
 ### Checked Extractors
 
 At first glance, the JDBC `ResultSet` class seems like a suitable candidate for converting into an extractor.
-However the `ResultSet` get methods (e.g. `ResultSet.getBoolean`) all throw a `SQLException` in their signature.
+However, the `ResultSet` get methods (e.g. `ResultSet.getBoolean`) all throw a `SQLException` in their signature.
 This prevents us from creating an extractor directly:
 
 ```java
@@ -225,7 +225,7 @@ interface Checked<CTX, T, EX extends Exception> {
 }
 ```
 
-These interfaces can then be used to construct extractors from methods that throw an exception, e.g.:
+These interfaces can then be used to construct extractors from methods that throw an exception:
 
 ```java
 final ExtractorByName.Checked<ResultSet, Boolean, SQLException> BOOLEAN = ResultSet::getBoolean;
@@ -240,7 +240,7 @@ final ExtractorByName<ResultSet, Boolean> BOOLEAN2 = BOOLEAN.unchecked();
 ### Specialisations
 
 The generic type parameter `T` in the extractor interfaces specifies the type of the extracted value.
-Currently Java generic types do not support primitive types (byte, int etc) directly,
+Currently Java generic types do not support primitive types (byte, int, etc) directly,
 which means their boxed equivalents (Byte, Integer, ...) must be used.
 This introduces the possibility of null values, as well as a slight performance overhead.
 If the value being extracted can never be null then there exists specialised equivalents of the extractor interfaces,
@@ -252,7 +252,8 @@ which can be used instead:
 | `ExtractorByName` | `DoubleExtractorByName` | `IntegerExtractorByName` | `LongExtractorByName` |
 | `ExtractorByIndex` | `DoubleExtractorByIndex` | `IntegerExtractorByIndex` | `LongExtractorByIndex` |
 
-Each specialised class provides an alternative extract method that supports the primitive type:
+Each specialised class provides an alternative extract method
+that supports extracting the primitive type:
 
 ```java
 public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
@@ -278,7 +279,7 @@ Extractor<Optional<String>, String> optGet = Optional::get;
 ```
 
 Each extractor type also has a static `of` constructor method (e.g. `Extractor.of`)
-that can be used where a lambda or method reference can't be used directly, e.g.:
+that can be used where a lambda or method reference can't be used directly:
 
 ```java
 // Commpile error
@@ -307,8 +308,7 @@ from existing ones.
 #### `map`
 
 The extractor `map` method creates an extractor that
-applies a function to result of the given extractor.
-E.g.:
+applies a function to result of the given extractor:
 
 ```java
 final ExtractorByName<Properties, String> getPropVal = Properties::getProperty;
@@ -322,7 +322,7 @@ System.out.println(javaVerDate);
 
 #### `flatMap`
 
-The `flatMap` method creates a new extractor by chaining two extractors together, e.g.:
+The `flatMap` method creates a new extractor by chaining two extractors together:
 
 ```java
 // Build a simple properties map.
@@ -348,7 +348,7 @@ System.out.println(value);
 #### `mapContext`
 
 The `mapContext` method creates an extractor that applies a function to the context,
-before applying the given extractor, e.g.:
+before applying the given extractor:
 
 ```java
 final ExtractorByIndex<String, Character> getChar = String::charAt;
@@ -431,11 +431,11 @@ public interface Injector<CTX, T> {
 
 I.e. an injector is a function that takes a context and a value,
 injects the value into the context, and returns the updated context.
-The injector can either modify the context as a side-effect and return the updated context,
+The injector can either modify the context as a side-effect and returns the updated context,
 or return a new context value.
 
 ```java
-// Example 1: Injector returns new context.
+// Example 1: Injector returns a new context.
 
 final Injector<Optional<String>, String> setOptVal = (os, s) -> Optional.ofNullable(s);
 
