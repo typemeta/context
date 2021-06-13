@@ -275,7 +275,7 @@ There are various ways to construct an extractor.
 The first and most common is to construct one via a lambda or method reference:
 
 ```java
-Extractor<Optional<String>, String> optGet = Optional::get;
+final Extractor<Optional<String>, String> optGet = Optional::get;
 ```
 
 Each extractor type also has a static `of` constructor method (e.g. `Extractor.of`)
@@ -302,7 +302,7 @@ final Extractor<Properties, String> alwaysRed = Extractor.konst("Red");
 
 ### Combinators
 
-The library also provides a number of methods that can be used to construct new extractors
+The library also provides some methods that can be used to construct new extractors
 from existing ones.
 
 #### `map`
@@ -357,7 +357,7 @@ final ExtractorByIndex<String, Character> getChar = String::charAt;
 final Extractor<Integer, Character> getFirstHexChar =
         getChar.bind(0).mapContext(Integer::toHexString);
 
-final char c = getFirstHexChar.extract(987654);
+final char c = getFirstHexChar.extract(0xfebca987);
 
 // Prints "f".
 System.out.println("c=" + c);
@@ -366,7 +366,9 @@ System.out.println("c=" + c);
 #### `optional`
 
 The `optional` method converts an extractor into one that extracts optional values.
-If the extracted value is null then it's converted to an empty optional value.
+By default the optional extractor calls the original extractor to get a value,
+and then passes it to `Optional.ofNullable` to covert it to an optional value 
+(note some extractors override this behaviour).
 
 ```java
 final ExtractorByName<Properties, String> getPropVal = Properties::getProperty;
@@ -452,6 +454,5 @@ setAtomVal.inject(ai, 100);
 
 assert(ai.get() == 100);
 ```
-
 
 WIP

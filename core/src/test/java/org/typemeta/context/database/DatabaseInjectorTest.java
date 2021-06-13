@@ -21,38 +21,38 @@ public class DatabaseInjectorTest {
 
     static {
         injectors = new HashMap<>();
-        injectors.put(Boolean.class, DatabaseInjectors.BOOLEAN);
-        injectors.put(Byte.class, DatabaseInjectors.BYTE);
-        injectors.put(Date.class, DatabaseInjectors.SQLDATE);
-        injectors.put(Double.class, DatabaseInjectors.DOUBLE);
-        injectors.put(Float.class, DatabaseInjectors.FLOAT);
-        injectors.put(Integer.class, DatabaseInjectors.INTEGER);
-        injectors.put(LocalDate.class, DatabaseInjectors.LOCALDATE);
-        injectors.put(LocalDateTime.class, DatabaseInjectors.LOCALDATETIME);
-        injectors.put(LocalTime.class, DatabaseInjectors.LOCALTIME);
-        injectors.put(Long.class, DatabaseInjectors.LONG);
-        injectors.put(Short.class, DatabaseInjectors.SHORT);
-        injectors.put(String.class, DatabaseInjectors.STRING);
-        injectors.put(Time.class, DatabaseInjectors.SQLTIME);
+        injectors.put(Boolean.class, PreparedStatementInjectors.BOOLEAN);
+        injectors.put(Byte.class, PreparedStatementInjectors.BYTE);
+        injectors.put(Date.class, PreparedStatementInjectors.SQLDATE);
+        injectors.put(Double.class, PreparedStatementInjectors.DOUBLE);
+        injectors.put(Float.class, PreparedStatementInjectors.FLOAT);
+        injectors.put(Integer.class, PreparedStatementInjectors.INTEGER);
+        injectors.put(LocalDate.class, PreparedStatementInjectors.LOCALDATE);
+        injectors.put(LocalDateTime.class, PreparedStatementInjectors.LOCALDATETIME);
+        injectors.put(LocalTime.class, PreparedStatementInjectors.LOCALTIME);
+        injectors.put(Long.class, PreparedStatementInjectors.LONG);
+        injectors.put(Short.class, PreparedStatementInjectors.SHORT);
+        injectors.put(String.class, PreparedStatementInjectors.STRING);
+        injectors.put(Time.class, PreparedStatementInjectors.SQLTIME);
     }
 
     private static final Map<Class<?>, InjectorByIndex<PreparedStatement, ?>> optInjectors;
 
     static {
         optInjectors = new HashMap<>();
-        optInjectors.put(Boolean.class, DatabaseInjectors.OPT_BOOLEAN);
-        optInjectors.put(Byte.class, DatabaseInjectors.OPT_BYTE);
-        optInjectors.put(Date.class, DatabaseInjectors.OPT_SQLDATE);
-        optInjectors.put(Double.class, DatabaseInjectors.OPT_DOUBLE);
-        optInjectors.put(Float.class, DatabaseInjectors.OPT_FLOAT);
-        optInjectors.put(Integer.class, DatabaseInjectors.OPT_INTEGER);
-        optInjectors.put(LocalDate.class, DatabaseInjectors.OPT_LOCALDATE);
-        optInjectors.put(LocalDateTime.class, DatabaseInjectors.OPT_LOCALDATETIME);
-        optInjectors.put(LocalTime.class, DatabaseInjectors.OPT_LOCALTIME);
-        optInjectors.put(Long.class, DatabaseInjectors.OPT_LONG);
-        optInjectors.put(Short.class, DatabaseInjectors.OPT_SHORT);
-        optInjectors.put(String.class, DatabaseInjectors.OPT_STRING);
-        optInjectors.put(Time.class, DatabaseInjectors.OPT_SQLTIME);
+        optInjectors.put(Boolean.class, PreparedStatementInjectors.OPT_BOOLEAN);
+        optInjectors.put(Byte.class, PreparedStatementInjectors.OPT_BYTE);
+        optInjectors.put(Date.class, PreparedStatementInjectors.OPT_SQLDATE);
+        optInjectors.put(Double.class, PreparedStatementInjectors.OPT_DOUBLE);
+        optInjectors.put(Float.class, PreparedStatementInjectors.OPT_FLOAT);
+        optInjectors.put(Integer.class, PreparedStatementInjectors.OPT_INTEGER);
+        optInjectors.put(LocalDate.class, PreparedStatementInjectors.OPT_LOCALDATE);
+        optInjectors.put(LocalDateTime.class, PreparedStatementInjectors.OPT_LOCALDATETIME);
+        optInjectors.put(LocalTime.class, PreparedStatementInjectors.OPT_LOCALTIME);
+        optInjectors.put(Long.class, PreparedStatementInjectors.OPT_LONG);
+        optInjectors.put(Short.class, PreparedStatementInjectors.OPT_SHORT);
+        optInjectors.put(String.class, PreparedStatementInjectors.OPT_STRING);
+        optInjectors.put(Time.class, PreparedStatementInjectors.OPT_SQLTIME);
     }
 
     private static Connection testDbConn;

@@ -183,15 +183,15 @@ abstract class DatabaseMeta {
 
     public static final Injector<PreparedStatement, Record1> RECORD1_INJECTOR =
             Injectors.combine(
-                    DatabaseInjectors.BOOLEAN.bind(1).premap(Record1::getBool),
-                    DatabaseInjectors.SQLDATE.bind(2).premap(Record1::getDate),
-                    DatabaseInjectors.DOUBLE.bind(3).premap(Record1::getDecimal),
-                    DatabaseInjectors.DOUBLE.bind(4).premap(Record1::getDouble),
-                    DatabaseInjectors.FLOAT.bind(5).premap(Record1::getFloat),
-                    DatabaseInjectors.INTEGER.bind(6).premap(Record1::getInt),
-                    DatabaseInjectors.STRING.bind(7).premap(Record1::getVarchar),
-                    DatabaseInjectors.SQLTIME.bind(8).premap(Record1::getTime),
-                    DatabaseInjectors.SQLTIMESTAMP.bind(9).premap(Record1::getTimestamp)
+                    PreparedStatementInjectors.BOOLEAN.bind(1).premap(Record1::getBool),
+                    PreparedStatementInjectors.SQLDATE.bind(2).premap(Record1::getDate),
+                    PreparedStatementInjectors.DOUBLE.bind(3).premap(Record1::getDecimal),
+                    PreparedStatementInjectors.DOUBLE.bind(4).premap(Record1::getDouble),
+                    PreparedStatementInjectors.FLOAT.bind(5).premap(Record1::getFloat),
+                    PreparedStatementInjectors.INTEGER.bind(6).premap(Record1::getInt),
+                    PreparedStatementInjectors.STRING.bind(7).premap(Record1::getVarchar),
+                    PreparedStatementInjectors.SQLTIME.bind(8).premap(Record1::getTime),
+                    PreparedStatementInjectors.SQLTIMESTAMP.bind(9).premap(Record1::getTimestamp)
             );
     
     public static final Extractor<ResultSet, Record1> RECORD1_EXTRACTOR =
@@ -207,15 +207,15 @@ abstract class DatabaseMeta {
                             (Time)args[7],
                             (Timestamp)args[8]
                     ),
-                    DatabaseExtractors.BOOLEAN.bind(TABLE_COLUMNS[0].name),
-                    DatabaseExtractors.SQLDATE.bind(TABLE_COLUMNS[1].name),
-                    DatabaseExtractors.DOUBLE.bind(TABLE_COLUMNS[2].name),
-                    DatabaseExtractors.DOUBLE.bind(TABLE_COLUMNS[3].name),
-                    DatabaseExtractors.FLOAT.bind(TABLE_COLUMNS[4].name),
-                    DatabaseExtractors.INTEGER.bind(TABLE_COLUMNS[5].name),
-                    DatabaseExtractors.STRING.bind(TABLE_COLUMNS[6].name),
-                    DatabaseExtractors.SQLTIME.bind(TABLE_COLUMNS[7].name),
-                    DatabaseExtractors.SQLTIMESTAMP.bind(TABLE_COLUMNS[8].name)
+                    ResultSetExtractors.BOOLEAN.bind(TABLE_COLUMNS[0].name),
+                    ResultSetExtractors.SQLDATE.bind(TABLE_COLUMNS[1].name),
+                    ResultSetExtractors.DOUBLE.bind(TABLE_COLUMNS[2].name),
+                    ResultSetExtractors.DOUBLE.bind(TABLE_COLUMNS[3].name),
+                    ResultSetExtractors.FLOAT.bind(TABLE_COLUMNS[4].name),
+                    ResultSetExtractors.INTEGER.bind(TABLE_COLUMNS[5].name),
+                    ResultSetExtractors.STRING.bind(TABLE_COLUMNS[6].name),
+                    ResultSetExtractors.SQLTIME.bind(TABLE_COLUMNS[7].name),
+                    ResultSetExtractors.SQLTIMESTAMP.bind(TABLE_COLUMNS[8].name)
             );
 
     public static class Record2 {
@@ -340,15 +340,15 @@ abstract class DatabaseMeta {
 
     public static final Injector<PreparedStatement, Record2> RECORD2_INJECTOR =
             Injectors.combine(
-                    DatabaseInjectors.BOOLEAN.bind(1).premap(Record2::getBool),
-                    DatabaseInjectors.LOCALDATE.bind(2).premap(Record2::getDate),
-                    DatabaseInjectors.FLOAT.bind(3).premap(Record2::getDecimal),
-                    DatabaseInjectors.DOUBLE.bind(4).premap(Record2::getDouble),
-                    DatabaseInjectors.FLOAT.bind(5).premap(Record2::getFloat),
-                    DatabaseInjectors.INTEGER.bind(6).premap(Record2::getInt),
-                    DatabaseInjectors.STRING.bind(7).premap(Record2::getVarchar),
-                    DatabaseInjectors.LOCALTIME.bind(8).premap(Record2::getTime),
-                    DatabaseInjectors.LOCALDATETIME.bind(9).premap(Record2::getTimestamp)
+                    PreparedStatementInjectors.BOOLEAN.bind(1).premap(Record2::getBool),
+                    PreparedStatementInjectors.LOCALDATE.bind(2).premap(Record2::getDate),
+                    PreparedStatementInjectors.FLOAT.bind(3).premap(Record2::getDecimal),
+                    PreparedStatementInjectors.DOUBLE.bind(4).premap(Record2::getDouble),
+                    PreparedStatementInjectors.FLOAT.bind(5).premap(Record2::getFloat),
+                    PreparedStatementInjectors.INTEGER.bind(6).premap(Record2::getInt),
+                    PreparedStatementInjectors.STRING.bind(7).premap(Record2::getVarchar),
+                    PreparedStatementInjectors.LOCALTIME.bind(8).premap(Record2::getTime),
+                    PreparedStatementInjectors.LOCALDATETIME.bind(9).premap(Record2::getTimestamp)
             );
 
     public static final Extractor<ResultSet, Record2> RECORD2_EXTRACTOR =
@@ -364,15 +364,15 @@ abstract class DatabaseMeta {
                             (LocalTime)args[7],
                             (LocalDateTime)args[8]
                     ),
-                    DatabaseExtractors.BOOLEAN.bind(TABLE_COLUMNS[0].name),
-                    DatabaseExtractors.LOCALDATE.bind(TABLE_COLUMNS[1].name),
-                    DatabaseExtractors.FLOAT.bind(TABLE_COLUMNS[2].name),
-                    DatabaseExtractors.DOUBLE.bind(TABLE_COLUMNS[3].name),
-                    DatabaseExtractors.FLOAT.bind(TABLE_COLUMNS[4].name),
-                    DatabaseExtractors.INTEGER.bind(TABLE_COLUMNS[5].name),
-                    DatabaseExtractors.STRING.bind(TABLE_COLUMNS[6].name),
-                    DatabaseExtractors.LOCALTIME.bind(TABLE_COLUMNS[7].name),
-                    DatabaseExtractors.LOCALDATETIME.bind(TABLE_COLUMNS[8].name)
+                    ResultSetExtractors.BOOLEAN.bind(TABLE_COLUMNS[0].name),
+                    ResultSetExtractors.LOCALDATE.bind(TABLE_COLUMNS[1].name),
+                    ResultSetExtractors.FLOAT.bind(TABLE_COLUMNS[2].name),
+                    ResultSetExtractors.DOUBLE.bind(TABLE_COLUMNS[3].name),
+                    ResultSetExtractors.FLOAT.bind(TABLE_COLUMNS[4].name),
+                    ResultSetExtractors.INTEGER.bind(TABLE_COLUMNS[5].name),
+                    ResultSetExtractors.STRING.bind(TABLE_COLUMNS[6].name),
+                    ResultSetExtractors.LOCALTIME.bind(TABLE_COLUMNS[7].name),
+                    ResultSetExtractors.LOCALDATETIME.bind(TABLE_COLUMNS[8].name)
             );
 
     public static class OptRecord1 {
@@ -508,15 +508,15 @@ abstract class DatabaseMeta {
 
     public static final Injector<PreparedStatement, OptRecord1> OPTRECORD1_INJECTOR =
             Injectors.combine(
-                    DatabaseInjectors.OPT_BOOLEAN.bind(1).premap(OptRecord1::getBool),
-                    DatabaseInjectors.OPT_SQLDATE.bind(2).premap(OptRecord1::getDate),
-                    DatabaseInjectors.OPT_DOUBLE.bind(3).premap(OptRecord1::getDecimal),
-                    DatabaseInjectors.OPT_DOUBLE.bind(4).premap(OptRecord1::getDouble),
-                    DatabaseInjectors.OPT_FLOAT.bind(5).premap(OptRecord1::getFloat),
-                    DatabaseInjectors.OPT_INTEGER.bind(6).premap(OptRecord1::getInt),
-                    DatabaseInjectors.OPT_STRING.bind(7).premap(OptRecord1::getVarchar),
-                    DatabaseInjectors.OPT_SQLTIME.bind(8).premap(OptRecord1::getTime),
-                    DatabaseInjectors.OPT_SQLTIMESTAMP.bind(9).premap(OptRecord1::getTimestamp)
+                    PreparedStatementInjectors.OPT_BOOLEAN.bind(1).premap(OptRecord1::getBool),
+                    PreparedStatementInjectors.OPT_SQLDATE.bind(2).premap(OptRecord1::getDate),
+                    PreparedStatementInjectors.OPT_DOUBLE.bind(3).premap(OptRecord1::getDecimal),
+                    PreparedStatementInjectors.OPT_DOUBLE.bind(4).premap(OptRecord1::getDouble),
+                    PreparedStatementInjectors.OPT_FLOAT.bind(5).premap(OptRecord1::getFloat),
+                    PreparedStatementInjectors.OPT_INTEGER.bind(6).premap(OptRecord1::getInt),
+                    PreparedStatementInjectors.OPT_STRING.bind(7).premap(OptRecord1::getVarchar),
+                    PreparedStatementInjectors.OPT_SQLTIME.bind(8).premap(OptRecord1::getTime),
+                    PreparedStatementInjectors.OPT_SQLTIMESTAMP.bind(9).premap(OptRecord1::getTimestamp)
             );
 
     public static final Extractor<ResultSet, OptRecord1> OPTRECORD1_EXTRACTOR =
@@ -532,15 +532,15 @@ abstract class DatabaseMeta {
                             (Optional<Time>)args[7],
                             (Optional<Timestamp>)args[8]
                     ),
-                    DatabaseExtractors.OPT_BOOLEAN.bind(TABLE_COLUMNS[0].name),
-                    DatabaseExtractors.OPT_SQLDATE.bind(TABLE_COLUMNS[1].name),
-                    DatabaseExtractors.OPT_DOUBLE.bind(TABLE_COLUMNS[2].name),
-                    DatabaseExtractors.OPT_DOUBLE.bind(TABLE_COLUMNS[3].name),
-                    DatabaseExtractors.OPT_FLOAT.bind(TABLE_COLUMNS[4].name),
-                    DatabaseExtractors.OPT_INTEGER.bind(TABLE_COLUMNS[5].name),
-                    DatabaseExtractors.OPT_STRING.bind(TABLE_COLUMNS[6].name),
-                    DatabaseExtractors.OPT_SQLTIME.bind(TABLE_COLUMNS[7].name),
-                    DatabaseExtractors.OPT_SQLTIMESTAMP.bind(TABLE_COLUMNS[8].name)
+                    ResultSetExtractors.OPT_BOOLEAN.bind(TABLE_COLUMNS[0].name),
+                    ResultSetExtractors.OPT_SQLDATE.bind(TABLE_COLUMNS[1].name),
+                    ResultSetExtractors.OPT_DOUBLE.bind(TABLE_COLUMNS[2].name),
+                    ResultSetExtractors.OPT_DOUBLE.bind(TABLE_COLUMNS[3].name),
+                    ResultSetExtractors.OPT_FLOAT.bind(TABLE_COLUMNS[4].name),
+                    ResultSetExtractors.OPT_INTEGER.bind(TABLE_COLUMNS[5].name),
+                    ResultSetExtractors.OPT_STRING.bind(TABLE_COLUMNS[6].name),
+                    ResultSetExtractors.OPT_SQLTIME.bind(TABLE_COLUMNS[7].name),
+                    ResultSetExtractors.OPT_SQLTIMESTAMP.bind(TABLE_COLUMNS[8].name)
             );
 
     public static class OptRecord2 {
@@ -676,15 +676,15 @@ abstract class DatabaseMeta {
 
     public static final Injector<PreparedStatement, OptRecord2> OPTRECORD2_INJECTOR =
             Injectors.combine(
-                    DatabaseInjectors.OPT_BOOLEAN.bind(1).premap(OptRecord2::getBool),
-                    DatabaseInjectors.OPT_LOCALDATE.bind(2).premap(OptRecord2::getDate),
-                    DatabaseInjectors.OPT_FLOAT.bind(3).premap(OptRecord2::getDecimal),
-                    DatabaseInjectors.OPT_DOUBLE.bind(4).premap(OptRecord2::getDouble),
-                    DatabaseInjectors.OPT_FLOAT.bind(5).premap(OptRecord2::getFloat),
-                    DatabaseInjectors.OPT_INTEGER.bind(6).premap(OptRecord2::getInt),
-                    DatabaseInjectors.OPT_STRING.bind(7).premap(OptRecord2::getVarchar),
-                    DatabaseInjectors.OPT_LOCALTIME.bind(8).premap(OptRecord2::getTime),
-                    DatabaseInjectors.OPT_LOCALDATETIME.bind(9).premap(OptRecord2::getTimestamp)
+                    PreparedStatementInjectors.OPT_BOOLEAN.bind(1).premap(OptRecord2::getBool),
+                    PreparedStatementInjectors.OPT_LOCALDATE.bind(2).premap(OptRecord2::getDate),
+                    PreparedStatementInjectors.OPT_FLOAT.bind(3).premap(OptRecord2::getDecimal),
+                    PreparedStatementInjectors.OPT_DOUBLE.bind(4).premap(OptRecord2::getDouble),
+                    PreparedStatementInjectors.OPT_FLOAT.bind(5).premap(OptRecord2::getFloat),
+                    PreparedStatementInjectors.OPT_INTEGER.bind(6).premap(OptRecord2::getInt),
+                    PreparedStatementInjectors.OPT_STRING.bind(7).premap(OptRecord2::getVarchar),
+                    PreparedStatementInjectors.OPT_LOCALTIME.bind(8).premap(OptRecord2::getTime),
+                    PreparedStatementInjectors.OPT_LOCALDATETIME.bind(9).premap(OptRecord2::getTimestamp)
             );
 
     public static final Extractor<ResultSet, OptRecord2> OPTRECORD2_EXTRACTOR =
@@ -700,15 +700,15 @@ abstract class DatabaseMeta {
                             (Optional<LocalTime>)args[7],
                             (Optional<LocalDateTime>)args[8]
                     ),
-                    DatabaseExtractors.OPT_BOOLEAN.bind(TABLE_COLUMNS[0].name),
-                    DatabaseExtractors.OPT_LOCALDATE.bind(TABLE_COLUMNS[1].name),
-                    DatabaseExtractors.OPT_FLOAT.bind(TABLE_COLUMNS[2].name),
-                    DatabaseExtractors.OPT_DOUBLE.bind(TABLE_COLUMNS[3].name),
-                    DatabaseExtractors.OPT_FLOAT.bind(TABLE_COLUMNS[4].name),
-                    DatabaseExtractors.OPT_INTEGER.bind(TABLE_COLUMNS[5].name),
-                    DatabaseExtractors.OPT_STRING.bind(TABLE_COLUMNS[6].name),
-                    DatabaseExtractors.OPT_LOCALTIME.bind(TABLE_COLUMNS[7].name),
-                    DatabaseExtractors.OPT_LOCALDATETIME.bind(TABLE_COLUMNS[8].name)
+                    ResultSetExtractors.OPT_BOOLEAN.bind(TABLE_COLUMNS[0].name),
+                    ResultSetExtractors.OPT_LOCALDATE.bind(TABLE_COLUMNS[1].name),
+                    ResultSetExtractors.OPT_FLOAT.bind(TABLE_COLUMNS[2].name),
+                    ResultSetExtractors.OPT_DOUBLE.bind(TABLE_COLUMNS[3].name),
+                    ResultSetExtractors.OPT_FLOAT.bind(TABLE_COLUMNS[4].name),
+                    ResultSetExtractors.OPT_INTEGER.bind(TABLE_COLUMNS[5].name),
+                    ResultSetExtractors.OPT_STRING.bind(TABLE_COLUMNS[6].name),
+                    ResultSetExtractors.OPT_LOCALTIME.bind(TABLE_COLUMNS[7].name),
+                    ResultSetExtractors.OPT_LOCALDATETIME.bind(TABLE_COLUMNS[8].name)
             );
 
     static final List<Class<?>> NUMERIC_TYPES =

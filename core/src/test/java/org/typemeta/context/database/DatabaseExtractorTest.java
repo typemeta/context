@@ -20,38 +20,38 @@ public class DatabaseExtractorTest {
 
     static {
         extractors = new HashMap<>();
-        extractors.put(Boolean.class, DatabaseExtractors.BOOLEAN);
-        extractors.put(Byte.class, DatabaseExtractors.BYTE);
-        extractors.put(Date.class, DatabaseExtractors.SQLDATE);
-        extractors.put(Double.class, DatabaseExtractors.DOUBLE);
-        extractors.put(Float.class, DatabaseExtractors.FLOAT);
-        extractors.put(Integer.class, DatabaseExtractors.INTEGER);
-        extractors.put(LocalDate.class, DatabaseExtractors.LOCALDATE);
-        extractors.put(LocalDateTime.class, DatabaseExtractors.LOCALDATETIME);
-        extractors.put(LocalTime.class, DatabaseExtractors.LOCALTIME);
-        extractors.put(Long.class, DatabaseExtractors.LONG);
-        extractors.put(Short.class, DatabaseExtractors.SHORT);
-        extractors.put(String.class, DatabaseExtractors.STRING);
-        extractors.put(Time.class, DatabaseExtractors.SQLTIME);
+        extractors.put(Boolean.class, ResultSetExtractors.BOOLEAN);
+        extractors.put(Byte.class, ResultSetExtractors.BYTE);
+        extractors.put(Date.class, ResultSetExtractors.SQLDATE);
+        extractors.put(Double.class, ResultSetExtractors.DOUBLE);
+        extractors.put(Float.class, ResultSetExtractors.FLOAT);
+        extractors.put(Integer.class, ResultSetExtractors.INTEGER);
+        extractors.put(LocalDate.class, ResultSetExtractors.LOCALDATE);
+        extractors.put(LocalDateTime.class, ResultSetExtractors.LOCALDATETIME);
+        extractors.put(LocalTime.class, ResultSetExtractors.LOCALTIME);
+        extractors.put(Long.class, ResultSetExtractors.LONG);
+        extractors.put(Short.class, ResultSetExtractors.SHORT);
+        extractors.put(String.class, ResultSetExtractors.STRING);
+        extractors.put(Time.class, ResultSetExtractors.SQLTIME);
     }
 
     private static final Map<Class<?>, ExtractorByName<ResultSet, ?>>  optExtractors;
 
     static {
         optExtractors = new HashMap<>();
-        optExtractors.put(Boolean.class, DatabaseExtractors.OPT_BOOLEAN);
-        optExtractors.put(Byte.class, DatabaseExtractors.OPT_BYTE);
-        optExtractors.put(Date.class, DatabaseExtractors.OPT_SQLDATE);
-        optExtractors.put(Double.class, DatabaseExtractors.OPT_DOUBLE);
-        optExtractors.put(Float.class, DatabaseExtractors.OPT_FLOAT);
-        optExtractors.put(Integer.class, DatabaseExtractors.OPT_INTEGER);
-        optExtractors.put(LocalDate.class, DatabaseExtractors.OPT_LOCALDATE);
-        optExtractors.put(LocalDateTime.class, DatabaseExtractors.OPT_LOCALDATETIME);
-        optExtractors.put(LocalTime.class, DatabaseExtractors.OPT_LOCALTIME);
-        optExtractors.put(Long.class, DatabaseExtractors.OPT_LONG);
-        optExtractors.put(Short.class, DatabaseExtractors.OPT_SHORT);
-        optExtractors.put(String.class, DatabaseExtractors.OPT_STRING);
-        optExtractors.put(Time.class, DatabaseExtractors.OPT_SQLTIME);
+        optExtractors.put(Boolean.class, ResultSetExtractors.OPT_BOOLEAN);
+        optExtractors.put(Byte.class, ResultSetExtractors.OPT_BYTE);
+        optExtractors.put(Date.class, ResultSetExtractors.OPT_SQLDATE);
+        optExtractors.put(Double.class, ResultSetExtractors.OPT_DOUBLE);
+        optExtractors.put(Float.class, ResultSetExtractors.OPT_FLOAT);
+        optExtractors.put(Integer.class, ResultSetExtractors.OPT_INTEGER);
+        optExtractors.put(LocalDate.class, ResultSetExtractors.OPT_LOCALDATE);
+        optExtractors.put(LocalDateTime.class, ResultSetExtractors.OPT_LOCALDATETIME);
+        optExtractors.put(LocalTime.class, ResultSetExtractors.OPT_LOCALTIME);
+        optExtractors.put(Long.class, ResultSetExtractors.OPT_LONG);
+        optExtractors.put(Short.class, ResultSetExtractors.OPT_SHORT);
+        optExtractors.put(String.class, ResultSetExtractors.OPT_STRING);
+        optExtractors.put(Time.class, ResultSetExtractors.OPT_SQLTIME);
     }
 
     private static Connection testDbConn;

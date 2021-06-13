@@ -1,9 +1,10 @@
-package org.typemeta.context.properties;
+package org.typemeta.context;
 
 import org.typemeta.context.extractors.*;
 import org.typemeta.context.extractors.byindex.ExtractorByIndex;
 import org.typemeta.context.extractors.byname.ExtractorByName;
 import org.typemeta.context.injectors.*;
+import org.typemeta.context.properties.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -166,7 +167,7 @@ public class Example {
         private static void example6() {
             final ExtractorByIndex<String, Character> getChar = String::charAt;
             final Extractor<Integer, Character> getFirstHexChar = getChar.bind(0).mapContext(Integer::toHexString);
-            final char c = getFirstHexChar.extract(987654);
+            final char c = getFirstHexChar.extract(0xfebca987);
             System.out.println("c=" + c);
         }
 

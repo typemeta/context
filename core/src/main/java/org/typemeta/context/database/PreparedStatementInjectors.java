@@ -12,7 +12,7 @@ import java.util.*;
  * A set of injectors for injecting values into database {@link PreparedStatement} objects.
  * These functions catch any {@link SQLException} exceptions and rethrow as as an unchecked exception.
  */
-public abstract class DatabaseInjectors {
+public abstract class PreparedStatementInjectors {
 
     /**
      * Convert a {@link PreparedStatement} injector into one that injects an {@link Optional} value.
@@ -38,7 +38,8 @@ public abstract class DatabaseInjectors {
     }
 
     /**
-     * Convert a {@code PreparedStatement} double injector into one that injects an {@link OptionalDouble} value.
+     * Convert a {@code PreparedStatement} injector for double values
+     * into one that injects an {@link OptionalDouble} value.
      * @param injr      the injector
      * @return          the optional double injector
      */
@@ -60,7 +61,8 @@ public abstract class DatabaseInjectors {
     }
 
     /**
-     * Convert a {@code PreparedStatement} double injector into one that injects an {@link OptionalInt} value.
+     * Convert a {@code PreparedStatement} injector for integer values
+     * into one that injects an {@link OptionalInt} value.
      * @param injr      the injector
      * @return          the optional integer injector
      */
@@ -82,7 +84,8 @@ public abstract class DatabaseInjectors {
     }
 
     /**
-     * Convert a {@code PreparedStatement} double injector into one that injects an {@link OptionalLong} value.
+     * Convert a {@code PreparedStatement} injectorfor long values
+     * into one that injects an {@link OptionalLong} value.
      * @param injr      the injector
      * @return          the optional long injector
      */

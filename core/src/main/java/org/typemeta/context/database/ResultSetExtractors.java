@@ -10,7 +10,7 @@ import java.util.Optional;
  * A set of extractors for extracting values from database {@link ResultSet} objects.
  * These extractors catch any {@link SQLException} exceptions and rethrow as as an unchecked exception.
  */
-public abstract class DatabaseExtractors {
+public abstract class ResultSetExtractors {
 
     /**
      * Convert a {@link ResultSet} extractor into one that extracts an {@link Optional} value.
