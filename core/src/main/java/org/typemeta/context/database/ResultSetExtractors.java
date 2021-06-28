@@ -3,8 +3,9 @@ package org.typemeta.context.database;
 import org.typemeta.context.extractors.byname.*;
 
 import java.sql.*;
+import java.sql.Date;
 import java.time.*;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * A set of extractors for extracting values from database {@link ResultSet} objects.
@@ -62,7 +63,7 @@ public abstract class ResultSetExtractors {
     /**
      * A {@code ResultSet} extractor for optional double values.
      */
-    public static final OptDoubleExtractorByName<ResultSet> OPT_DOUBLE =
+    public static final ExtractorByName<ResultSet, OptionalDouble> OPT_DOUBLE =
             CheckedDatabaseExtractors.OPT_DOUBLE.unchecked();
 
     /**
@@ -86,7 +87,7 @@ public abstract class ResultSetExtractors {
     /**
      * A {@code ResultSet} extractor for optional integer values.
      */
-    public static final OptIntExtractorByName<ResultSet> OPT_INTEGER =
+    public static final ExtractorByName<ResultSet, OptionalInt> OPT_INTEGER =
             CheckedDatabaseExtractors.OPT_INTEGER.unchecked();
 
     /**
@@ -98,7 +99,7 @@ public abstract class ResultSetExtractors {
     /**
      * A {@code ResultSet} extractor for optional long values.
      */
-    public static final OptLongExtractorByName<ResultSet> OPT_LONG =
+    public static final ExtractorByName<ResultSet, OptionalLong> OPT_LONG =
             CheckedDatabaseExtractors.OPT_LONG.unchecked();
 
     /**

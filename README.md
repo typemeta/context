@@ -42,7 +42,7 @@ Add this dependency to your project pom.xml:
 
 ## Example
 
-Given a simple class consisting of a few member fields:
+Consider a simple class consisting of a few member fields:
 
 ```java
 static class Config {
@@ -66,7 +66,28 @@ final Config config = new Config(
 final Properties props = new Properties();
 ```
 
-we can define an injector, which will inject a `Config` object into a `Properties` object:
+If we want to write a `Config` object to the properties,
+we would have to write each field individually:
+
+```java
+props.setProperty("endDate", before.endDate().toString());
+before.numThreads().ifPresent(n -> props.setProperty("numThreads", Integer.toString(n)));
+props.setProperty("env", before.env());
+```
+
+Likewise to read the config back out we have to read the individual fields
+and then construct the `Config` object:
+
+```java
+final String numThreads = props.getProperty("numThreads");
+final Config after = new Config(
+        LocalDate.parse(props.getProperty("endDate")),
+        numThreads == null ? OptionalInt.empty() : OptionalInt.of(Integer.parseInt(numThreads)),
+        props.getProperty("env")
+);
+```
+
+Using context, we can define an injector, which will inject or write a `Config` object into a `Properties` object:
 
 ```java
 final Injector<Properties, Config> setConfigProp =
@@ -75,8 +96,6 @@ final Injector<Properties, Config> setConfigProp =
             PropertiesInjectors.OPT_INTEGER.bind("numThreads").premap(Config::numThreads),
             PropertiesInjectors.STRING.bind("env").premap(Config::env)
         );
-
-        setConfigProp.inject(props, config);
 ```
 
 and an extractor, which will extract a `Config` object from a `Properties` object:
@@ -89,9 +108,16 @@ final Extractor<Properties, Config> getConfigProp =
                 PropertiesExtractors.STRING.bind("env"),
                 Config::new
         );
+```
 
+and use them like this:
+
+```java
+// Write the config data to the props.
+setConfigProp.inject(props, config);
+
+// Read the config back out.
 final Config config2 = getConfigProp.extract(props);
-assert(config2.equals(config));
 ```
 
 # User Guide
@@ -99,7 +125,7 @@ assert(config2.equals(config));
 *Combinators* are an approach to organising libraries
 by providing a set of primitive constructs,
 along with a set of functions that can combine existing constructs to form new ones.
-Context provides two sets of combinators, extractors and injectors.
+Context provides two sets of combinators - extractors and injectors.
 
 ## Extractors
 
@@ -384,7 +410,7 @@ assert(notEmpty.isPresent());
 #### `combine`
 
 `combine` is a standalone method that can be used to combine one more extractors
-into one that extractors an object.
+into one that extracts an object.
 The extractors being combined correspond to the fields that comprise the object.
 
 The `Config` example earlier in this guide illustrates the usage:
@@ -433,8 +459,8 @@ public interface Injector<CTX, T> {
 
 I.e. an injector is a function that takes a context and a value,
 injects the value into the context, and returns the updated context.
-The injector can either modify the context as a side-effect and returns the updated context,
-or return a new context value.
+The injector can either modify the context as a side-effect and return the updated context,
+or it can return a new context value.
 
 ```java
 // Example 1: Injector returns a new context.
@@ -455,4 +481,51 @@ setAtomVal.inject(ai, 100);
 assert(ai.get() == 100);
 ```
 
-WIP
+In common with Extractors, Injectors provide the following functionality,
+each of which operates in a similar fashion to its extractor counterpart:
+
+* **InjectorByName** - injectors that take a string name argument.
+* **InjectorByIndex** - injectors that take an integer index argument.
+* **Checked Injectors** - injectors that throw a checked exception.
+* **Specialisations** - injectors that operate on primitive types.
+
+
+### Constructors
+
+There are various ways to construct an injector.
+The first and most common is to construct one via a lambda or method reference:
+
+```java
+final Injector<Optional<String>, String> optSet = (os, s) -> Optional.ofNullable(s);
+```
+
+Each injector type also has a static `of` constructor method (e.g. `Injector.of`)
+that can be used where a lambda or method reference can't be used directly.
+
+
+#### `combine`
+
+`combine` is a standalone method that can be used to combine one more injectors
+into one that injects an object.
+The extractors being combined correspond to the fields that comprise the object.
+
+The `Config` example earlier in this guide illustrates the usage:
+
+```java
+```java
+final Injector<Properties, Config> setConfigProp =
+        Injectors.combine(
+            PropertiesInjectors.LOCALDATE.bind("endDate").premap(Config::endDate),
+            PropertiesInjectors.OPT_INTEGER.bind("numThreads").premap(Config::numThreads),
+            PropertiesInjectors.STRING.bind("env").premap(Config::env)
+        );
+
+// Write the config data to the props.
+setConfigProp.inject(props, config);
+```
+
+In the above example, the three injectors being combined correspond
+to the three fields that comprise the `Config` class.
+So `combine` creates an injector for `Config`,
+by calling each field injector to inject the field values.
+

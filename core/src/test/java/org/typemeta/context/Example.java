@@ -6,7 +6,7 @@ import org.typemeta.context.extractors.byname.ExtractorByName;
 import org.typemeta.context.injectors.*;
 import org.typemeta.context.properties.*;
 
-import java.time.LocalDate;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -81,13 +81,40 @@ public class Example {
 
     public static class ExtractorExamples {
         public static void main(String[] args) {
-            example1();
-            example2();
-            example3();
-            example4();
-            example5();
-            example6();
-            example7();
+            example0();
+//            example1();
+//            example2();
+//            example3();
+//            example4();
+//            example5();
+//            example6();
+//            example7();
+        }
+
+        private static void example0() {
+            final Config before = new Config(
+                    LocalDate.of(2021, 04, 19),
+                    OptionalInt.of(24),
+                    "DEV"
+            );
+
+            final Properties props = new Properties();
+
+            props.setProperty("endDate", before.endDate().toString());
+            before.numThreads().ifPresent(n -> props.setProperty("numThreads", Integer.toString(n)));
+            props.setProperty("env", before.env());
+
+            final String numThreads = props.getProperty("numThreads");
+            final Config after = new Config(
+                    LocalDate.parse(props.getProperty("endDate")),
+                    numThreads == null ? OptionalInt.empty() : OptionalInt.of(Integer.parseInt(numThreads)),
+                    props.getProperty("env")
+            );
+
+            assert (before.equals(after));
+
+            System.out.println("before=" + before);
+            System.out.println("after=" + after);
         }
 
         private static void example1() {
@@ -98,6 +125,10 @@ public class Example {
             );
 
             final Properties props = new Properties();
+
+            props.setProperty("endDate", before.endDate().toString());
+            before.numThreads().ifPresent(n -> props.setProperty("numThreads", Integer.toString(n)));
+            props.setProperty("env", before.env());
 
             INJR.inject(props, before);
 
@@ -207,6 +238,10 @@ public class Example {
             setAtomVal.inject(ai, 100);
 
             assert(ai.get() == 100);
+        }
+
+        private static void example3() {
+            final Injector<Optional<String>, String> optSet = (os, s) -> Optional.ofNullable(s);
         }
     }
 }

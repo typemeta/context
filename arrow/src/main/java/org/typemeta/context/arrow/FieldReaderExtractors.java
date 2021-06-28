@@ -8,7 +8,7 @@ import java.time.*;
 import java.util.*;
 
 /**
- * A set of extractors for extracting values from database {@link FieldReader} objects.
+ * A set of extractors for extracting values from Arow {@link FieldReader} objects.
  */
 public abstract class FieldReaderExtractors {
 
@@ -38,7 +38,7 @@ public abstract class FieldReaderExtractors {
     public static final Extractor<FieldReader, Optional<Character>> OPT_CHAR = optional(CHAR);
 
     public static final DoubleExtractor<FieldReader> DOUBLE = FieldReader::readDouble;
-    public static final OptDoubleExtractor<FieldReader> OPT_DOUBLE =
+    public static final Extractor<FieldReader, OptionalDouble> OPT_DOUBLE =
             fr -> {
                 if (fr.isSet()) {
                     return OptionalDouble.of(DOUBLE.extract(fr));
@@ -51,7 +51,7 @@ public abstract class FieldReaderExtractors {
     public static final Extractor<FieldReader, Optional<Float>> OPT_FLOAT = optional(FLOAT);
 
     public static final IntExtractor<FieldReader> INTEGER = FieldReader::readInteger;
-    public static final OptIntExtractor<FieldReader> OPT_INTEGER =
+    public static final Extractor<FieldReader, OptionalInt> OPT_INTEGER =
             fr -> {
                 if (fr.isSet()) {
                     return OptionalInt.of(INTEGER.extract(fr));
@@ -61,7 +61,7 @@ public abstract class FieldReaderExtractors {
             };
 
     public static final LongExtractor<FieldReader> LONG = FieldReader::readLong;
-    public static final OptLongExtractor<FieldReader> OPT_LONG =
+    public static final Extractor<FieldReader, OptionalLong> OPT_LONG =
             fr -> {
                 if (fr.isSet()) {
                     return OptionalLong.of(LONG.extract(fr));
@@ -84,8 +84,7 @@ public abstract class FieldReaderExtractors {
     /**
      * An extractor for optional {@code LocalDate} values.
      */
-    public static final Extractor<FieldReader, Optional<LocalDateTime>> OPT_LOCALDATETIME =
-            optional(LOCALDATETIME);
+    public static final Extractor<FieldReader, Optional<LocalDateTime>> OPT_LOCALDATETIME = optional(LOCALDATETIME);
 
     /**
      * An extractor for {@link LocalDate} values.
@@ -95,7 +94,5 @@ public abstract class FieldReaderExtractors {
     /**
      * An extractor for optional {@code LocalDate} values.
      */
-    public static final Extractor<FieldReader, Optional<LocalDate>> OPT_LOCALDATE =
-            optional(LOCALDATE);
-
+    public static final Extractor<FieldReader, Optional<LocalDate>> OPT_LOCALDATE = optional(LOCALDATE);
 }

@@ -65,7 +65,7 @@ public abstract class CheckedDatabaseExtractors {
     /**
      * A {@code ResultSet} extractor for optional double values.
      */
-    public static final OptDoubleExtractorByName.Checked<ResultSet, SQLException> OPT_DOUBLE =
+    public static final ExtractorByName.Checked<ResultSet, OptionalDouble, SQLException> OPT_DOUBLE =
             (rs, name) -> {
                 final double value = DOUBLE.extractDouble(rs, name);
                 if (rs.wasNull()) {
@@ -96,7 +96,7 @@ public abstract class CheckedDatabaseExtractors {
     /**
      * A {@code ResultSet} extractor for optional integer values.
      */
-    public static final OptIntExtractorByName.Checked<ResultSet, SQLException> OPT_INTEGER =
+    public static final ExtractorByName.Checked<ResultSet, OptionalInt, SQLException> OPT_INTEGER =
             (rs, name) -> {
                 final int value = INTEGER.extractInt(rs, name);
                 if (rs.wasNull()) {
@@ -115,7 +115,7 @@ public abstract class CheckedDatabaseExtractors {
     /**
      * A {@code ResultSet} extractor for optional long values.
      */
-    public static final OptLongExtractorByName.Checked<ResultSet, SQLException> OPT_LONG =
+    public static final ExtractorByName.Checked<ResultSet, OptionalLong, SQLException> OPT_LONG =
             (rs, name) -> {
                 final long value = LONG.extractLong(rs, name);
                 if (rs.wasNull()) {

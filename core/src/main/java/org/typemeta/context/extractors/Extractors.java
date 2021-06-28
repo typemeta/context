@@ -4,8 +4,6 @@ import org.typemeta.context.functions.Functions;
 
 import java.util.*;
 
-import static java.util.stream.Collectors.toList;
-
 /**
  * A set of combinator methods for constructing {@link Extractor} extractors.
  */
@@ -33,11 +31,14 @@ public abstract class Extractors {
      * @param <T>       the extractor value type
      * @return          an extractor for a list of values
      */
-    public static <CTX, T> Extractor<CTX, List<T>> list(Collection<Extractor<CTX, T>> extrs) {
-        return ctx ->
-                extrs.stream()
-                        .map(ext -> ext.extract(ctx))
-                        .collect(toList());
+    public static <CTX, T> Extractor<CTX, List<T>> sequence(Collection<Extractor<CTX, T>> extrs) {
+        return ctx -> {
+            final List<T> lt = new ArrayList<>(extrs.size());
+            for (Extractor<CTX, T> extr : extrs) {
+                lt.add(extr.extract(ctx));
+            }
+            return lt;
+        };
     }
 
     /**
