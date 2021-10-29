@@ -135,6 +135,16 @@ public interface Injector<CTX, T> {
         }
 
         /**
+         * Convert this injector into one that applies the given function to the value before injecting it.
+         * @param f         the function to be applied to the injected value
+         * @param <U>       the function return type
+         * @return          the new injector
+         */
+        default <U> Injector.Checked<CTX, U, EX> premap(Functions.F<U, T> f) {
+            return (ctx, value) -> inject(ctx, f.apply(value));
+        }
+
+        /**
          * Return an unchecked equivalent of this injector.
          * @return an unchecked equivalent of this injector
          */
