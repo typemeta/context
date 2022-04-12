@@ -1,6 +1,9 @@
 package org.typemeta.context.injectors;
 
+import org.typemeta.context.functions.Functions;
+
 import java.util.OptionalInt;
+import java.util.function.ToIntFunction;
 
 /**
  * A {@link Injector} specialised for integer values.
@@ -63,6 +66,16 @@ public interface IntInjector<CTX> extends Injector<CTX, Integer> {
     }
 
     /**
+     * Convert this injector into one that applies the given function to the value before injecting it.
+     * @param f         the function to be applied to the injected value
+     * @param <U>       the function return type
+     * @return          the new injector
+     */
+    default <U> Injector<CTX, U> premap(ToIntFunction<U> f) {
+        return (ctx, value) -> inject(ctx, f.applyAsInt(value));
+    }
+
+    /**
      * An {@link Injector.Checked} injector specialised for integer values.
      * @param <CTX>     the context type
      */
@@ -115,6 +128,16 @@ public interface IntInjector<CTX> extends Injector<CTX, Integer> {
         @Override
         default CTX inject(CTX ctx, Integer value) throws EX {
             return injectInt(ctx, value);
+        }
+
+        /**
+         * Convert this injector into one that applies the given function to the value before injecting it.
+         * @param f         the function to be applied to the injected value
+         * @param <U>       the function return type
+         * @return          the new injector
+         */
+        default <U> Injector.Checked<CTX, U, EX> premap(ToIntFunction<U> f) {
+            return (ctx, value) -> inject(ctx, f.applyAsInt(value));
         }
 
         /**

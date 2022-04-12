@@ -1,10 +1,12 @@
 package org.typemeta.context.injectors.byname;
 
+import org.typemeta.context.functions.Functions;
 import org.typemeta.context.injectors.*;
 import org.typemeta.context.injectors.byindex.DoubleInjectorByIndex;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.OptionalInt;
+import java.util.function.*;
 
 /**
  * A function to inject an integer value into an context, given an name.
@@ -62,6 +64,16 @@ public interface IntInjectorByName<CTX> extends InjectorByName<CTX, Integer> {
     @Override
     default IntInjector<CTX> bind(String name) {
         return (ctx, value) -> injectInt(ctx, name, value);
+    }
+
+    /**
+     * Return an injector which first applies the given function to the value.
+     * @param f         the function
+     * @param <U>       the function return type
+     * @return          the new injector
+     */
+    default <U> InjectorByName<CTX, U> premap(ToIntFunction<U> f) {
+        return (ctx, name, value) -> inject(ctx, name, f.applyAsInt(value));
     }
 
     /**
@@ -127,6 +139,16 @@ public interface IntInjectorByName<CTX> extends InjectorByName<CTX, Integer> {
         @Override
         default CTX inject(CTX ctx, String name, Integer value) throws EX {
             return injectInt(ctx, name, value);
+        }
+
+        /**
+         * Return an injector which first applies the given function to the value.
+         * @param f         the function
+         * @param <U>       the function return type
+         * @return          the new injector
+         */
+        default <U> InjectorByName.Checked<CTX, U, EX> premap(ToIntFunction<U> f) {
+            return (ctx, name, value) -> inject(ctx, name, f.applyAsInt(value));
         }
 
         /**

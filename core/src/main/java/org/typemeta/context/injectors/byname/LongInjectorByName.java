@@ -4,6 +4,7 @@ import org.typemeta.context.injectors.*;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.OptionalLong;
+import java.util.function.*;
 
 /**
  * A function to inject a long value into an context, given an name.
@@ -61,6 +62,16 @@ public interface LongInjectorByName<CTX> extends InjectorByName<CTX, Long> {
     @Override
     default LongInjector<CTX> bind(String name) {
         return (ctx, value) -> injectLong(ctx, name, value);
+    }
+
+    /**
+     * Return an injector which first applies the given function to the value.
+     * @param f         the function
+     * @param <U>       the function return type
+     * @return          the new injector
+     */
+    default <U> InjectorByName<CTX, U> premap(ToLongFunction<U> f) {
+        return (ctx, name, value) -> inject(ctx, name, f.applyAsLong(value));
     }
 
     /**
@@ -126,6 +137,16 @@ public interface LongInjectorByName<CTX> extends InjectorByName<CTX, Long> {
         @Override
         default CTX inject(CTX ctx, String name, Long value) throws EX {
             return injectLong(ctx, name, value);
+        }
+
+        /**
+         * Return an injector which first applies the given function to the value.
+         * @param f         the function
+         * @param <U>       the function return type
+         * @return          the new injector
+         */
+        default <U> InjectorByName.Checked<CTX, U, EX> premap(ToLongFunction<U> f) {
+            return (ctx, name, value) -> inject(ctx, name, f.applyAsLong(value));
         }
 
         /**

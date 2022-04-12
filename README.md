@@ -11,8 +11,8 @@ or as a target for values (for injectors).
 Examples of contexts include Java `Properties` objects, JDBC `ResultSet` objects (for database extractors),
 and JDBC `PreparedStatement` objects (for database injectors).
 
-The library provides implemenetation of extractors and injectos for the above context types,
-but can can support any type of context.
+The library provides implementations of extractors and injectors for the above context types,
+but can can also support any type of context.
 
 # Getting Started
 
@@ -75,7 +75,7 @@ before.numThreads().ifPresent(n -> props.setProperty("numThreads", Integer.toStr
 props.setProperty("env", before.env());
 ```
 
-Likewise to read the config back out we have to read the individual fields
+Likewise, to read the config back out we have to read the individual fields
 and then construct the `Config` object:
 
 ```java
@@ -212,7 +212,7 @@ System.out.println(javaVer);
 ### ExtractorByIndex
 
 An `ExtractorByIndex` is similar to `ExtractorByName`,
-where instead the `extract` method expects an integer index instead of a name.
+but where the `extract` method expects an integer index instead of a name.
 
 ```java
 @FunctionalInterface
@@ -501,6 +501,10 @@ final Injector<Optional<String>, String> optSet = (os, s) -> Optional.ofNullable
 
 Each injector type also has a static `of` constructor method (e.g. `Injector.of`)
 that can be used where a lambda or method reference can't be used directly.
+
+### Combinators
+
+
 
 #### `combine`
 

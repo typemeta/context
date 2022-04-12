@@ -1,6 +1,7 @@
 package org.typemeta.context.injectors;
 
 import java.util.OptionalDouble;
+import java.util.function.*;
 
 /**
  * A {@link Injector} specialised for double values.
@@ -52,6 +53,16 @@ public interface DoubleInjector<CTX> extends Injector<CTX, Double> {
     @Override
     default CTX inject(CTX ctx, Double value) {
         return injectDouble(ctx, value);
+    }
+
+    /**
+     * Convert this injector into one that applies the given function to the value before injecting it.
+     * @param f         the function to be applied to the injected value
+     * @param <U>       the function return type
+     * @return          the new injector
+     */
+    default <U> Injector<CTX, U> premap(ToDoubleFunction<U> f) {
+        return (ctx, value) -> inject(ctx, f.applyAsDouble(value));
     }
 
     /**
@@ -115,6 +126,16 @@ public interface DoubleInjector<CTX> extends Injector<CTX, Double> {
         @Override
         default CTX inject(CTX ctx, Double value) throws EX {
             return injectDouble(ctx, value);
+        }
+
+        /**
+         * Convert this injector into one that applies the given function to the value before injecting it.
+         * @param f         the function to be applied to the injected value
+         * @param <U>       the function return type
+         * @return          the new injector
+         */
+        default <U> Injector.Checked<CTX, U, EX> premap(ToDoubleFunction<U> f) {
+            return (ctx, value) -> inject(ctx, f.applyAsDouble(value));
         }
 
         /**

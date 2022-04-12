@@ -4,6 +4,7 @@ import org.typemeta.context.injectors.*;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.OptionalDouble;
+import java.util.function.*;
 
 /**
  * A function to inject a double value into an context, given an name.
@@ -61,6 +62,16 @@ public interface DoubleInjectorByName<CTX> extends InjectorByName<CTX, Double> {
     @Override
     default DoubleInjector<CTX> bind(String name) {
         return (ctx, value) -> injectDouble(ctx, name, value);
+    }
+
+    /**
+     * Return an injector which first applies the given function to the value.
+     * @param f         the function
+     * @param <U>       the function return type
+     * @return          the new injector
+     */
+    default <U> InjectorByName<CTX, U> premap(ToDoubleFunction<U> f) {
+        return (ctx, name, value) -> inject(ctx, name, f.applyAsDouble(value));
     }
 
     /**
@@ -126,6 +137,16 @@ public interface DoubleInjectorByName<CTX> extends InjectorByName<CTX, Double> {
         @Override
         default CTX inject(CTX ctx, String name, Double value) throws EX {
             return injectDouble(ctx, name, value);
+        }
+
+        /**
+         * Return an injector which first applies the given function to the value.
+         * @param f         the function
+         * @param <U>       the function return type
+         * @return          the new injector
+         */
+        default <U> InjectorByName.Checked<CTX, U, EX> premap(ToDoubleFunction<U> f) {
+            return (ctx, name, value) -> inject(ctx, name, f.applyAsDouble(value));
         }
 
         /**

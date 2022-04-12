@@ -1,6 +1,7 @@
 package org.typemeta.context.injectors;
 
 import java.util.OptionalLong;
+import java.util.function.*;
 
 /**
  * A {@link Injector} specialised for long values.
@@ -52,6 +53,16 @@ public interface LongInjector<CTX> extends Injector<CTX, Long> {
     @Override
     default CTX inject(CTX ctx, Long value) {
         return injectLong(ctx, value);
+    }
+
+    /**
+     * Convert this injector into one that applies the given function to the value before injecting it.
+     * @param f         the function to be applied to the injected value
+     * @param <U>       the function return type
+     * @return          the new injector
+     */
+    default <U> Injector<CTX, U> premap(ToLongFunction<U> f) {
+        return (ctx, value) -> inject(ctx, f.applyAsLong(value));
     }
 
     /**
@@ -115,6 +126,16 @@ public interface LongInjector<CTX> extends Injector<CTX, Long> {
         @Override
         default CTX inject(CTX ctx, Long value) throws EX {
             return injectLong(ctx, value);
+        }
+
+        /**
+         * Convert this injector into one that applies the given function to the value before injecting it.
+         * @param f         the function to be applied to the injected value
+         * @param <U>       the function return type
+         * @return          the new injector
+         */
+        default <U> Injector.Checked<CTX, U, EX> premap(ToLongFunction<U> f) {
+            return (ctx, value) -> inject(ctx, f.applyAsLong(value));
         }
 
         /**
