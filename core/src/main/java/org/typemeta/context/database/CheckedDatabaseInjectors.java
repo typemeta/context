@@ -13,6 +13,8 @@ import java.util.*;
  */
 public abstract class CheckedDatabaseInjectors {
 
+    private CheckedDatabaseInjectors() {}
+
     /**
      * Convert a {@link PreparedStatement} injector into one that injects an {@link Optional} value.
      * @param injr      the injector

@@ -12,6 +12,8 @@ import java.util.*;
  */
 public abstract class FieldReaderExtractors {
 
+    private FieldReaderExtractors() {}
+
     /**
      * A combinator function to convert a {@link Extractor} into one for {@link Optional} values.
      * @param extr      the extractor function for the value type

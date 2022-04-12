@@ -9,6 +9,9 @@ import java.util.*;
  * A set injectors for injecting values into {@link Properties} objects.
  */
 public abstract class PropertiesInjectors {
+
+    private PropertiesInjectors() {}
+
     /**
      * A {@code Properties} injector for {@link String} values.
      */

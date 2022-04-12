@@ -1,6 +1,8 @@
 package org.typemeta.context.extractors.byname;
 
-public class ExtractorByNames {
+public abstract class ExtractorByNames {
+
+    private ExtractorByNames() {}
 
     /**
      * Create a {@code ExtractorByName} for enum values.

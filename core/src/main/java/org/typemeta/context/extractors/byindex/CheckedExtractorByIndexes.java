@@ -1,6 +1,8 @@
 package org.typemeta.context.extractors.byindex;
 
-public class CheckedExtractorByIndexes {
+public abstract class CheckedExtractorByIndexes {
+
+    private CheckedExtractorByIndexes() {}
 
     /**
      * Create a {@link ExtractorByIndex.Checked} for enum values.

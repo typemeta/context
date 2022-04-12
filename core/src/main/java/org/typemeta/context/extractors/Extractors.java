@@ -9,6 +9,8 @@ import java.util.*;
  */
 public abstract class Extractors {
 
+    private Extractors() {}
+
     /**
      * Create an {@code Extractor} for enum values.
      * @param <CTX>     the context type

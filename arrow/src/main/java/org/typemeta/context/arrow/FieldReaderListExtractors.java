@@ -12,6 +12,8 @@ import java.util.*;
  */
 public class FieldReaderListExtractors {
 
+    private FieldReaderListExtractors() {}
+
     public static final class FieldReaderListExtractor<T> implements ExtractorByIndex<List<FieldReader>, T> {
         private final Extractor<FieldReader, T> extractor;
 

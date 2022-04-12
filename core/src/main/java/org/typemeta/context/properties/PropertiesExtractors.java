@@ -9,6 +9,9 @@ import java.util.*;
  * A set of extractors for extracting values from {@link Properties} objects.
  */
 public abstract class PropertiesExtractors {
+
+    private PropertiesExtractors() {}
+
     /**
      * A {@code Properties} extractor for {@link String} values.
      */

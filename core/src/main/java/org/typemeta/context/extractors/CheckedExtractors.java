@@ -12,6 +12,8 @@ import static java.util.stream.Collectors.toList;
  */
 public abstract class CheckedExtractors {
 
+    private CheckedExtractors() {}
+
     /**
      * Create a checked extractor for enum values.
      * @param <CTX>     the context type

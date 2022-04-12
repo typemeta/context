@@ -13,6 +13,8 @@ import java.util.*;
  */
 public abstract class ResultSetExtractors {
 
+    private ResultSetExtractors() {}
+
     /**
      * Convert a {@link ResultSet} extractor into one that extracts an {@link Optional} value.
      * @param extr      the extractor function for the value type

@@ -1,6 +1,9 @@
 package org.typemeta.context.injectors.byname;
 
 public abstract class InjectorByNames {
+
+    private InjectorByNames() {}
+
     /**
      * Create a {@link InjectorByName} for enum values
      * @param strInjr   the string injector

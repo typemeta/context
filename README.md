@@ -502,7 +502,6 @@ final Injector<Optional<String>, String> optSet = (os, s) -> Optional.ofNullable
 Each injector type also has a static `of` constructor method (e.g. `Injector.of`)
 that can be used where a lambda or method reference can't be used directly.
 
-
 #### `combine`
 
 `combine` is a standalone method that can be used to combine one more injectors

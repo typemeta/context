@@ -14,6 +14,8 @@ import java.util.*;
  */
 public abstract class PreparedStatementInjectors {
 
+    private PreparedStatementInjectors() {}
+
     /**
      * Convert a {@link PreparedStatement} injector into one that injects an {@link Optional} value.
      * @param injr      the injector

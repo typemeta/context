@@ -2,6 +2,8 @@ package org.typemeta.context.injectors;
 
 public abstract class CheckedInjectors {
 
+    private CheckedInjectors() {}
+
     /**
      * Construct an injector by combining the given injectors.
      * The new injector applies each of the given injectors in turn.

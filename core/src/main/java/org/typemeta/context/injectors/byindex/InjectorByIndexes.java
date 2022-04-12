@@ -1,6 +1,9 @@
 package org.typemeta.context.injectors.byindex;
 
 public abstract class InjectorByIndexes {
+
+    private InjectorByIndexes() {}
+
     /**
      * Create a {@link InjectorByIndex} for enum values
      * @param strInjr   the string injector

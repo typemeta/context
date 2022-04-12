@@ -1,6 +1,9 @@
 package org.typemeta.context.injectors.byname;
 
 public abstract class CheckedInjectorByNames {
+
+    private CheckedInjectorByNames() {}
+
     /**
      * Create a {@link InjectorByName.Checked} for enum values
      * @param strInjr   the string injector

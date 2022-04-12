@@ -2,6 +2,8 @@ package org.typemeta.context.injectors;
 
 public abstract class Injectors {
 
+    private Injectors() {}
+
     /**
      * Construct an injector by combining the given injectors.
      * @param injs      the array of the extractors

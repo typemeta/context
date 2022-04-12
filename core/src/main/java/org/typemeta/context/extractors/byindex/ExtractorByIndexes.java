@@ -1,6 +1,8 @@
 package org.typemeta.context.extractors.byindex;
 
-public class ExtractorByIndexes {
+public abstract class ExtractorByIndexes {
+
+    private ExtractorByIndexes() {}
 
     /**
      * Create a {@code ExtractorByIndex} for enum values.

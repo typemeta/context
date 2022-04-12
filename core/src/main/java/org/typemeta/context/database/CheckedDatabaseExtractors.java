@@ -12,6 +12,7 @@ import java.util.*;
  * These extractors may throw {@link SQLException} exceptions.
  */
 public abstract class CheckedDatabaseExtractors {
+    private CheckedDatabaseExtractors() {}
 
     /**
      * Convert a {@code ResultSet} extractor extractor into one for {@link Optional} values.
