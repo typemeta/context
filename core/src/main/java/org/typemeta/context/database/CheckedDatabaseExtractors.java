@@ -156,7 +156,7 @@ public abstract class CheckedDatabaseExtractors {
      */
     public static final ExtractorByName.Checked<ResultSet, Optional<String>, SQLException> OPT_NONEMPTY_STRING =
             optional(STRING)
-                    .map(oi -> oi.flatMap(s -> s.isEmpty() ? Optional.empty() : Optional.of(s)));
+                    .map(os -> os.flatMap(s -> s.isEmpty() ? Optional.empty() : Optional.of(s)));
 
     /**
      * A {@code ResultSet} extractor for {@link Date} values.
@@ -206,7 +206,7 @@ public abstract class CheckedDatabaseExtractors {
      */
     public static final ExtractorByName.Checked<ResultSet, Optional<LocalTime>, SQLException> OPT_LOCALTIME =
             optional(SQLTIME)
-                    .map(od -> od.map(Time::toLocalTime));
+                    .map(ot -> ot.map(Time::toLocalTime));
 
     /**
      * A {@code ResultSet} extractor for {@link Timestamp} values.
@@ -225,7 +225,7 @@ public abstract class CheckedDatabaseExtractors {
      */
     public static final ExtractorByName.Checked<ResultSet, LocalDateTime, SQLException> LOCALDATETIME =
             SQLTIMESTAMP.map(Timestamp::toInstant)
-                    .map(inst -> LocalDateTime.ofInstant(inst, ZoneId.systemDefault()));
+                    .map(ts -> LocalDateTime.ofInstant(ts, ZoneId.systemDefault()));
 
     /**
      * A {@code ResultSet} extractor for optional {@code LocalDateTime} values.
