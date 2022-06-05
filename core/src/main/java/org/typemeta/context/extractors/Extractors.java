@@ -44,6 +44,23 @@ public abstract class Extractors {
     }
 
     /**
+     * Combinator function for building a extractor from a single extractor
+     * and a constructor function.
+     * @param exA       the first extractor
+     * @param f         the value constructor
+     * @param <CTX>     the context type
+     * @param <A>       the type of value returned by the first extractor
+     * @param <R>       the value type
+     * @return          the new extractor
+     */
+    public static <CTX, A, R> Extractor<CTX, R> combine(
+            Extractor<CTX, A> exA,
+            Functions.F<A, R> f
+    ) {
+        return ctx -> f.apply(exA.extract(ctx));
+    }
+
+    /**
      * Combinator function for building a extractor from a set of extractors
      * and a constructor function.
      * @param exA       the first extractor
