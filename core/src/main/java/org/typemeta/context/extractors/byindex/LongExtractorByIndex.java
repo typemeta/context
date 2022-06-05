@@ -53,7 +53,7 @@ public interface LongExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Long> {
 
     @Override
     default LongExtractor<CTX> bind(int index) {
-        return rs -> extractLong(rs, index);
+        return ctx -> extractLong(ctx, index);
     }
 
     /**
@@ -97,12 +97,12 @@ public interface LongExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Long> {
          * @return          the new extractor
          */
         default <U> ExtractorByIndex.Checked<CTX, U, EX> mapLong(LongFunction<U> f) {
-            return (rs, index) -> f.apply(extract(rs, index));
+            return (ctx, index) -> f.apply(extract(ctx, index));
         }
 
         @Override
         default LongExtractor.Checked<CTX, EX> bind(int index) {
-            return rs -> extractLong(rs, index);
+            return ctx -> extractLong(ctx, index);
         }
 
         /**

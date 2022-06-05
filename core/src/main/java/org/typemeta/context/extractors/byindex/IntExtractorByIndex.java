@@ -54,7 +54,7 @@ public interface IntExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Integer>
 
     @Override
     default IntExtractor<CTX> bind(int index) {
-        return rs -> extractInteger(rs, index);
+        return ctx -> extractInteger(ctx, index);
     }
 
     /**
@@ -97,12 +97,12 @@ public interface IntExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Integer>
          * @return          the new extractor
          */
         default <U> ExtractorByIndex.Checked<CTX, U, EX> mapInteger(IntFunction<U> f) {
-            return (rs, index) -> f.apply(extract(rs, index));
+            return (ctx, index) -> f.apply(extract(ctx, index));
         }
 
         @Override
         default IntExtractor.Checked<CTX, EX> bind(int index) {
-            return rs -> extractInteger(rs, index);
+            return ctx -> extractInteger(ctx, index);
         }
 
         /**

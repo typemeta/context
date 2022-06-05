@@ -58,7 +58,7 @@ public interface Extractor<CTX, T> {
      * @return          the new extractor
      */
     default <U> Extractor<CTX, U> map(Functions.F<T, U> f) {
-        return rs -> f.apply(extract(rs));
+        return ctx -> f.apply(extract(ctx));
     }
 
     /**
@@ -68,7 +68,7 @@ public interface Extractor<CTX, T> {
      * @return          the new extractor
      */
     default <U> Extractor<CTX, U> flatMap(Functions.F<T, Extractor<CTX, U>> f) {
-        return rs -> f.apply(this.extract(rs)).extract(rs);
+        return ctx -> f.apply(this.extract(ctx)).extract(ctx);
     }
 
     /**
@@ -147,7 +147,7 @@ public interface Extractor<CTX, T> {
          * @return          the new extractor
          */
         default <U> Checked<CTX, U, EX> map(Function<T, U> f) {
-            return rs -> f.apply(extract(rs));
+            return ctx -> f.apply(extract(ctx));
         }
 
         /**
@@ -157,7 +157,7 @@ public interface Extractor<CTX, T> {
          * @return          the new extractor
          */
         default <U> Checked<CTX, U, EX> flatMap(Functions.F<T, Checked<CTX, U, EX>> f) {
-            return rs -> f.apply(this.extract(rs)).extract(rs);
+            return ctx -> f.apply(this.extract(ctx)).extract(ctx);
         }
 
         /**

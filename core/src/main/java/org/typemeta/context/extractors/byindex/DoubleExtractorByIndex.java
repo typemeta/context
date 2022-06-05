@@ -54,7 +54,7 @@ public interface DoubleExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Doubl
 
     @Override
     default DoubleExtractor<CTX> bind(int index) {
-        return rs -> extractDouble(rs, index);
+        return ctx -> extractDouble(ctx, index);
     }
 
     /**
@@ -98,12 +98,12 @@ public interface DoubleExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Doubl
          * @return          the new extractor
          */
         default <U> ExtractorByIndex.Checked<CTX, U, EX> mapDouble(DoubleFunction<U> f) {
-            return (rs, index) -> f.apply(extract(rs, index));
+            return (ctx, index) -> f.apply(extract(ctx, index));
         }
 
         @Override
         default DoubleExtractor.Checked<CTX, EX> bind(int index) {
-            return rs -> extractDouble(rs, index);
+            return ctx -> extractDouble(ctx, index);
         }
 
         /**

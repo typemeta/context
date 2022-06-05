@@ -48,7 +48,7 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
 
     @Override
     default LongExtractor<CTX> bind(String name) {
-        return rs -> extractLong(rs, name);
+        return ctx -> extractLong(ctx, name);
     }
 
     /**
@@ -96,7 +96,7 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
 
         @Override
         default LongExtractor.Checked<CTX, EX> bind(String name) {
-            return rs -> extractLong(rs, name);
+            return ctx -> extractLong(ctx, name);
         }
 
         /**

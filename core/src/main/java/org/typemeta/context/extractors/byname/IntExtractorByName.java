@@ -48,7 +48,7 @@ public interface IntExtractorByName<CTX> extends ExtractorByName<CTX, Integer> {
 
     @Override
     default IntExtractor<CTX> bind(String name) {
-        return rs -> extractInt(rs, name);
+        return ctx -> extractInt(ctx, name);
     }
 
     /**
@@ -97,7 +97,7 @@ public interface IntExtractorByName<CTX> extends ExtractorByName<CTX, Integer> {
 
         @Override
         default IntExtractor.Checked<CTX, EX> bind(String name) {
-            return rs -> extractInt(rs, name);
+            return ctx -> extractInt(ctx, name);
         }
 
         /**

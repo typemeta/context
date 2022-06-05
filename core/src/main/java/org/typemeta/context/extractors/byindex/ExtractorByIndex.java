@@ -48,7 +48,7 @@ public interface ExtractorByIndex<CTX, T> {
      * @return          the extractor
      */
     default Extractor<CTX, T> bind(int index) {
-        return rs -> extract(rs, index);
+        return ctx -> extract(ctx, index);
     }
 
     /**
@@ -88,7 +88,7 @@ public interface ExtractorByIndex<CTX, T> {
          * @return          the new extractor
          */
         default <U> Checked<CTX, U, EX> map(Functions.F<T, U> f) {
-            return (rs, index) -> f.apply(extract(rs, index));
+            return (ctx, index) -> f.apply(extract(ctx, index));
         }
 
         /**
@@ -97,7 +97,7 @@ public interface ExtractorByIndex<CTX, T> {
          * @return          the extractor
          */
         default Extractor.Checked<CTX, T, EX> bind(int index) {
-            return rs -> extract(rs, index);
+            return ctx -> extract(ctx, index);
         }
 
         /**

@@ -55,7 +55,7 @@ public interface DoubleExtractorByName<CTX> extends ExtractorByName<CTX, Double>
 
     @Override
     default DoubleExtractor<CTX> bind(String name) {
-        return rs -> extractDouble(rs, name);
+        return ctx -> extractDouble(ctx, name);
     }
 
     /**
@@ -103,7 +103,7 @@ public interface DoubleExtractorByName<CTX> extends ExtractorByName<CTX, Double>
 
         @Override
         default DoubleExtractor.Checked<CTX, EX> bind(String name) {
-            return rs -> extractDouble(rs, name);
+            return ctx -> extractDouble(ctx, name);
         }
 
         /**
