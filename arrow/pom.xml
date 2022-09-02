@@ -6,11 +6,11 @@
     <parent>
         <groupId>org.typemeta</groupId>
         <artifactId>context</artifactId>
-        <version>0.2</version>
+        <version>0.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>context-arrow</artifactId>
-    <version>0.2</version>
+    <version>0.3-SNAPSHOT</version>
 
     <name>context-arrow</name>
 
