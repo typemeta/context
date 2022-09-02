@@ -6,11 +6,11 @@
     <parent>
         <groupId>org.typemeta</groupId>
         <artifactId>context</artifactId>
-        <version>0.2-SNAPSHOT</version>
+        <version>0.2</version>
     </parent>
     
     <artifactId>context-core</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
 
     <name>context-core</name>
 
