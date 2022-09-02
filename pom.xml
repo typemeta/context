@@ -295,7 +295,7 @@
                     <docencoding>UTF-8</docencoding>
                     <charset>UTF-8</charset>
                     <!-- Seem to require this to avoid Javadoc "JAVA_HOME is not correctly set." error -->
-                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                    <!-- <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable> -->
                     <additionalJOptions>
                         <additionalJOption>-XDignore.symbol.file</additionalJOption>
                         <additionalKOption>-Xdoclint:-html</additionalKOption>
