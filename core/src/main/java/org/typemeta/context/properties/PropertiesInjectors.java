@@ -16,7 +16,7 @@ public abstract class PropertiesInjectors {
      * A {@code Properties} injector for {@link String} values.
      */
     public static final InjectorByName<Properties, String> STRING =
-            InjectorByName.of(Properties::setProperty);
+            InjectorByName.ofSideEffect(Properties::setProperty);
 
     /**
      * A {@code Properties} injector for optional {@code String} values.

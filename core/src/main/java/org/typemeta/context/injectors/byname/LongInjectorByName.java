@@ -38,7 +38,7 @@ public interface LongInjectorByName<CTX> extends InjectorByName<CTX, Long> {
      * @param <CTX>     the context type
      * @return          the extractor
      */
-    static <CTX> LongInjectorByName<CTX> of(SideEffect<CTX> f) {
+    static <CTX> LongInjectorByName<CTX> ofSideEffect(SideEffect<CTX> f) {
         return (ctx, name, value) -> {
             f.inject(ctx, name, value);
             return ctx;
@@ -117,7 +117,7 @@ public interface LongInjectorByName<CTX> extends InjectorByName<CTX, Long> {
          * @param <EX>      the exception type
          * @return          the extractor
          */
-        static <CTX, EX extends Exception> Checked<CTX, EX> of(SideEffect<CTX, EX> f) {
+        static <CTX, EX extends Exception> Checked<CTX, EX> ofSideEffect(SideEffect<CTX, EX> f) {
             return (ctx, name, value) -> {
                 f.inject(ctx, name, value);
                 return ctx;

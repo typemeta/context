@@ -1,6 +1,5 @@
 package org.typemeta.context.injectors.byindex;
 
-import org.typemeta.context.functions.Functions;
 import org.typemeta.context.injectors.*;
 import org.typemeta.context.utils.Exceptions;
 
@@ -39,7 +38,7 @@ public interface IntInjectorByIndex<CTX> extends InjectorByIndex<CTX, Integer> {
      * @param <CTX>     the context type
      * @return          the extractor
      */
-    static <CTX> IntInjectorByIndex<CTX> of(SideEffect<CTX> f) {
+    static <CTX> IntInjectorByIndex<CTX> ofSideEffect(SideEffect<CTX> f) {
         return (ctx, index, value) -> {
             f.inject(ctx, index, value);
             return ctx;
@@ -118,7 +117,7 @@ public interface IntInjectorByIndex<CTX> extends InjectorByIndex<CTX, Integer> {
          * @param <EX>      the exception type
          * @return          the extractor
          */
-        static <CTX, EX extends Exception> Checked<CTX, EX> of(SideEffect<CTX, EX> f) {
+        static <CTX, EX extends Exception> Checked<CTX, EX> ofSideEffect(SideEffect<CTX, EX> f) {
             return (ctx, index, value) -> {
                 f.inject(ctx, index, value);
                 return ctx;

@@ -1,8 +1,6 @@
 package org.typemeta.context.injectors.byname;
 
-import org.typemeta.context.functions.Functions;
 import org.typemeta.context.injectors.*;
-import org.typemeta.context.injectors.byindex.DoubleInjectorByIndex;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.OptionalInt;
@@ -40,7 +38,7 @@ public interface IntInjectorByName<CTX> extends InjectorByName<CTX, Integer> {
      * @param <CTX>     the context type
      * @return          the extractor
      */
-    static <CTX> IntInjectorByName<CTX> of(SideEffect<CTX> f) {
+    static <CTX> IntInjectorByName<CTX> ofSideEffect(SideEffect<CTX> f) {
         return (ctx, name, value) -> {
             f.inject(ctx, name, value);
             return ctx;
@@ -119,7 +117,7 @@ public interface IntInjectorByName<CTX> extends InjectorByName<CTX, Integer> {
          * @param <EX>      the exception type
          * @return          the extractor
          */
-        static <CTX, EX extends Exception> Checked<CTX, EX> of(SideEffect<CTX, EX> f) {
+        static <CTX, EX extends Exception> Checked<CTX, EX> ofSideEffect(SideEffect<CTX, EX> f) {
             return (ctx, name, value) -> {
                 f.inject(ctx, name, value);
                 return ctx;

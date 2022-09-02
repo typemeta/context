@@ -40,7 +40,7 @@ public interface InjectorByName<CTX, T> {
      * @param <T>       the injected value type
      * @return          the extractor
      */
-    static <CTX, T> InjectorByName<CTX, T> of(SideEffect<CTX, T> f) {
+    static <CTX, T> InjectorByName<CTX, T> ofSideEffect(SideEffect<CTX, T> f) {
         return (ctx, name, value) -> {
             f.inject(ctx, name, value);
             return ctx;
@@ -122,7 +122,7 @@ public interface InjectorByName<CTX, T> {
          * @param <EX>      the exception type
          * @return          the extractor
          */
-        static <CTX, T, EX extends Exception> Checked<CTX, T, EX> of(SideEffect<CTX, T, EX> f) {
+        static <CTX, T, EX extends Exception> Checked<CTX, T, EX> ofSideEffect(SideEffect<CTX, T, EX> f) {
             return (ctx, name, value) -> {
                 f.inject(ctx, name, value);
                 return ctx;

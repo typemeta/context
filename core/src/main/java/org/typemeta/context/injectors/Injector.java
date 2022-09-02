@@ -39,7 +39,7 @@ public interface Injector<CTX, T> {
      * @param <T>       the injected value type
      * @return          the extractor
      */
-    static <CTX, T> Injector<CTX, T> of(SideEffect<CTX, T> f) {
+    static <CTX, T> Injector<CTX, T> ofSideEffect(SideEffect<CTX, T> f) {
         return (ctx, value) -> {
             f.inject(ctx, value);
             return ctx;

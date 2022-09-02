@@ -232,7 +232,7 @@ public class Example {
         }
 
         private static void example2() {
-            final Injector<AtomicInteger, Integer> setAtomVal = Injector.of(AtomicInteger::set);
+            final Injector<AtomicInteger, Integer> setAtomVal = Injector.ofSideEffect(AtomicInteger::set);
 
             final AtomicInteger ai = new AtomicInteger(0);
             setAtomVal.inject(ai, 100);

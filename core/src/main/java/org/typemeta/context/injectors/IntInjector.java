@@ -1,7 +1,5 @@
 package org.typemeta.context.injectors;
 
-import org.typemeta.context.functions.Functions;
-
 import java.util.OptionalInt;
 import java.util.function.ToIntFunction;
 
@@ -36,7 +34,7 @@ public interface IntInjector<CTX> extends Injector<CTX, Integer> {
      * @param <CTX>     the context type
      * @return          the extractor
      */
-    static <CTX> IntInjector<CTX> of(SideEffect<CTX> f) {
+    static <CTX> IntInjector<CTX> ofSideEffect(SideEffect<CTX> f) {
         return (ctx, value) -> {
             f.inject(ctx, value);
             return ctx;
@@ -109,7 +107,7 @@ public interface IntInjector<CTX> extends Injector<CTX, Integer> {
          * @param <EX>      the exception type
          * @return          the extractor
          */
-        static <CTX, EX extends Exception> Checked<CTX, EX> of(SideEffect<CTX, EX> f) {
+        static <CTX, EX extends Exception> Checked<CTX, EX> ofSideEffect(SideEffect<CTX, EX> f) {
             return (ctx, value) -> {
                 f.inject(ctx, value);
                 return ctx;

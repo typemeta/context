@@ -34,7 +34,7 @@ public interface DoubleInjector<CTX> extends Injector<CTX, Double> {
      * @param <CTX>     the context type
      * @return          the extractor
      */
-    static <CTX> DoubleInjector<CTX> of(SideEffect<CTX> f) {
+    static <CTX> DoubleInjector<CTX> ofSideEffect(SideEffect<CTX> f) {
         return (ctx, value) -> {
             f.inject(ctx, value);
             return ctx;
@@ -107,7 +107,7 @@ public interface DoubleInjector<CTX> extends Injector<CTX, Double> {
          * @param <EX>      the exception type
          * @return          the extractor
          */
-        static <CTX, EX extends Exception> Checked<CTX, EX> of(SideEffect<CTX, EX> f) {
+        static <CTX, EX extends Exception> Checked<CTX, EX> ofSideEffect(SideEffect<CTX, EX> f) {
             return (ctx, value) -> {
                 f.inject(ctx, value);
                 return ctx;
