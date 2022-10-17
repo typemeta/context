@@ -145,14 +145,15 @@ public interface Extractor<CTX, T> {
 I.e. an extractor is a function that takes a context,
 extracts a value and returns the extracted value.
 Contexts can be any type that supports the retrieval of values.
-Taking the Java `Optional` type as an example context,
-we can define an extractor for Optional:
+The simplest context type we can imagine is the  Java `Optional` type,
+which either holds a value or doesn't.
+SO using `Optional` as an example context type, we can define an extractor to extract a `String` value from an `Optional<String>` context:
 
 ```java
 Extractor<Optional<String>, String> optGet = Optional::get;
 ```
 
-and use it to extract a value from an optional value:
+and use it to extract a value from a context:
 
 ```java
 final Optional<String> optStr = Optional.of("test");
@@ -160,7 +161,7 @@ final String s = optGet.extract(optStr);
 assert(s.equals("test"));
 ```
 
-We can convert this extractor into one for a different type by mapping a function over it:
+We can convert this extractor into one that extracts a value of a different type by mapping a function over it:
 
 ```java
 final Extractor<Optional<String>, Integer> optLen = optGet.map(String::length);
@@ -176,7 +177,7 @@ However, unlike `Optional`,
 in order to be able to extract a value from a `Properties` object,
 a property key is required.
 Therefore we need a slightly different type of extractor,
-that adds an extra string parameter to the `extract` method:
+one that adds an extra string parameter to the `extract` method:
 
 ```java
 @FunctionalInterface
@@ -200,7 +201,8 @@ and can use it by calling the extract method with a `Properties` object and a ke
 final String javaVer = getPropVal.extract(System.getProperties(), "java.version");
 ```
 
-Alternatively, we can bind this `ExtractorByName` to a name,
+Alternatively, since we typically know the property name in advance,
+we can bind this `ExtractorByName` to a name,
 which then gives us a standard `Extractor`:
 
 ```java
@@ -228,7 +230,8 @@ As before, an `ExtractorByIndex` can be bound to an integer value, to create a s
 
 ### Checked Extractors
 
-At first glance, the JDBC `ResultSet` class seems like a suitable candidate for converting into an extractor.
+At first glance, the JDBC `ResultSet` class seems like a suitable candidate for converting into an extractor,
+using a method reference to infer the extractor value.
 However, the `ResultSet` get methods (e.g. `ResultSet.getBoolean`) all throw a `SQLException` in their signature.
 This prevents us from creating an extractor directly:
 
