@@ -395,7 +395,7 @@ System.out.println("c=" + c);
 
 The `optional` method converts an extractor into one that extracts optional values.
 By default the optional extractor calls the original extractor to get a value,
-and then passes it to `Optional.ofNullable` to covert it to an optional value 
+and then passes it to `Optional.ofNullable` to convert it to an optional value 
 (note some extractors override this behaviour).
 
 ```java
