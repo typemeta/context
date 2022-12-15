@@ -142,12 +142,11 @@ public interface Extractor<CTX, T> {
 }
 ```
 
-I.e. an extractor is a function that takes a context,
-extracts a value and returns the extracted value.
+I.e. an extractor is a function that takes a context and returns a value extracted from the context.
 Contexts can be any type that supports the retrieval of values.
 The simplest context type we can imagine is the  Java `Optional` type,
 which either holds a value or doesn't.
-SO using `Optional` as an example context type, we can define an extractor to extract a `String` value from an `Optional<String>` context:
+So using `Optional` as an example context type, we can define an extractor to extract a `String` value from an `Optional<String>` context:
 
 ```java
 Extractor<Optional<String>, String> optGet = Optional::get;
