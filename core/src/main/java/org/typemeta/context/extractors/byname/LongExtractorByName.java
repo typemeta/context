@@ -1,6 +1,7 @@
 package org.typemeta.context.extractors.byname;
 
 import org.typemeta.context.extractors.LongExtractor;
+import org.typemeta.context.functions.Functions;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.function.LongFunction;
@@ -33,6 +34,11 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
     @Override
     default Long extract(CTX ctx, String name) {
         return extractLong(ctx, name);
+    }
+
+    @Override
+    default <U> ExtractorByName<CTX, U> map(Functions.F<Long, U> f) {
+        return mapLong(f::apply);
     }
 
     /**
@@ -81,6 +87,11 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
         @Override
         default Long extract(CTX ctx, String name) throws EX {
             return extractLong(ctx, name);
+        }
+
+        @Override
+        default <U> ExtractorByName.Checked<CTX, U, EX> map(Functions.F<Long, U> f) {
+            return mapLong(f::apply);
         }
 
         /**

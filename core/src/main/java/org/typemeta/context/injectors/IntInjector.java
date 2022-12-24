@@ -1,5 +1,7 @@
 package org.typemeta.context.injectors;
 
+import org.typemeta.context.functions.Functions;
+
 import java.util.OptionalInt;
 import java.util.function.ToIntFunction;
 
@@ -63,13 +65,18 @@ public interface IntInjector<CTX> extends Injector<CTX, Integer> {
         return (ctx, optVal) -> optVal.isPresent() ? injectInt(ctx, optVal.getAsInt()) : ctx;
     }
 
+    @Override
+    default <U> Injector<CTX, U> premap(Functions.F<U, Integer> f) {
+        return premapInt(f::apply);
+    }
+
     /**
      * Convert this injector into one that applies the given function to the value before injecting it.
      * @param f         the function to be applied to the injected value
      * @param <U>       the function return type
      * @return          the new injector
      */
-    default <U> Injector<CTX, U> premap(ToIntFunction<U> f) {
+    default <U> Injector<CTX, U> premapInt(ToIntFunction<U> f) {
         return (ctx, value) -> inject(ctx, f.applyAsInt(value));
     }
 
@@ -128,13 +135,18 @@ public interface IntInjector<CTX> extends Injector<CTX, Integer> {
             return injectInt(ctx, value);
         }
 
+        @Override
+        default <U> Injector.Checked<CTX, U, EX> premap(Functions.F<U, Integer> f) {
+            return premapInt(f::apply);
+        }
+
         /**
          * Convert this injector into one that applies the given function to the value before injecting it.
          * @param f         the function to be applied to the injected value
          * @param <U>       the function return type
          * @return          the new injector
          */
-        default <U> Injector.Checked<CTX, U, EX> premap(ToIntFunction<U> f) {
+        default <U> Injector.Checked<CTX, U, EX> premapInt(ToIntFunction<U> f) {
             return (ctx, value) -> inject(ctx, f.applyAsInt(value));
         }
 

@@ -1,6 +1,7 @@
 package org.typemeta.context.extractors.byname;
 
 import org.typemeta.context.extractors.IntExtractor;
+import org.typemeta.context.functions.Functions;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.function.IntFunction;
@@ -33,6 +34,11 @@ public interface IntExtractorByName<CTX> extends ExtractorByName<CTX, Integer> {
     @Override
     default Integer extract(CTX ctx, String name) {
         return extractInt(ctx, name);
+    }
+
+    @Override
+    default <U> ExtractorByName<CTX, U> map(Functions.F<Integer, U> f) {
+        return mapInt(f::apply);
     }
 
     /**
@@ -68,6 +74,11 @@ public interface IntExtractorByName<CTX> extends ExtractorByName<CTX, Integer> {
          */
         static <CTX, EX extends Exception> Checked<CTX, EX> of(Checked<CTX, EX> extr) {
             return extr;
+        }
+
+        @Override
+        default <U> ExtractorByName.Checked<CTX, U, EX> map(Functions.F<Integer, U> f) {
+            return mapInt(f::apply);
         }
 
         /**

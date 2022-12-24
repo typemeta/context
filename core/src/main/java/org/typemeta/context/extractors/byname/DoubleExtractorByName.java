@@ -1,6 +1,7 @@
 package org.typemeta.context.extractors.byname;
 
 import org.typemeta.context.extractors.DoubleExtractor;
+import org.typemeta.context.functions.Functions;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.function.DoubleFunction;
@@ -40,6 +41,11 @@ public interface DoubleExtractorByName<CTX> extends ExtractorByName<CTX, Double>
     @Override
     default Double extract(CTX ctx, String name) {
         return extractDouble(ctx, name);
+    }
+
+    @Override
+    default <U> ExtractorByName<CTX, U> map(Functions.F<Double, U> f) {
+        return mapDouble(f::apply);
     }
 
     /**
@@ -88,6 +94,11 @@ public interface DoubleExtractorByName<CTX> extends ExtractorByName<CTX, Double>
         @Override
         default Double extract(CTX ctx, String name) throws EX {
             return extractDouble(ctx, name);
+        }
+
+        @Override
+        default <U> ExtractorByName.Checked<CTX, U, EX> map(Functions.F<Double, U> f) {
+            return mapDouble(f::apply);
         }
 
         /**

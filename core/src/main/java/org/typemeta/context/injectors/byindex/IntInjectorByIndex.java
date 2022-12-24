@@ -1,5 +1,6 @@
 package org.typemeta.context.injectors.byindex;
 
+import org.typemeta.context.functions.Functions;
 import org.typemeta.context.injectors.*;
 import org.typemeta.context.utils.Exceptions;
 
@@ -64,13 +65,18 @@ public interface IntInjectorByIndex<CTX> extends InjectorByIndex<CTX, Integer> {
         return (ctx, value) -> injectInt(ctx, index, value);
     }
 
+    @Override
+    default <U> InjectorByIndex<CTX, U> premap(Functions.F<U, Integer> f) {
+        return premapInt(f::apply);
+    }
+
     /**
      * Return an injector which first applies the given function to the value.
      * @param f         the function
      * @param <U>       the function return type
      * @return          the new injector
      */
-    default <U> InjectorByIndex<CTX, U> premap(ToIntFunction<U> f) {
+    default <U> InjectorByIndex<CTX, U> premapInt(ToIntFunction<U> f) {
         return (ctx, index, value) -> inject(ctx, index, f.applyAsInt(value));
     }
 
@@ -139,13 +145,18 @@ public interface IntInjectorByIndex<CTX> extends InjectorByIndex<CTX, Integer> {
             return injectInt(ctx, index, value);
         }
 
+        @Override
+        default <U> InjectorByIndex.Checked<CTX, U, EX> premap(Functions.F<U, Integer> f) {
+            return premapInt(f::apply);
+        }
+
         /**
          * Return an injector which first applies the given function to the value.
          * @param f         the function
          * @param <U>       the function return type
          * @return          the new injector
          */
-        default <U> InjectorByIndex.Checked<CTX, U, EX> premap(ToIntFunction<U> f) {
+        default <U> InjectorByIndex.Checked<CTX, U, EX> premapInt(ToIntFunction<U> f) {
             return (ctx, index, value) -> inject(ctx, index, f.applyAsInt(value));
         }
 

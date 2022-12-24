@@ -1,6 +1,7 @@
 package org.typemeta.context.extractors.byindex;
 
 import org.typemeta.context.extractors.IntExtractor;
+import org.typemeta.context.functions.Functions;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.function.IntFunction;
@@ -28,7 +29,7 @@ public interface IntExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Integer>
      * @param ctx       the context
      * @return          the extracted value
      */
-    int extractInteger(CTX ctx, int index);
+    int extractInt(CTX ctx, int index);
 
     /**
      * Extract a value of type {@code T} from the given context,
@@ -39,7 +40,12 @@ public interface IntExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Integer>
      */
     @Override
     default Integer extract(CTX ctx, int index) {
-        return extractInteger(ctx, index);
+        return extractInt(ctx, index);
+    }
+
+    @Override
+    default <U> ExtractorByIndex<CTX, U> map(Functions.F<Integer, U> f) {
+        return mapInteger(f::apply);
     }
 
     /**
@@ -49,12 +55,12 @@ public interface IntExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Integer>
      * @return          the new extractor
      */
     default <U> ExtractorByIndex<CTX, U> mapInteger(IntFunction<U> f) {
-        return (ctx, index) -> f.apply(extractInteger(ctx, index));
+        return (ctx, index) -> f.apply(extractInt(ctx, index));
     }
 
     @Override
     default IntExtractor<CTX> bind(int index) {
-        return ctx -> extractInteger(ctx, index);
+        return ctx -> extractInt(ctx, index);
     }
 
     /**
@@ -83,26 +89,31 @@ public interface IntExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Integer>
          * @return          the extracted value
          * @throws EX       if the extraction fails
          */
-        int extractInteger(CTX ctx, int index) throws EX;
+        int extractInt(CTX ctx, int index) throws EX;
 
         @Override
         default Integer extract(CTX ctx, int index) throws EX {
-            return extractInteger(ctx, index);
+            return extractInt(ctx, index);
         }
-        
+
+        @Override
+        default <U> ExtractorByIndex.Checked<CTX, U, EX> map(Functions.F<Integer, U> f) {
+            return mapInt(f::apply);
+        }
+
         /**
          * A variant of the {@link ExtractorByIndex.Checked#map} method specialised for integer values.
          * @param f         the function
          * @param <U>       the function return type
          * @return          the new extractor
          */
-        default <U> ExtractorByIndex.Checked<CTX, U, EX> mapInteger(IntFunction<U> f) {
+        default <U> ExtractorByIndex.Checked<CTX, U, EX> mapInt(IntFunction<U> f) {
             return (ctx, index) -> f.apply(extract(ctx, index));
         }
 
         @Override
         default IntExtractor.Checked<CTX, EX> bind(int index) {
-            return ctx -> extractInteger(ctx, index);
+            return ctx -> extractInt(ctx, index);
         }
 
         /**
@@ -112,7 +123,7 @@ public interface IntExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Integer>
         default IntExtractorByIndex<CTX> unchecked() {
             return (ctx, index) -> {
                 try {
-                    return extractInteger(ctx, index);
+                    return extractInt(ctx, index);
                 } catch (Exception ex) {
                     return Exceptions.throwUnchecked(ex);
                 }

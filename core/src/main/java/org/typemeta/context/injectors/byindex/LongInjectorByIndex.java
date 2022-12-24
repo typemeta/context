@@ -1,5 +1,6 @@
 package org.typemeta.context.injectors.byindex;
 
+import org.typemeta.context.functions.Functions;
 import org.typemeta.context.injectors.*;
 import org.typemeta.context.utils.Exceptions;
 
@@ -64,13 +65,18 @@ public interface LongInjectorByIndex<CTX> extends InjectorByIndex<CTX, Long> {
         return (ctx, value) -> injectLong(ctx, index, value);
     }
 
+    @Override
+    default <U> InjectorByIndex<CTX, U> premap(Functions.F<U, Long> f) {
+        return premapLong(f::apply);
+    }
+
     /**
      * Return an injector which first applies the given function to the value.
      * @param f         the function
      * @param <U>       the function return type
      * @return          the new injector
      */
-    default <U> InjectorByIndex<CTX, U> premap(ToLongFunction<U> f) {
+    default <U> InjectorByIndex<CTX, U> premapLong(ToLongFunction<U> f) {
         return (ctx, index, value) -> inject(ctx, index, f.applyAsLong(value));
     }
 
@@ -139,13 +145,18 @@ public interface LongInjectorByIndex<CTX> extends InjectorByIndex<CTX, Long> {
             return injectLong(ctx, index, value);
         }
 
+        @Override
+        default <U> InjectorByIndex.Checked<CTX, U, EX> premap(Functions.F<U, Long> f) {
+            return premapLong(f::apply);
+        }
+
         /**
          * Return an injector which first applies the given function to the value.
          * @param f         the function
          * @param <U>       the function return type
          * @return          the new injector
          */
-        default <U> InjectorByIndex.Checked<CTX, U, EX> premap(ToLongFunction<U> f) {
+        default <U> InjectorByIndex.Checked<CTX, U, EX> premapLong(ToLongFunction<U> f) {
             return (ctx, index, value) -> inject(ctx, index, f.applyAsLong(value));
         }
 

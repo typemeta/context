@@ -1,6 +1,7 @@
 package org.typemeta.context.extractors.byindex;
 
 import org.typemeta.context.extractors.DoubleExtractor;
+import org.typemeta.context.functions.Functions;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.function.DoubleFunction;
@@ -39,6 +40,11 @@ public interface DoubleExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Doubl
     @Override
     default Double extract(CTX ctx, int index) {
         return extractDouble(ctx, index);
+    }
+
+    @Override
+    default <U> ExtractorByIndex<CTX, U> map(Functions.F<Double, U> f) {
+        return mapDouble(f::apply);
     }
 
     /**
@@ -88,6 +94,11 @@ public interface DoubleExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Doubl
         @Override
         default Double extract(CTX ctx, int index) throws EX {
             return extractDouble(ctx, index);
+        }
+
+        @Override
+        default <U> ExtractorByIndex.Checked<CTX, U, EX> map(Functions.F<Double, U> f) {
+            return mapDouble((f::apply));
         }
 
         /**

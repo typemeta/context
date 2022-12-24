@@ -1,5 +1,7 @@
 package org.typemeta.context.injectors;
 
+import org.typemeta.context.functions.Functions;
+
 import java.util.OptionalLong;
 import java.util.function.*;
 
@@ -55,13 +57,18 @@ public interface LongInjector<CTX> extends Injector<CTX, Long> {
         return injectLong(ctx, value);
     }
 
+    @Override
+    default <U> Injector<CTX, U> premap(Functions.F<U, Long> f) {
+        return premapLong(f::apply);
+    }
+
     /**
      * Convert this injector into one that applies the given function to the value before injecting it.
      * @param f         the function to be applied to the injected value
      * @param <U>       the function return type
      * @return          the new injector
      */
-    default <U> Injector<CTX, U> premap(ToLongFunction<U> f) {
+    default <U> Injector<CTX, U> premapLong(ToLongFunction<U> f) {
         return (ctx, value) -> inject(ctx, f.applyAsLong(value));
     }
 
@@ -128,13 +135,18 @@ public interface LongInjector<CTX> extends Injector<CTX, Long> {
             return injectLong(ctx, value);
         }
 
+        @Override
+        default <U> Injector.Checked<CTX, U, EX> premap(Functions.F<U, Long> f) {
+            return premapLong(f::apply);
+        }
+
         /**
          * Convert this injector into one that applies the given function to the value before injecting it.
          * @param f         the function to be applied to the injected value
          * @param <U>       the function return type
          * @return          the new injector
          */
-        default <U> Injector.Checked<CTX, U, EX> premap(ToLongFunction<U> f) {
+        default <U> Injector.Checked<CTX, U, EX> premapLong(ToLongFunction<U> f) {
             return (ctx, value) -> inject(ctx, f.applyAsLong(value));
         }
 

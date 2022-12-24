@@ -1,5 +1,6 @@
 package org.typemeta.context.injectors.byindex;
 
+import org.typemeta.context.functions.Functions;
 import org.typemeta.context.injectors.*;
 import org.typemeta.context.utils.Exceptions;
 
@@ -75,13 +76,18 @@ public interface DoubleInjectorByIndex<CTX> extends InjectorByIndex<CTX, Double>
         return (ctx, value) -> injectDouble(ctx, index, value);
     }
 
+    @Override
+    default <U> InjectorByIndex<CTX, U> premap(Functions.F<U, Double> f) {
+        return premapDbl(f::apply);
+    }
+
     /**
      * Return an injector which first applies the given function to the value.
      * @param f         the function
      * @param <U>       the function return type
      * @return          the new injector
      */
-    default <U> InjectorByIndex<CTX, U> premap(ToDoubleFunction<U> f) {
+    default <U> InjectorByIndex<CTX, U> premapDbl(ToDoubleFunction<U> f) {
         return (ctx, index, value) -> inject(ctx, index, f.applyAsDouble(value));
     }
 
@@ -89,7 +95,7 @@ public interface DoubleInjectorByIndex<CTX> extends InjectorByIndex<CTX, Double>
      * Convert this injector into one that accepts optional values.
      * @return          the injector for optional values
      */
-    default InjectorByIndex<CTX, OptionalDouble> optionalDouble() {
+    default InjectorByIndex<CTX, OptionalDouble> optionalDbl() {
         return (ctx, index, optVal) ->
                 optVal.isPresent() ? inject(ctx, index, optVal.getAsDouble()) : ctx;
     }
@@ -150,13 +156,18 @@ public interface DoubleInjectorByIndex<CTX> extends InjectorByIndex<CTX, Double>
             return injectDouble(ctx, index, value);
         }
 
+        @Override
+        default <U> InjectorByIndex.Checked<CTX, U, EX> premap(Functions.F<U, Double> f) {
+            return premapDbl(f::apply);
+        }
+
         /**
          * Return an injector which first applies the given function to the value.
          * @param f         the function
          * @param <U>       the function return type
          * @return          the new injector
          */
-        default <U> InjectorByIndex.Checked<CTX, U, EX> premap(ToDoubleFunction<U> f) {
+        default <U> InjectorByIndex.Checked<CTX, U, EX> premapDbl(ToDoubleFunction<U> f) {
             return (ctx, index, value) -> inject(ctx, index, f.applyAsDouble(value));
         }
 
@@ -164,7 +175,7 @@ public interface DoubleInjectorByIndex<CTX> extends InjectorByIndex<CTX, Double>
          * Convert this injector into one that accepts optional values.
          * @return          the injector for optional values
          */
-        default InjectorByIndex.Checked<CTX, OptionalDouble, EX> optionalDouble() {
+        default InjectorByIndex.Checked<CTX, OptionalDouble, EX> optionalDbl() {
             return (ctx, index, optVal) ->
                     optVal.isPresent() ? inject(ctx, index, optVal.getAsDouble()) : ctx;
         }

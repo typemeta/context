@@ -1,9 +1,10 @@
 package org.typemeta.context.extractors;
 
+import org.typemeta.context.functions.Functions;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.Optional;
-import java.util.function.IntFunction;
+import java.util.function.*;
 
 /**
  * A specialisation of {@code Extractor} for integer values.
@@ -56,6 +57,11 @@ public interface IntExtractor<CTX> extends Extractor<CTX, Integer> {
     default Extractor<CTX, Optional<Integer>> optional() {
         // This extractor doesn't support nulls, so this won't work.
         throw new RuntimeException("Cannot construct an optional extractor from a IntExtractor");
+    }
+
+    @Override
+    default <U> Extractor<CTX, U> map(Functions.F<Integer, U> f) {
+        return mapInt(f::apply);
     }
 
     /**
@@ -117,6 +123,11 @@ public interface IntExtractor<CTX> extends Extractor<CTX, Integer> {
         @Override
         default Integer extract(CTX ctx) throws EX {
             return extractInt(ctx);
+        }
+
+        @Override
+        default <U> Extractor.Checked<CTX, U, EX> map(Function<Integer, U> f) {
+            return mapInt(f::apply);
         }
 
         /**

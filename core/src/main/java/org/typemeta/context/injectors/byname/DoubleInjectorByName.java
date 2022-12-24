@@ -1,5 +1,6 @@
 package org.typemeta.context.injectors.byname;
 
+import org.typemeta.context.functions.Functions;
 import org.typemeta.context.injectors.*;
 import org.typemeta.context.utils.Exceptions;
 
@@ -64,13 +65,18 @@ public interface DoubleInjectorByName<CTX> extends InjectorByName<CTX, Double> {
         return (ctx, value) -> injectDouble(ctx, name, value);
     }
 
+    @Override
+    default <U> InjectorByName<CTX, U> premap(Functions.F<U, Double> f) {
+        return premapDbl(f::apply);
+    }
+
     /**
      * Return an injector which first applies the given function to the value.
      * @param f         the function
      * @param <U>       the function return type
      * @return          the new injector
      */
-    default <U> InjectorByName<CTX, U> premap(ToDoubleFunction<U> f) {
+    default <U> InjectorByName<CTX, U> premapDbl(ToDoubleFunction<U> f) {
         return (ctx, name, value) -> inject(ctx, name, f.applyAsDouble(value));
     }
 
@@ -78,7 +84,7 @@ public interface DoubleInjectorByName<CTX> extends InjectorByName<CTX, Double> {
      * Convert this injector into one that accepts optional values.
      * @return          the injector for optional values
      */
-    default InjectorByName<CTX, OptionalDouble> optionalDouble() {
+    default InjectorByName<CTX, OptionalDouble> optionalDbl() {
         return (ctx, name, optVal) ->
                 optVal.isPresent() ? inject(ctx, name, optVal.getAsDouble()) : ctx;
     }
@@ -139,13 +145,18 @@ public interface DoubleInjectorByName<CTX> extends InjectorByName<CTX, Double> {
             return injectDouble(ctx, name, value);
         }
 
+        @Override
+        default <U> InjectorByName.Checked<CTX, U, EX> premap(Functions.F<U, Double> f) {
+            return premapDbl(f::apply);
+        }
+
         /**
          * Return an injector which first applies the given function to the value.
          * @param f         the function
          * @param <U>       the function return type
          * @return          the new injector
          */
-        default <U> InjectorByName.Checked<CTX, U, EX> premap(ToDoubleFunction<U> f) {
+        default <U> InjectorByName.Checked<CTX, U, EX> premapDbl(ToDoubleFunction<U> f) {
             return (ctx, name, value) -> inject(ctx, name, f.applyAsDouble(value));
         }
 
@@ -153,7 +164,7 @@ public interface DoubleInjectorByName<CTX> extends InjectorByName<CTX, Double> {
          * Convert this injector into one that accepts optional values.
          * @return          the injector for optional values
          */
-        default InjectorByName.Checked<CTX, OptionalDouble, EX> optionalDouble() {
+        default InjectorByName.Checked<CTX, OptionalDouble, EX> optionalDbl() {
             return (ctx, name, optVal) ->
                     optVal.isPresent() ? inject(ctx, name, optVal.getAsDouble()) : ctx;
         }

@@ -1,9 +1,11 @@
 package org.typemeta.context.extractors;
 
+import org.typemeta.context.extractors.byname.ExtractorByName;
+import org.typemeta.context.functions.Functions;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.Optional;
-import java.util.function.DoubleFunction;
+import java.util.function.*;
 
 /**
  * A specialisation of {@link Extractor} for double values.
@@ -50,6 +52,11 @@ public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
     @Override
     default Double extract(CTX ctx) {
         return extractDouble(ctx);
+    }
+
+    @Override
+    default <U> Extractor<CTX, U> map(Functions.F<Double, U> f) {
+        return mapDouble(f::apply);
     }
 
     /**
@@ -117,6 +124,11 @@ public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
         @Override
         default Double extract(CTX ctx) throws EX {
             return extractDouble(ctx);
+        }
+
+        @Override
+        default <U> Extractor.Checked<CTX, U, EX> map(Function<Double, U> f) {
+            return mapDouble(f::apply);
         }
 
         /**
