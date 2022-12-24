@@ -24,7 +24,7 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
 
     /**
      * Extract a long value from the given context, for the given name.
-     * A variant of the {@link ExtractorByName#extract method specialised for long values.
+     * A variant of the {@link ExtractorByName#extract} method specialised for long values.
      * @param ctx       the context
      * @return          the extracted value
      */
@@ -71,7 +71,7 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
 
         /**
          * Extract a long value from the given context, for the given name.
-         * A variant of the {@link ExtractorByName.Checked#extract method specialised for long values.
+         * A variant of the {@link ExtractorByName.Checked#extract} method specialised for long values.
          * @param ctx       the context
          * @return          the extracted value
          * @throws EX       if the extraction fails
