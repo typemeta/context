@@ -459,7 +459,7 @@ public interface Injector<CTX, T> {
 
 I.e. an injector is a function that takes a context and a value,
 injects the value into the context, and returns the updated context.
-The injector can either modify the context as a side-effect and return the updated context,
+The injector can either modify the context as a side effect and return the updated context,
 or it can return a new context value.
 
 ```java

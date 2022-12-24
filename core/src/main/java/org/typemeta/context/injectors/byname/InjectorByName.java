@@ -25,9 +25,9 @@ public interface InjectorByName<CTX, T> {
     }
 
     /**
-     * A variant of {@code Injector} that modifies the given context as a side-effect.
-     * @param <CTX>
-     * @param <T>
+     * A variant of {@code Injector} that modifies the given context as a side effect.
+     * @param <CTX>     the context type
+     * @param <T>       the injected value type
      */
     interface SideEffect<CTX, T> {
         void inject(CTX ctx, String name, T value);
@@ -105,7 +105,7 @@ public interface InjectorByName<CTX, T> {
         }
 
         /**
-         * A variant of {@code Injector} that modifies the given context as a side-effect.
+         * A variant of {@code Injector} that modifies the given context as a side effect.
          * @param <CTX>     the context type
          * @param <T>       the value type
          * @param <EX>      the exception type

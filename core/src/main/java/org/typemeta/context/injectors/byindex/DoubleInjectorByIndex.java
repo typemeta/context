@@ -24,8 +24,8 @@ public interface DoubleInjectorByIndex<CTX> extends InjectorByIndex<CTX, Double>
     }
 
     /**
-     * A variant of {@code Injector} that modifies the given context as a side-effect.
-     * @param <CTX>
+     * A variant of {@code Injector} that modifies the given context as a side effect.
+     * @param <CTX>     the context type
      */
     @FunctionalInterface
     interface SideEffect<CTX> {
@@ -112,7 +112,7 @@ public interface DoubleInjectorByIndex<CTX> extends InjectorByIndex<CTX, Double>
         }
 
         /**
-         * A variant of {@code Injector} that modifies the given context as a side-effect.
+         * A variant of {@code Injector} that modifies the given context as a side effect.
          * @param <CTX>     the context type
          * @param <EX>      the exception type
          */
