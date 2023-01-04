@@ -42,7 +42,7 @@ Add this dependency to your project pom.xml:
 
 ## Example
 
-Consider a simple class consisting of a few member fields:
+Consider a simple class consisting of several member fields:
 
 ```java
 static class Config {
