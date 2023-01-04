@@ -129,7 +129,7 @@ Context provides two sets of combinators - extractors and injectors.
 
 ## Extractors
 
-Extractors extract a value from a context.
+An Extractor extracts a value from a context.
 The primary interface is `Extractor`, which has one abstract method:
 
 ```java
@@ -446,7 +446,7 @@ The `konst` and `flatMap` methods correspond to the monadic `pure` (aka `return`
 
 ## Injectors
 
-Injectors inject a value into a context.
+An injector injects a value into a context.
 The primary interface is `Injector`, which essentially looks as follows:
 
 ```java
