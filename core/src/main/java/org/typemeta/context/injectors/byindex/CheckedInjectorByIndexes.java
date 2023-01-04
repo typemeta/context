@@ -1,7 +1,5 @@
 package org.typemeta.context.injectors.byindex;
 
-import org.typemeta.context.injectors.Injector;
-
 public abstract class CheckedInjectorByIndexes {
 
     private CheckedInjectorByIndexes() {}

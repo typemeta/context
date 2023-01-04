@@ -5,7 +5,7 @@ import org.typemeta.context.injectors.*;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.OptionalDouble;
-import java.util.function.*;
+import java.util.function.ToDoubleFunction;
 
 /**
  * A function to inject a double value into an context, given an index.

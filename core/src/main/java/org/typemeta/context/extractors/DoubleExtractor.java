@@ -1,6 +1,5 @@
 package org.typemeta.context.extractors;
 
-import org.typemeta.context.extractors.byname.ExtractorByName;
 import org.typemeta.context.functions.Functions;
 import org.typemeta.context.utils.Exceptions;
 

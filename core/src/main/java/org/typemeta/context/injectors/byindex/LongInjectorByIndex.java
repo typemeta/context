@@ -5,7 +5,7 @@ import org.typemeta.context.injectors.*;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.OptionalLong;
-import java.util.function.*;
+import java.util.function.ToLongFunction;
 
 /**
  * A function to inject a long value into an context, given an index.

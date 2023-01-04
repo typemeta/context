@@ -11,9 +11,9 @@ import java.util.*;
  * A set of injectors for injecting values into database {@link PreparedStatement} objects.
  * These injectors may throw {@link SQLException} exceptions.
  */
-public abstract class CheckedDatabaseInjectors {
+public abstract class CheckedPreparedStatementInjectors {
 
-    private CheckedDatabaseInjectors() {}
+    private CheckedPreparedStatementInjectors() {}
 
     /**
      * Convert a {@link PreparedStatement} injector into one that injects an {@link Optional} value.

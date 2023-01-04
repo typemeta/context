@@ -5,7 +5,7 @@ import org.typemeta.context.injectors.*;
 import org.typemeta.context.utils.Exceptions;
 
 import java.util.OptionalInt;
-import java.util.function.*;
+import java.util.function.ToIntFunction;
 
 /**
  * A function to inject an integer value into an context, given an name.

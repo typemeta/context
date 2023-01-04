@@ -3,7 +3,7 @@ package org.typemeta.context.injectors;
 import org.typemeta.context.functions.Functions;
 
 import java.util.OptionalDouble;
-import java.util.function.*;
+import java.util.function.ToDoubleFunction;
 
 /**
  * A {@link Injector} specialised for double values.

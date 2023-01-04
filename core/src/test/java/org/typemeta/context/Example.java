@@ -6,7 +6,7 @@ import org.typemeta.context.extractors.byname.ExtractorByName;
 import org.typemeta.context.injectors.*;
 import org.typemeta.context.properties.*;
 
-import java.time.*;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
