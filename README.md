@@ -1,6 +1,5 @@
 [<img src="https://img.shields.io/maven-central/v/org.typemeta/context.svg"/>](https://search.maven.org/search?q=org.typemeta.context)
 [![Javadocs](https://www.javadoc.io/badge/org.typemeta/context.svg)](https://www.javadoc.io/doc/org.typemeta/context)
-[![Build Status](https://travis-ci.com/typemeta/context.svg)](https://travis-ci.com/typemeta/context)
 
 *Context* is a zero-dependency Java library that provides a combinator framework for building *extractors*,
 that can read values from a context,
