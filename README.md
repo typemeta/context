@@ -234,7 +234,7 @@ However, the `ResultSet` get methods (e.g. `ResultSet.getBoolean`) all throw a `
 This prevents us from creating an extractor directly:
 
 ```java
-// Compile error.
+// Fails to compile....
 final ExtractorByName<ResultSet, Boolean> BOOLEAN = ResultSet::getBoolean;
 ```
 
@@ -258,11 +258,13 @@ These interfaces can then be used to construct extractors from methods that thro
 final ExtractorByName.Checked<ResultSet, Boolean, SQLException> BOOLEAN = ResultSet::getBoolean;
 ```
 
-We can also convert a `Checked` extractor instance to an unchecked one by calling `Checked.unchecked`:
+We can convert a `Checked` extractor instance to an unchecked one by calling `Checked.unchecked`:
 
 ```java
 final ExtractorByName<ResultSet, Boolean> BOOLEAN2 = BOOLEAN.unchecked();
 ```
+
+This gives us an extractor that will catch the checked exception and rethrow as a `RuntimeException`.
 
 ### Specialisations
 
@@ -309,10 +311,10 @@ Each extractor type also has a static `of` constructor method (e.g. `Extractor.o
 that can be used where a lambda or method reference can't be used directly:
 
 ```java
-// Commpile error
+// Fails to compile...
 final ExtractorByName<ResultSet, Boolean> BOOLEAN = ResultSet::getBoolean.unchecked();
 
-// Ok.
+// Compiler is happy...
 final ExtractorByName<ResultSet, Boolean> BOOLEAN =
         ExtractorByName.of(ResultSet::getBoolean).unchecked();
 ```
