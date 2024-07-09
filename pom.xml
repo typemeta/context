@@ -35,7 +35,7 @@
 
         <!-- Library versions -->
         <arrow.version>4.0.0</arrow.version>
-        <derby.version>10.14.2.0</derby.version>
+        <derby.version>10.17.1.0</derby.version>
         <junit.version>5.7.2</junit.version>
         <slf4j.version>1.7.25</slf4j.version>
     </properties>
