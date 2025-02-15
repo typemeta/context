@@ -1,10 +1,10 @@
 package org.typemeta.context.extractors;
 
 import org.typemeta.context.functions.Functions;
-import org.typemeta.context.utils.Exceptions;
 
 import java.util.Optional;
-import java.util.function.*;
+import java.util.function.Function;
+import java.util.function.IntFunction;
 
 /**
  * A specialisation of {@code Extractor} for integer values.
@@ -149,7 +149,7 @@ public interface IntExtractor<CTX> extends Extractor<CTX, Integer> {
                 try {
                     return extract(ctx);
                 } catch (Exception ex) {
-                    return Exceptions.throwUnchecked(ex);
+                    throw new RuntimeException(ex);
                 }
             };
         }

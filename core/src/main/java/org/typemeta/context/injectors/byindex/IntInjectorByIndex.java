@@ -1,8 +1,8 @@
 package org.typemeta.context.injectors.byindex;
 
 import org.typemeta.context.functions.Functions;
-import org.typemeta.context.injectors.*;
-import org.typemeta.context.utils.Exceptions;
+import org.typemeta.context.injectors.Injector;
+import org.typemeta.context.injectors.IntInjector;
 
 import java.util.OptionalInt;
 import java.util.function.ToIntFunction;
@@ -178,7 +178,7 @@ public interface IntInjectorByIndex<CTX> extends InjectorByIndex<CTX, Integer> {
                 try {
                     return inject(ctx, index, value);
                 } catch (Exception ex) {
-                    return Exceptions.throwUnchecked(ex);
+                    throw new RuntimeException(ex);
                 }
             };
         }

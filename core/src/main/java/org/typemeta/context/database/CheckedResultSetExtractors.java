@@ -1,11 +1,19 @@
 package org.typemeta.context.database;
 
-import org.typemeta.context.extractors.byname.*;
+import org.typemeta.context.extractors.byname.DoubleExtractorByName;
+import org.typemeta.context.extractors.byname.ExtractorByName;
+import org.typemeta.context.extractors.byname.IntExtractorByName;
+import org.typemeta.context.extractors.byname.LongExtractorByName;
 
-import java.sql.Date;
 import java.sql.*;
-import java.time.*;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
 
 /**
  * A set of extractors for extracting values from database {@link ResultSet} objects.
@@ -16,7 +24,7 @@ public abstract class CheckedResultSetExtractors {
     private CheckedResultSetExtractors() {}
 
     /**
-     * Convert a {@code ResultSet} extractor extractor into one for {@link Optional} values.
+     * Convert a {@code ResultSet} extractor into one for {@link Optional} values.
      * @param extr      the extractor function for the value type
      * @param <T>       the value type
      * @return          the extractor function for the optional value

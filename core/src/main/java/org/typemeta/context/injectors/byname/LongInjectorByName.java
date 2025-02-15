@@ -1,8 +1,8 @@
 package org.typemeta.context.injectors.byname;
 
 import org.typemeta.context.functions.Functions;
-import org.typemeta.context.injectors.*;
-import org.typemeta.context.utils.Exceptions;
+import org.typemeta.context.injectors.Injector;
+import org.typemeta.context.injectors.LongInjector;
 
 import java.util.OptionalLong;
 import java.util.function.ToLongFunction;
@@ -178,7 +178,7 @@ public interface LongInjectorByName<CTX> extends InjectorByName<CTX, Long> {
                 try {
                     return inject(ctx, name, value);
                 } catch (Exception ex) {
-                    return Exceptions.throwUnchecked(ex);
+                    throw new RuntimeException(ex);
                 }
             };
         }

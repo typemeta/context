@@ -2,7 +2,6 @@ package org.typemeta.context.extractors.byname;
 
 import org.typemeta.context.extractors.LongExtractor;
 import org.typemeta.context.functions.Functions;
-import org.typemeta.context.utils.Exceptions;
 
 import java.util.function.LongFunction;
 
@@ -119,7 +118,7 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
                 try {
                     return extractLong(ctx, name);
                 } catch (Exception ex) {
-                    return Exceptions.throwUnchecked(ex);
+                    throw new RuntimeException(ex);
                 }
             };
         }

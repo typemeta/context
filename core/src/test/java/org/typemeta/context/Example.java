@@ -1,14 +1,20 @@
 package org.typemeta.context;
 
-import org.typemeta.context.extractors.*;
+import org.typemeta.context.extractors.Extractor;
+import org.typemeta.context.extractors.Extractors;
 import org.typemeta.context.extractors.byindex.ExtractorByIndex;
 import org.typemeta.context.extractors.byname.ExtractorByName;
-import org.typemeta.context.injectors.*;
-import org.typemeta.context.properties.*;
+import org.typemeta.context.injectors.Injector;
+import org.typemeta.context.injectors.Injectors;
+import org.typemeta.context.properties.PropertiesExtractors;
+import org.typemeta.context.properties.PropertiesInjectors;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Example {

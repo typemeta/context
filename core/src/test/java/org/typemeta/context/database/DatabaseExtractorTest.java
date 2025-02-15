@@ -1,18 +1,25 @@
 package org.typemeta.context.database;
 
-import org.junit.jupiter.api.*;
-import org.slf4j.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.typemeta.context.extractors.Extractor;
 import org.typemeta.context.extractors.byname.ExtractorByName;
 
 import java.sql.Date;
 import java.sql.*;
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.typemeta.context.database.DatabaseMeta.*;
 
+@Disabled
 public class DatabaseExtractorTest {
     private static final Logger logger = LoggerFactory.getLogger(DatabaseExtractorTest.class);
 

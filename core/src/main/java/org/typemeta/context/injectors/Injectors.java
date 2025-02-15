@@ -1,6 +1,9 @@
 package org.typemeta.context.injectors;
 
 public abstract class Injectors {
+
+    private Injectors() {}
+
     /**
      * Create a {@link Injector} for enum values
      * @param strInjr   the string injector
@@ -13,19 +16,36 @@ public abstract class Injectors {
         return strInjr.premap(Enum::name);
     }
 
-    private Injectors() {}
-
     /**
      * Construct an injector by combining the given injectors.
      * The new injector applies each of the given injectors in turn.
-     * @param injs      the array of the extractors
+     * @param injs      the array of injectors
      * @param <CTX>     the context type
      * @param <T>       the injector value type
      * @return          the new injector
      */
     @SafeVarargs
     public static <CTX, T> Injector<CTX, T> combine(
-            Injector<CTX, T> ... injs
+            Injector<CTX, T>... injs
+    ) {
+        return (ctx, value) -> {
+            for(Injector<CTX, T> inj : injs) {
+                ctx = inj.inject(ctx, value);
+            }
+            return ctx;
+        };
+    }
+
+    /**
+     * Construct an injector by combining the given injectors.
+     * The new injector applies each of the given injectors in turn.
+     * @param injs      the iterable of injectors
+     * @param <CTX>     the context type
+     * @param <T>       the injector value type
+     * @return          the new injector
+     */
+    public static <CTX, T> Injector<CTX, T> combine(
+            Iterable<Injector<CTX, T>> injs
     ) {
         return (ctx, value) -> {
             for(Injector<CTX, T> inj : injs) {

@@ -1,7 +1,6 @@
 package org.typemeta.context.injectors;
 
 import org.typemeta.context.functions.Functions;
-import org.typemeta.context.utils.Exceptions;
 
 import java.util.Optional;
 
@@ -153,7 +152,7 @@ public interface Injector<CTX, T> {
                 try {
                     return inject(ctx, value);
                 } catch (Exception ex) {
-                    return Exceptions.throwUnchecked(ex);
+                    throw new RuntimeException(ex);
                 }
             };
         }

@@ -2,7 +2,9 @@ package org.typemeta.context.extractors;
 
 import org.typemeta.context.functions.Functions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * A set of combinator methods for constructing {@link Extractor} extractors.
@@ -308,7 +310,32 @@ public abstract class Extractors {
             Extractor<CTX, ?> ... exs
     ) {
         return ctx -> {
-            final Object[] vals = Arrays.stream(exs).map(ex -> ex.extract(ctx)).toArray();
+            final Object[] vals = new Object[exs.length];
+            for (int i = 0; i < exs.length; ++i) {
+                vals[i] = exs[i].extract(ctx);
+            }
+            return f.apply(vals);
+        };
+    }
+
+    /**
+     * Combinator function for building a extractor from a set of extractors
+     * and a constructor function.
+     * @param f         the value constructor
+     * @param exs       an iterable of the extractors
+     * @param <CTX>     the context type
+     * @param <R>       the value type
+     * @return          the new extractor
+     */
+    public static <CTX, R> Extractor<CTX, R> combine(
+            Functions.F<List<Object>, R> f,
+            Iterable<Extractor<CTX, ?>> exs
+    ) {
+        return ctx -> {
+            final List<Object> vals = new ArrayList<>();
+            for (Extractor<CTX, ?> ex : exs) {
+                vals.add(ex.extract(ctx));
+            }
             return f.apply(vals);
         };
     }

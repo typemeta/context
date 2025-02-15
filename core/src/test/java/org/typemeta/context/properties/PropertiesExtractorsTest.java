@@ -1,15 +1,20 @@
 package org.typemeta.context.properties;
 
 import org.junit.jupiter.api.Test;
-import org.typemeta.context.extractors.*;
+import org.typemeta.context.extractors.Extractor;
+import org.typemeta.context.extractors.Extractors;
 import org.typemeta.context.extractors.byname.ExtractorByName;
 import org.typemeta.context.injectors.Injector;
 import org.typemeta.context.injectors.byname.InjectorByName;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class PropertiesExtractorsTest {
 

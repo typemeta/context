@@ -1,8 +1,8 @@
 package org.typemeta.context.injectors.byindex;
 
 import org.typemeta.context.functions.Functions;
-import org.typemeta.context.injectors.*;
-import org.typemeta.context.utils.Exceptions;
+import org.typemeta.context.injectors.DoubleInjector;
+import org.typemeta.context.injectors.Injector;
 
 import java.util.OptionalDouble;
 import java.util.function.ToDoubleFunction;
@@ -189,7 +189,7 @@ public interface DoubleInjectorByIndex<CTX> extends InjectorByIndex<CTX, Double>
                 try {
                     return inject(ctx, index, value);
                 } catch (Exception ex) {
-                    return Exceptions.throwUnchecked(ex);
+                    throw new RuntimeException(ex);
                 }
             };
         }

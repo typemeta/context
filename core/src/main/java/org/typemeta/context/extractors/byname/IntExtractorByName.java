@@ -2,7 +2,6 @@ package org.typemeta.context.extractors.byname;
 
 import org.typemeta.context.extractors.IntExtractor;
 import org.typemeta.context.functions.Functions;
-import org.typemeta.context.utils.Exceptions;
 
 import java.util.function.IntFunction;
 
@@ -120,7 +119,7 @@ public interface IntExtractorByName<CTX> extends ExtractorByName<CTX, Integer> {
                 try {
                     return extractInt(ctx, name);
                 } catch (Exception ex) {
-                    return Exceptions.throwUnchecked(ex);
+                    throw new RuntimeException(ex);
                 }
             };
         }

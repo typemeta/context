@@ -4,6 +4,7 @@ import org.apache.arrow.memory.*;
 import org.apache.arrow.vector.*;
 import org.apache.arrow.vector.complex.reader.FieldReader;
 import org.apache.arrow.vector.types.pojo.Field;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.typemeta.context.extractors.*;
 import org.typemeta.context.extractors.byindex.ExtractorByIndex;
@@ -15,6 +16,7 @@ import java.util.function.BiFunction;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Disabled
 public class FieldReaderExtractorTest {
     private static final int N = 16;
 

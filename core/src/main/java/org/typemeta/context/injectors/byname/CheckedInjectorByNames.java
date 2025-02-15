@@ -20,7 +20,7 @@ public abstract class CheckedInjectorByNames {
     /**
      * Construct an injector by combining the given injectors.
      * The new injector applies each of the given injectors in turn.
-     * @param injs      the array of the extractors
+     * @param injs      the array of injectors
      * @param <CTX>     the context type
      * @param <T>       the injector value type
      * @return          the new injector
@@ -28,6 +28,25 @@ public abstract class CheckedInjectorByNames {
     @SafeVarargs
     public static <CTX, T, EX extends Exception> InjectorByName.Checked<CTX, T, EX> combine(
             InjectorByName.Checked<CTX, T, EX> ... injs
+    ) {
+        return (ctx, name, value) -> {
+            for(InjectorByName.Checked<CTX, T, EX> inj : injs) {
+                ctx = inj.inject(ctx, name, value);
+            }
+            return ctx;
+        };
+    }
+
+    /**
+     * Construct an injector by combining the given injectors.
+     * The new injector applies each of the given injectors in turn.
+     * @param injs      the iterable of injectors
+     * @param <CTX>     the context type
+     * @param <T>       the injector value type
+     * @return          the new injector
+     */
+    public static <CTX, T, EX extends Exception> InjectorByName.Checked<CTX, T, EX> combine(
+            Iterable<InjectorByName.Checked<CTX, T, EX>> injs
     ) {
         return (ctx, name, value) -> {
             for(InjectorByName.Checked<CTX, T, EX> inj : injs) {

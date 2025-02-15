@@ -1,7 +1,6 @@
 package org.typemeta.context.extractors;
 
 import org.typemeta.context.functions.Functions;
-import org.typemeta.context.utils.Exceptions;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -178,7 +177,7 @@ public interface Extractor<CTX, T> {
                 try {
                     return extract(ctx);
                 } catch (Exception ex) {
-                    return Exceptions.throwUnchecked(ex);
+                    throw new RuntimeException(ex);
                 }
             };
         }

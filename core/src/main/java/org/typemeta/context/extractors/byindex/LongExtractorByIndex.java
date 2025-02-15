@@ -2,7 +2,6 @@ package org.typemeta.context.extractors.byindex;
 
 import org.typemeta.context.extractors.LongExtractor;
 import org.typemeta.context.functions.Functions;
-import org.typemeta.context.utils.Exceptions;
 
 import java.util.function.LongFunction;
 
@@ -125,7 +124,7 @@ public interface LongExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Long> {
                 try {
                     return extractLong(ctx, index);
                 } catch (Exception ex) {
-                    return Exceptions.throwUnchecked(ex);
+                    throw new RuntimeException(ex);
                 }
             };
         }

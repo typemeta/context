@@ -1,24 +1,13 @@
 package org.typemeta.context.utils;
 
-import org.typemeta.context.functions.*;
+import org.typemeta.context.functions.CheckedFunctions;
+import org.typemeta.context.functions.Functions;
 
 /**
  * Utility functions relating to exceptions.
  */
 @SuppressWarnings("unchecked")
 public abstract class Exceptions {
-
-    /**
-     * Rethrow a checked exception, hiding it at the type level using a Java quirk.
-     * @param ex        the exception
-     * @param <X>       the exception type
-     * @param <T>       the return type
-     * @return          never returns
-     * @throws X        the hidden checked exception
-     */
-    public static <X extends Exception, T> T throwUnchecked(Exception ex) throws X {
-        throw (X) ex;
-    }
 
     /**
      * Wrap a function which throws a checked exception
@@ -32,7 +21,7 @@ public abstract class Exceptions {
         try {
             return thrower.apply();
         } catch(Exception ex) {
-            return throwUnchecked(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -50,7 +39,7 @@ public abstract class Exceptions {
             try {
                 return thrower.apply(t);
             } catch(Exception ex) {
-                return throwUnchecked(ex);
+                throw new RuntimeException(ex);
             }
         };
     }
@@ -71,7 +60,7 @@ public abstract class Exceptions {
             try {
                 return thrower.apply(a, b);
             } catch(Exception ex) {
-                return throwUnchecked(ex);
+                throw new RuntimeException(ex);
             }
         };
     }

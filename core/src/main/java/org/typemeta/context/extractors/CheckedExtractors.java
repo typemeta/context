@@ -3,7 +3,9 @@ package org.typemeta.context.extractors;
 import org.typemeta.context.functions.Functions;
 import org.typemeta.context.utils.Exceptions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
@@ -294,7 +296,7 @@ public abstract class CheckedExtractors {
      * Combinator function for building a checked extractor from a set of checked extractors
      * and a constructor function.
      * @param f         the value constructor
-     * @param exs       an array of the extractors
+     * @param exs       an array of extractors
      * @param <CTX>     the context type
      * @param <R>       the value type
      * @param <EX>      the exception type
@@ -309,6 +311,29 @@ public abstract class CheckedExtractors {
             final Object[] vals = new Object[exs.length];
             for (int i = 0; i < exs.length; ++i) {
                 vals[i] = exs[i].extract(ctx);
+            }
+            return f.apply(vals);
+        };
+    }
+
+    /**
+     * Combinator function for building a checked extractor from a set of checked extractors
+     * and a constructor function.
+     * @param f         the value constructor
+     * @param exs       an iterable of extractors
+     * @param <CTX>     the context type
+     * @param <R>       the value type
+     * @param <EX>      the exception type
+     * @return          the new extractor
+     */
+    public static <CTX, R, EX extends Exception> Extractor.Checked<CTX, R, EX> combine(
+            Functions.F<List<Object>, R> f,
+            Iterable<Extractor.Checked<CTX, ?, EX>> exs
+    ) {
+        return ctx -> {
+            final List<Object> vals = new ArrayList<>();
+            for (Extractor.Checked<CTX, ?, EX> ex : exs) {
+                vals.add(ex.extract(ctx));
             }
             return f.apply(vals);
         };

@@ -35,4 +35,23 @@ public abstract class CheckedInjectorByIndexes {
             return ctx;
         };
     }
+
+    /**
+     * Construct an injector by combining the given injectors.
+     * The new injector applies each of the given injectors in turn.
+     * @param injs      the iterable of extractors
+     * @param <CTX>     the context type
+     * @param <T>       the injector value type
+     * @return          the new injector
+     */
+    public static <CTX, T, EX extends Exception> InjectorByIndex.Checked<CTX, T, EX> combine(
+            Iterable<InjectorByIndex.Checked<CTX, T, EX>> injs
+    ) {
+        return (ctx, idx, value) -> {
+            for(InjectorByIndex.Checked<CTX, T, EX> inj : injs) {
+                ctx = inj.inject(ctx, idx, value);
+            }
+            return ctx;
+        };
+    }
 }

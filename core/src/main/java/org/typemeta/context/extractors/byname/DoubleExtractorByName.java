@@ -2,7 +2,6 @@ package org.typemeta.context.extractors.byname;
 
 import org.typemeta.context.extractors.DoubleExtractor;
 import org.typemeta.context.functions.Functions;
-import org.typemeta.context.utils.Exceptions;
 
 import java.util.function.DoubleFunction;
 
@@ -126,7 +125,7 @@ public interface DoubleExtractorByName<CTX> extends ExtractorByName<CTX, Double>
                 try {
                     return extractDouble(ctx, name);
                 } catch (Exception ex) {
-                    return Exceptions.throwUnchecked(ex);
+                    throw new RuntimeException(ex);
                 }
             };
         }
