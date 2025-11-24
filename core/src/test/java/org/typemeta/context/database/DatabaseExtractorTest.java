@@ -64,7 +64,7 @@ public class DatabaseExtractorTest {
     private static Connection testDbConn;
 
     static void loadScript(String path) {
-        logger.info("Loading script " + path);
+        logger.info("Loading script {}", path);
         SqlUtils.loadMultiResource(path)
                 .forEach(sql -> {
                     try (final Statement stmt = testDbConn.createStatement()) {

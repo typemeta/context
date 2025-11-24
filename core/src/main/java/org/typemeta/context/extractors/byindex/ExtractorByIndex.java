@@ -6,7 +6,7 @@ import org.typemeta.context.functions.Functions;
 import java.util.Optional;
 
 /**
- * A function to extract a value from an context, given an index.
+ * A function to extract a value from a context, given an index.
  * @param <CTX>     the context type
  * @param <T>       the value type
  */

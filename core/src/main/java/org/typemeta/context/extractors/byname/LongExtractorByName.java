@@ -6,7 +6,7 @@ import org.typemeta.context.functions.Functions;
 import java.util.function.LongFunction;
 
 /**
- * A function to extract a long value from an context, given a name.
+ * A function to extract a long value from a context, given a name.
  * Essentially a specialisation of {@link ExtractorByName} for long values.
  * @param <CTX>     the context type
  */

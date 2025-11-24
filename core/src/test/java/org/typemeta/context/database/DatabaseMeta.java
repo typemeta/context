@@ -49,7 +49,7 @@ abstract class DatabaseMeta {
                 return false;
             }
         } else {
-            return !rhs.isPresent();
+            return rhs.isEmpty();
         }
     }
 
@@ -61,7 +61,7 @@ abstract class DatabaseMeta {
                 return false;
             }
         } else {
-            return !rhs.isPresent();
+            return rhs.isEmpty();
         }
     }
 
@@ -96,6 +96,20 @@ abstract class DatabaseMeta {
             this.varcharF = varcharF;
             this.timeF = timeF;
             this.timestampF = timestampF;
+        }
+
+        Record1(Object[] objArr) {
+            this(
+                    (Boolean)objArr[0],
+                    (Date)objArr[1],
+                    (Double)objArr[2],
+                    (Double)objArr[3],
+                    (Float)objArr[4],
+                    (Integer)objArr[5],
+                    (String)objArr[6],
+                    (Time)objArr[7],
+                    (Timestamp)objArr[8]
+            );
         }
 
         public boolean getBool() {
@@ -200,17 +214,7 @@ abstract class DatabaseMeta {
     
     public static final Extractor<ResultSet, Record1> RECORD1_EXTRACTOR =
             Extractors.combine(
-                    (Object[] args) -> new Record1(
-                            (Boolean)args[0],
-                            (Date)args[1],
-                            (Double)args[2],
-                            (Double)args[3],
-                            (Float)args[4],
-                            (Integer)args[5],
-                            (String)args[6],
-                            (Time)args[7],
-                            (Timestamp)args[8]
-                    ),
+                    Record1::new,
                     ResultSetExtractors.BOOLEAN.bind(TABLE_COLUMNS[0].name),
                     ResultSetExtractors.SQLDATE.bind(TABLE_COLUMNS[1].name),
                     ResultSetExtractors.DOUBLE.bind(TABLE_COLUMNS[2].name),

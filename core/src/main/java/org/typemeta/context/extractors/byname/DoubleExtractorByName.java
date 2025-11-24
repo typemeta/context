@@ -6,7 +6,7 @@ import org.typemeta.context.functions.Functions;
 import java.util.function.DoubleFunction;
 
 /**
- * A function to extract a double value from an context, given a name.
+ * A function to extract a double value from a context, given a name.
  * Essentially a specialisation of {@link ExtractorByName} for double values.
  * @param <CTX>     the context type
  */

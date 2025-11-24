@@ -56,7 +56,7 @@ public interface InjectorByName<CTX, T> {
     CTX inject(CTX ctx, String name, T value);
 
     /**
-     * Bind this injector to an name.
+     * Bind this injector to a name.
      * @param name      the name
      * @return          the new injector
      */
@@ -139,7 +139,7 @@ public interface InjectorByName<CTX, T> {
         CTX inject(CTX ctx, String name, T value) throws EX;
 
         /**
-         * Bind this injector to an name.
+         * Bind this injector to a name.
          * @param name      the name
          * @return          the new injector
          */

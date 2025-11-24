@@ -6,7 +6,7 @@ import org.typemeta.context.functions.Functions;
 import java.util.function.IntFunction;
 
 /**
- * A function to extract a int value from an context, given an index.
+ * A function to extract a int value from a context, given an index.
  * Essentially a specialisation of {@link ExtractorByIndex} for integer values.
  * @param <CTX>     the context type
  */

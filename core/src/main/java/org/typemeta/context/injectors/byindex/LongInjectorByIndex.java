@@ -8,7 +8,7 @@ import java.util.OptionalLong;
 import java.util.function.ToLongFunction;
 
 /**
- * A function to inject a long value into an context, given an index.
+ * A function to inject a long value into a context, given an index.
  * Essentially a specialisation of {@link InjectorByIndex} for long values.
  * @param <CTX>     the context type
  */

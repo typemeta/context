@@ -91,7 +91,7 @@ public interface Extractor<CTX, T> {
     }
 
     /**
-     * A function to extract a value from an context, which may throw a checked exception.
+     * A function to extract a value from a context, which may throw a checked exception.
      * @param <CTX>     the context type
      * @param <T>       the extracted value type
      * @param <EX>      the exception type

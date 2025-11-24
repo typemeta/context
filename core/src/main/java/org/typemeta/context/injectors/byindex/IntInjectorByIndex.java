@@ -8,7 +8,7 @@ import java.util.OptionalInt;
 import java.util.function.ToIntFunction;
 
 /**
- * A function to inject an integer value into an context, given an index.
+ * A function to inject an integer value into a context, given an index.
  * Essentially a specialisation of {@link InjectorByIndex} for integer values.
  * @param <CTX>     the context type
  */

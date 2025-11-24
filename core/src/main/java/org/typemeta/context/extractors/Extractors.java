@@ -46,7 +46,7 @@ public abstract class Extractors {
     }
 
     /**
-     * Combinator function for building a extractor from a single extractor
+     * Combinator function for building an extractor from a single extractor
      * and a constructor function.
      * @param exA       the first extractor
      * @param f         the value constructor
@@ -63,7 +63,7 @@ public abstract class Extractors {
     }
 
     /**
-     * Combinator function for building a extractor from a set of extractors
+     * Combinator function for building an extractor from a set of extractors
      * and a constructor function.
      * @param exA       the first extractor
      * @param exB       the second extractor
@@ -83,7 +83,7 @@ public abstract class Extractors {
     }
 
     /**
-     * Combinator function for building a extractor from a set of extractors
+     * Combinator function for building an extractor from a set of extractors
      * and a constructor function.
      * @param exA       the first extractor
      * @param exB       the second extractor
@@ -106,7 +106,7 @@ public abstract class Extractors {
     }
 
     /**
-     * Combinator function for building a extractor from a set of extractors
+     * Combinator function for building an extractor from a set of extractors
      * and a constructor function.
      * @param exA       the first extractor
      * @param exB       the second extractor
@@ -132,7 +132,7 @@ public abstract class Extractors {
     }
 
     /**
-     * Combinator function for building a extractor from a set of extractors
+     * Combinator function for building an extractor from a set of extractors
      * and a constructor function.
      * @param exA       the first extractor
      * @param exB       the second extractor
@@ -167,7 +167,7 @@ public abstract class Extractors {
     }
 
     /**
-     * Combinator function for building a extractor from a set of extractors
+     * Combinator function for building an extractor from a set of extractors
      * and a constructor function.
      * @param exA       the first extractor
      * @param exB       the second extractor
@@ -206,7 +206,7 @@ public abstract class Extractors {
     }
 
     /**
-     * Combinator function for building a extractor from a set of extractors
+     * Combinator function for building an extractor from a set of extractors
      * and a constructor function.
      * @param exA       the first extractor
      * @param exB       the second extractor
@@ -249,7 +249,7 @@ public abstract class Extractors {
     }
 
     /**
-     * Combinator function for building a extractor from a set of extractors
+     * Combinator function for building an extractor from a set of extractors
      * and a constructor function.
      * @param exA       the first extractor
      * @param exB       the second extractor
@@ -296,7 +296,7 @@ public abstract class Extractors {
     }
 
     /**
-     * Combinator function for building a extractor from a set of extractors
+     * Combinator function for building an extractor from a set of extractors
      * and a constructor function.
      * @param f         the value constructor
      * @param exs       an array of the extractors
@@ -319,7 +319,7 @@ public abstract class Extractors {
     }
 
     /**
-     * Combinator function for building a extractor from a set of extractors
+     * Combinator function for building an extractor from a set of extractors
      * and a constructor function.
      * @param f         the value constructor
      * @param exs       an iterable of the extractors

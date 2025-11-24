@@ -8,7 +8,7 @@ import java.util.OptionalDouble;
 import java.util.function.ToDoubleFunction;
 
 /**
- * A function to inject a double value into an context, given an name.
+ * A function to inject a double value into a context, given a name.
  * Essentially a specialisation of {@link InjectorByName} for double values.
  * @param <CTX>     the context type
  */
