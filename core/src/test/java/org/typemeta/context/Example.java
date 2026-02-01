@@ -88,18 +88,18 @@ public class Example {
     public static class ExtractorExamples {
         public static void main(String[] args) {
             example0();
-//            example1();
-//            example2();
-//            example3();
-//            example4();
-//            example5();
-//            example6();
-//            example7();
+            example1();
+            example2();
+            example3();
+            example4();
+            example5();
+            example6();
+            example7();
         }
 
         private static void example0() {
             final Config before = new Config(
-                    LocalDate.of(2021, 04, 19),
+                    LocalDate.of(2021, 4, 19),
                     OptionalInt.of(24),
                     "DEV"
             );
@@ -125,7 +125,7 @@ public class Example {
 
         private static void example1() {
             final Config before = new Config(
-                    LocalDate.of(2021, 04, 19),
+                    LocalDate.of(2021, 4, 19),
                     OptionalInt.of(24),
                     "DEV"
             );
@@ -195,7 +195,7 @@ public class Example {
             final ExtractorByName<Properties, String> getPropVal = Properties::getProperty;
             final Extractor<Properties, String> getKey = getPropVal.bind("whichKey");
 
-            final Extractor<Properties, String> getKeyVal = getKey.flatMap(key -> getPropVal.bind(key));
+            final Extractor<Properties, String> getKeyVal = getKey.flatMap(getPropVal::bind);
 
             final String value = getKeyVal.extract(props);
             System.out.println(value);
@@ -214,7 +214,7 @@ public class Example {
 
             final Optional<String> empty = getPropOptVal.extract(System.getProperties(), "no_such_key");
             System.out.println("empty=" + empty);
-            assert (!empty.isPresent());
+            assert (empty.isEmpty());
 
 
             final Optional<String> notEmpty = getPropOptVal.extract(System.getProperties(), "java.home");
