@@ -3,6 +3,7 @@ package org.typemeta.context.extractors.byindex;
 import org.typemeta.context.extractors.DoubleExtractor;
 import org.typemeta.context.functions.Functions;
 
+import java.util.Optional;
 import java.util.function.DoubleFunction;
 
 /**
@@ -20,6 +21,16 @@ public interface DoubleExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Doubl
      */
     static <CTX> DoubleExtractorByIndex<CTX> of(DoubleExtractorByIndex<CTX> extr) {
         return extr;
+    }
+
+    /**
+     * An extractor that returns a constant value.
+     * @param t         the value
+     * @param <CTX>     context type
+     * @return          the extractor
+     */
+    static <CTX> DoubleExtractorByIndex<CTX> konst(double t) {
+        return (ctx, index) -> t;
     }
 
     /**
@@ -60,6 +71,12 @@ public interface DoubleExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Doubl
     @Override
     default DoubleExtractor<CTX> bind(int index) {
         return ctx -> extractDouble(ctx, index);
+    }
+
+    @Override
+    default ExtractorByIndex<CTX, Optional<Double>> optional() {
+        // This extractor can't support nulls.
+        throw new RuntimeException("Cannot construct an optional extractor from a DoubleExtractorByIndex");
     }
 
     /**

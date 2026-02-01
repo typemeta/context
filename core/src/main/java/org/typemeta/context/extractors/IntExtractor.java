@@ -31,7 +31,7 @@ public interface IntExtractor<CTX> extends Extractor<CTX, Integer> {
     }
 
     /**
-     * An extractor that always returns the given value.
+     * An extractor that returns a constant value.
      * @param value     the value
      * @param <CTX>     the context type
      * @return          the extractor
@@ -41,7 +41,7 @@ public interface IntExtractor<CTX> extends Extractor<CTX, Integer> {
     }
 
     /**
-     * Extract a integer value from the given context.
+     * Extract an integer value from the given context.
      * A variant of the {@link Extractor#extract} method specialised for double values.
      * @param ctx       the context
      * @return          the extracted value
@@ -55,7 +55,7 @@ public interface IntExtractor<CTX> extends Extractor<CTX, Integer> {
 
     @Override
     default Extractor<CTX, Optional<Integer>> optional() {
-        // This extractor doesn't support nulls, so this won't work.
+        // This extractor can't support nulls.
         throw new RuntimeException("Cannot construct an optional extractor from a IntExtractor");
     }
 

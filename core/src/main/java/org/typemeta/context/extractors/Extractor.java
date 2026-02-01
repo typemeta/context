@@ -33,7 +33,7 @@ public interface Extractor<CTX, T> {
     }
 
     /**
-     * An extractor that always returns the same value.
+     * An extractor that returns a constant value.
      * @param t         the value
      * @param <CTX>     context type
      * @param <T>       the extracted value type
@@ -71,14 +71,14 @@ public interface Extractor<CTX, T> {
     }
 
     /**
-     * Construct an extractor that transform the context that this extractor applies to,
+     * Construct an extractor that transforms the context that this extractor applies to,
      * by applying a function to the context before the extractor is applied.
      * @param f         the function
-     * @param <CTX0>    the transformed context type
+     * @param <CTX2>    the transformed context type
      * @return          the new extractor
      */
-    default <CTX0> Extractor<CTX0, T> mapContext(Functions.F<CTX0, CTX> f) {
-        return ctx0 -> extract(f.apply(ctx0));
+    default <CTX2> Extractor<CTX2, T> mapContext(Functions.F<CTX2, CTX> f) {
+        return ctx2 -> extract(f.apply(ctx2));
     }
 
     /**

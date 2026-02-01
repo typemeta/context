@@ -12,7 +12,7 @@ public abstract class ExtractorByNames {
      * @param strExtr   the string extractor
      * @return          the enum extractor
      */
-    static <CTX, E extends Enum<E>> ExtractorByName<CTX, E> enumExtractor(
+    public static <CTX, E extends Enum<E>> ExtractorByName<CTX, E> enumExtractor(
             Class<E> enumType,
             ExtractorByName<CTX, String> strExtr
     ) {

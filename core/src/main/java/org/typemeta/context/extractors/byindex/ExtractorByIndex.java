@@ -1,6 +1,7 @@
 package org.typemeta.context.extractors.byindex;
 
 import org.typemeta.context.extractors.Extractor;
+import org.typemeta.context.extractors.byname.ExtractorByName;
 import org.typemeta.context.functions.Functions;
 
 import java.util.Optional;
@@ -21,6 +22,17 @@ public interface ExtractorByIndex<CTX, T> {
      */
     static <CTX, T> ExtractorByIndex<CTX, T> of(ExtractorByIndex<CTX, T> extr) {
         return extr;
+    }
+
+    /**
+     * An extractor that returns a constant value.
+     * @param t         the value
+     * @param <CTX>     context type
+     * @param <T>       the extracted value type
+     * @return          the extractor
+     */
+    static <CTX, T> ExtractorByIndex<CTX, T> konst(T t) {
+        return (ctx, index) -> t;
     }
 
     /**

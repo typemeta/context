@@ -3,10 +3,12 @@ package org.typemeta.context.extractors.byindex;
 import org.typemeta.context.extractors.LongExtractor;
 import org.typemeta.context.functions.Functions;
 
+import java.util.Optional;
 import java.util.function.LongFunction;
 
 /**
- * A function to extract a value from a context, given an index.
+ * A function to extract a long value from a context, given an index.
+ * Essentially a specialisation of {@link ExtractorByIndex} for long values.
  * @param <CTX>     the context type
  */
 @FunctionalInterface
@@ -19,6 +21,16 @@ public interface LongExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Long> {
      */
     static <CTX> LongExtractorByIndex<CTX> of(LongExtractorByIndex<CTX> extr) {
         return extr;
+    }
+
+    /**
+     * An extractor that returns a constant value.
+     * @param t         the value
+     * @param <CTX>     context type
+     * @return          the extractor
+     */
+    static <CTX> DoubleExtractorByIndex<CTX> konst(long t) {
+        return (ctx, index) -> t;
     }
 
     /**
@@ -59,6 +71,12 @@ public interface LongExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Long> {
     @Override
     default LongExtractor<CTX> bind(int index) {
         return ctx -> extractLong(ctx, index);
+    }
+
+    @Override
+    default ExtractorByIndex<CTX, Optional<Long>> optional() {
+        // This extractor can't support nulls.
+        throw new RuntimeException("Cannot construct an optional extractor from a LongExtractorByIndex");
     }
 
     /**

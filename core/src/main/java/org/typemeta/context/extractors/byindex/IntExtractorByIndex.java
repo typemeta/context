@@ -3,10 +3,11 @@ package org.typemeta.context.extractors.byindex;
 import org.typemeta.context.extractors.IntExtractor;
 import org.typemeta.context.functions.Functions;
 
+import java.util.Optional;
 import java.util.function.IntFunction;
 
 /**
- * A function to extract a int value from a context, given an index.
+ * A function to extract an int value from a context, given an index.
  * Essentially a specialisation of {@link ExtractorByIndex} for integer values.
  * @param <CTX>     the context type
  */
@@ -20,6 +21,16 @@ public interface IntExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Integer>
      */
     static <CTX> IntExtractorByIndex<CTX> of(IntExtractorByIndex<CTX> extr) {
         return extr;
+    }
+
+    /**
+     * An extractor that returns a constant value.
+     * @param t         the value
+     * @param <CTX>     context type
+     * @return          the extractor
+     */
+    static <CTX> DoubleExtractorByIndex<CTX> konst(int t) {
+        return (ctx, index) -> t;
     }
 
     /**
@@ -60,6 +71,12 @@ public interface IntExtractorByIndex<CTX> extends ExtractorByIndex<CTX, Integer>
     @Override
     default IntExtractor<CTX> bind(int index) {
         return ctx -> extractInt(ctx, index);
+    }
+
+    @Override
+    default ExtractorByIndex<CTX, Optional<Integer>> optional() {
+        // This extractor can't support nulls.
+        throw new RuntimeException("Cannot construct an optional extractor from a IntExtractorByIndex");
     }
 
     /**

@@ -3,6 +3,7 @@ package org.typemeta.context.extractors.byname;
 import org.typemeta.context.extractors.LongExtractor;
 import org.typemeta.context.functions.Functions;
 
+import java.util.Optional;
 import java.util.function.LongFunction;
 
 /**
@@ -22,6 +23,15 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
         return extr;
     }
 
+    /**
+     * An extractor that returns a constant value.
+     * @param t         the value
+     * @param <CTX>     context type
+     * @return          the extractor
+     */
+    static <CTX> LongExtractorByName<CTX> konst(long t) {
+        return (ctx, s) -> t;
+    }
     /**
      * Extract a long value from the given context, for the given name.
      * A variant of the {@link ExtractorByName#extract} method specialised for long values.
@@ -54,6 +64,12 @@ public interface LongExtractorByName<CTX> extends ExtractorByName<CTX, Long> {
     @Override
     default LongExtractor<CTX> bind(String name) {
         return ctx -> extractLong(ctx, name);
+    }
+
+    @Override
+    default ExtractorByName<CTX, Optional<Long>> optional() {
+        // This extractor can't support nulls.
+        throw new RuntimeException("Cannot construct an optional extractor from a LongExtractorByName");
     }
 
     /**

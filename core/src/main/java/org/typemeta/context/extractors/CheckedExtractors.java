@@ -25,7 +25,7 @@ public abstract class CheckedExtractors {
      * @param strExtr   the string extractor
      * @return          the enum extractor
      */
-    static <CTX, E extends Enum<E>, EX extends Exception>
+    public static <CTX, E extends Enum<E>, EX extends Exception>
     Extractor.Checked<CTX, E, EX> enumExtractor(
             Class<E> enumType,
             Extractor.Checked<CTX, String, EX> strExtr

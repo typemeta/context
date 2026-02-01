@@ -3,6 +3,7 @@ package org.typemeta.context.extractors.byname;
 import org.typemeta.context.extractors.IntExtractor;
 import org.typemeta.context.functions.Functions;
 
+import java.util.Optional;
 import java.util.function.IntFunction;
 
 /**
@@ -20,6 +21,16 @@ public interface IntExtractorByName<CTX> extends ExtractorByName<CTX, Integer> {
      */
     static <CTX> IntExtractorByName<CTX> of(IntExtractorByName<CTX> extr) {
         return extr;
+    }
+
+    /**
+     * An extractor that returns a constant value.
+     * @param t         the value
+     * @param <CTX>     context type
+     * @return          the extractor
+     */
+    static <CTX> IntExtractorByName<CTX> konst(int t) {
+        return (ctx, s) -> t;
     }
 
     /**
@@ -54,6 +65,12 @@ public interface IntExtractorByName<CTX> extends ExtractorByName<CTX, Integer> {
     @Override
     default IntExtractor<CTX> bind(String name) {
         return ctx -> extractInt(ctx, name);
+    }
+
+    @Override
+    default ExtractorByName<CTX, Optional<Integer>> optional() {
+        // This extractor can't support nulls.
+        throw new RuntimeException("Cannot construct an optional extractor from a IntExtractorByName");
     }
 
     /**

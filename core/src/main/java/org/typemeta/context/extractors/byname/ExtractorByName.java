@@ -24,6 +24,17 @@ public interface ExtractorByName<CTX, T> {
     }
 
     /**
+     * An extractor that returns a constant value.
+     * @param t         the value
+     * @param <CTX>     context type
+     * @param <T>       the extracted value type
+     * @return          the extractor
+     */
+    static <CTX, T> ExtractorByName<CTX, T> konst(T t) {
+        return (ctx, s) -> t;
+    }
+
+    /**
      * Extract a value of type {@code T} from the given context,
      * for the given column name.
      * @param ctx       the context
@@ -40,6 +51,27 @@ public interface ExtractorByName<CTX, T> {
      */
     default <U> ExtractorByName<CTX, U> map(Functions.F<T, U> f) {
         return (ctx, name) -> f.apply(extract(ctx, name));
+    }
+
+    /**
+     * Flatmap a function over this extractor.
+     * @param f         the function
+     * @param <U>       the extractor value type returned by the function
+     * @return          the new extractor
+     */
+    default <U> ExtractorByName<CTX, U> flatMap(Functions.F<T, ExtractorByName<CTX, U>> f) {
+        return (ctx, name) -> f.apply(this.extract(ctx, name)).extract(ctx, name);
+    }
+
+    /**
+     * Construct an extractor that transforms the context that this extractor applies to,
+     * by applying a function to the context before the extractor is applied.
+     * @param f         the function
+     * @param <CTX2>    the transformed context type
+     * @return          the new extractor
+     */
+    default <CTX2> ExtractorByName<CTX2, T> mapContext(Functions.F<CTX2, CTX> f) {
+        return (ctx2, name) -> extract(f.apply(ctx2), name);
     }
 
     /**
@@ -90,6 +122,27 @@ public interface ExtractorByName<CTX, T> {
          */
         default <U> Checked<CTX, U, EX> map(Functions.F<T, U> f) {
             return (ctx, name) -> f.apply(extract(ctx, name));
+        }
+
+        /**
+         * Flatmap a function over this extractor.
+         * @param f         the function
+         * @param <U>       the extractor value type returned by the function
+         * @return          the new extractor
+         */
+        default <U> Checked<CTX, U, EX> flatMap(Functions.F<T, Checked<CTX, U, EX>> f) {
+            return (ctx, name) -> f.apply(this.extract(ctx, name)).extract(ctx, name);
+        }
+
+        /**
+         * Construct an extractor that transforms the context that this extractor applies to,
+         * by applying a function to the context before the extractor is applied.
+         * @param f         the function
+         * @param <CTX2>    the transformed context type
+         * @return          the new extractor
+         */
+        default <CTX2> Checked<CTX2, T, EX> mapContext(Functions.F<CTX2, CTX> f) {
+            return (ctx2, name) -> extract(f.apply(ctx2), name);
         }
 
         /**

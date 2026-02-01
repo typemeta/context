@@ -31,7 +31,7 @@ public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
     }
 
     /**
-     * An extractor that always returns the given value.
+     * An extractor that returns a constant value.
      * @param value     the value
      * @param <CTX>     the context type
      * @return          the extractor
@@ -70,7 +70,7 @@ public interface DoubleExtractor<CTX> extends Extractor<CTX, Double> {
 
     @Override
     default Extractor<CTX, Optional<Double>> optional() {
-        // This extractor doesn't support nulls, so this won't work.
+        // This extractor can't support nulls.
         throw new RuntimeException("Cannot construct an optional extractor from a DoubleExtractor");
     }
 
